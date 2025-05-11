@@ -70,14 +70,37 @@ export const RESUME_DATA = {
 
   ],
   skills: [
+    "HTML",
+    "CSS",
     "JavaScript",
     "TypeScript",
-    "React/Next.js/Remix",
-    "Node.js",
-    "GraphQL",
-    "Relay",
-    "WebRTC",
-  ],
+    "SQL",
+    "Manual Testing",
+    "Automated Testing",
+    "Penetration Testing",
+    "Security Testing",
+    "Accessibility Testing",
+    "Functional Testing",
+    "Non-Functional Testing",
+    "AI Testing",
+    "Playwright",
+    "K6",
+    "Postman (API testing)",
+    "Git",
+    "GitHub",
+    "Github Actions",
+    "CI/CD",
+    "JIRA",
+    "Clickup",
+    "Asana",
+    "Agile Development",
+    "Figma",
+    "Power BI",
+    "Tableau",
+
+    
+  ]
+  ,
   
   projects: [
     {
