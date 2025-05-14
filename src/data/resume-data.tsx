@@ -12,7 +12,7 @@ export const RESUME_DATA = {
   about:
     "QA Engineer",
   summary:
-    "Experienced QA Engineer with a track record of success in over 10 projects across diverse industries, including e-commerce, logistics, and healthcare. Proficient in manual and automated testing, penetration testing (pentesting), and creating comprehensive test plans to ensure software reliability and security. Expertise includes designing and executing test cases, managing defects, and conducting a wide range of tests, including functional, integration, system, user acceptance, and performance testing. Skilled in using tools like Playwright, K6, Postman, Git/GitHub, and JIRA, with strong knowledge of HTML, CSS, JavaScript, TypeScript, and SQL. A collaborative professional adept at thriving in Agile environments, delivering secure, user-focused, and high-quality software solutions.",
+    "Experienced QA Engineer with a proven track record across 15+ projects in diverse industries, including e-commerce, logistics, healthcare, finance, food & beverage, and telecommunications. Expertise includes leading over 6 projects with full ownership of the QA process — from defining test strategies and creating comprehensive test plans to executing manual and automated tests. Skilled in defect management and conducting functional, integration, system, and user acceptance testing to ensure high software quality.",
   avatarUrl: "https://github.com/Defused15.png",
   personalWebsiteUrl: "",
   contact: {
