@@ -97,8 +97,6 @@ export const RESUME_DATA = {
     "Figma",
     "Power BI",
     "Tableau",
-
-    
   ]
   ,
   
@@ -120,24 +118,6 @@ export const RESUME_DATA = {
         href: "https://parabol.co/",
       },
     },
-    {
-      title: "Evercast",
-      techStack: [
-        "Lead Frontend Developer",
-        "TypeScript",
-        "React",
-        "Node.js",
-        "GraphQL",
-      ],
-      description:
-        "Creative collaboration platform that combines video conferencing and HD media streaming",
-      logo: DivLogo,
-      link: {
-        label: "evercast.us",
-        href: "https://www.evercast.us/",
-      },
-    },
- 
   ],
 
 } as const;
