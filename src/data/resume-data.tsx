@@ -47,7 +47,7 @@ export const RESUME_DATA = {
   work: [
     {
       company: "Inetum",
-      link: "https://parabol.co",
+      link: "https://www.inetum.com/es",
       badges: ["Remote"],
       title: "Quality Engineer",
       logo: InetumLogo,
