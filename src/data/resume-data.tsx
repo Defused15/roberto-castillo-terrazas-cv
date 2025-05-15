@@ -53,10 +53,21 @@ export const RESUME_DATA = {
       logo: InetumLogo,
       start: "2025",
       end: null,
-  description: [
-        "Reviewed software requirements",
-        "Created test plans",
-      ],
+ description: [
+  "Led the review and analysis of software requirements to ensure clarity, completeness, and testability.",
+  "Created detailed test plans including test strategies that defined scope, objectives, types of testing, resources, and schedules.",
+  "Designed and wrote the complete test suite with test cases based on functional requirements, applying diverse testing techniques.",
+  "Developed and implemented automated tests, integrating them into CI/CD pipelines to enable scheduled regression testing.",
+  "Managed and prioritized bug tracking, ensuring accurate logging and follow-up of issues during the QA process.",
+  "Performed integration testing, system testing, and user acceptance testing (UAT) to validate functionality and performance.",
+  "Created detailed supporting documentation to facilitate and back QA processes and team understanding.",
+  "Generated detailed testing reports to communicate results, issues, and quality metrics to stakeholders.",
+  "Conducted performance testing, including spike and load scenarios, to evaluate scalability and system reliability.",
+  "Executed accessibility testing to ensure compliance with ADA standards and inclusive software design.",
+  "Collaborated closely with cross-functional teams, leading QA efforts and aligning testing activities with development and product goals."
+],
+
+
     },
     {
   company: "Divelement",
@@ -127,20 +138,17 @@ export const RESUME_DATA = {
   
   projects: [
     {
-      title: "Parabol",
+      title: "QA Playground Test Automation",
       techStack: [
-        "Full Stack Developer",
-        "TypeScript",
-        "React",
-        "Node.js",
-        "GraphQL",
+        "Playwright",
+        "Github Actions",
       ],
       description:
-        "The Agile meeting co-pilot that delivers better meetings with less effort",
-      logo: DivLogo,
+        "The QA Playground page has Mini Web Apps that I use to showcase my test skills. I have created a GitHub repository that contains the code for the test automation and CI/CD pipeline.",
+      logo: "",
       link: {
         label: "github.com",
-        href: "https://parabol.co/",
+        href: "https://github.com/Defused15/QA-Playground-Tests",
       },
     },
   ],
