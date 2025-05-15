@@ -131,9 +131,15 @@ export default function Page() {
                     {work.title}
                   </h4>
                 </CardHeader>
-                <CardContent className="mt-2 text-xs print:text-[10px]">
-                  {work.description}
-                </CardContent>
+             <CardContent className="mt-2 text-xs print:text-[10px]">
+  <ul className="list-disc pl-4 space-y-1">
+    {work.description.map((point, index) => (
+      <li key={index}>{point}</li>
+    ))}
+  </ul>
+</CardContent>
+
+
               </Card>
             );
           })}
