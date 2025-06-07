@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/react";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider"
+import Script  from "next/script";
 
 import "./globals.css";
 import React from "react";
@@ -24,6 +25,22 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={inter.className} suppressHydrationWarning>
+      <head>
+      /* Google tag (gtag.js) */
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JWPND7VDCL"></script>
+<Script
+  id="google-analytics"
+  strategy="afterInteractive"
+  dangerouslySetInnerHTML={{
+    __html: `
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-JWPND7VDCL');
+    `,
+  }}
+/>
+      </head>
       <body className="bg-white dark:bg-gray-900">
           <ThemeProvider
             attribute="class"
