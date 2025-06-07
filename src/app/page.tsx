@@ -69,9 +69,9 @@ export default function Page() {
                   size="icon"
                   asChild
                 >
-                  <a href={social.url}>
-                    <social.icon className="size-4" />
-                  </a>
+                  <a href={social.url} target="_blank" rel="noopener noreferrer">
+      <social.icon className="size-4" />
+    </a>
                 </Button>
               ))}
              <div className="size-8 flex items-center justify-center">
