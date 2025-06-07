@@ -26,7 +26,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.className} suppressHydrationWarning>
       <head>
-      /* Google tag (gtag.js) */
+   {/* Google tag (gtag.js) */}
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-JWPND7VDCL"></script>
 <Script
   id="google-analytics"
