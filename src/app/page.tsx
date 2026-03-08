@@ -41,6 +41,11 @@ export default function Page() {
                 {RESUME_DATA.location}
               </a>
             </p>
+            {RESUME_DATA.contact.email ? (
+              <p className="text-xs text-muted-foreground">
+                {RESUME_DATA.contact.email}
+              </p>
+            ) : null}
             <div className="flex gap-x-1 pt-1 text-sm text-muted-foreground print:hidden">
               {RESUME_DATA.contact.email ? (
                 <Button
