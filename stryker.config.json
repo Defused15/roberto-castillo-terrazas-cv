@@ -1,0 +1,26 @@
+{
+  "$schema": "./node_modules/@stryker-mutator/core/schema/stryker-schema.json",
+  "packageManager": "npm",
+  "reporters": ["html", "clear-text", "progress"],
+  "testRunner": "jest",
+
+  "jest": {
+    "projectType": "custom",
+    "configFile": "jest.config.js"
+  },
+
+  "coverageAnalysis": "off",
+
+  "mutate": [
+    "src/lib/**/*.ts",
+    "src/components/command-menu.tsx",
+    "src/components/project-card.tsx",
+    "src/components/darkmode.tsx"
+  ],
+
+  "ignorePatterns": [
+    "reports",
+    ".stryker-tmp",
+    "jest.config.ts"
+  ]
+}

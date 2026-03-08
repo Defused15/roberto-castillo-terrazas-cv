@@ -9,6 +9,9 @@ import { Button } from "@/components/ui/button";
 import { RESUME_DATA } from "@/data/resume-data";
 import { ProjectCard } from "@/components/project-card";
 import { ModeToggle} from "@/components/darkmode";
+import { Inter } from "next/font/google";
+
+const inter = Inter({ subsets: ["latin"] });
 
 
 export const metadata: Metadata = {
@@ -17,16 +20,18 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
+  const projectCount = RESUME_DATA.projects.length as number;
+
   return (
-    <main className="container bg-white dark:bg-gray-900 relative mx-auto scroll-my-12 overflow-auto p-4 print:p-12 md:p-16">
+    <main className={`${inter.className} container bg-white dark:bg-gray-900 relative mx-auto scroll-my-12 overflow-auto p-4 print:p-12 md:p-16`}>
       <section className="mx-auto bg-white dark:bg-gray-900 w-full max-w-2xl space-y-8 bg-white print:space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex-1 space-y-1.5">
             <h1 className="text-2xl font-bold">{RESUME_DATA.name}</h1>
-            <p className="max-w-md text-pretty font-mono text-sm text-muted-foreground print:text-[12px]">
+            <p className="max-w-md text-pretty text-sm text-muted-foreground print:text-[12px]">
               {RESUME_DATA.about}
             </p>
-            <p className="max-w-md items-center text-pretty font-mono text-xs text-muted-foreground">
+            <p className="max-w-md items-center text-pretty text-xs text-muted-foreground">
               <a
                 className="inline-flex gap-x-1.5 align-baseline leading-none hover:underline"
                 href={RESUME_DATA.locationLink}
@@ -36,7 +41,7 @@ export default function Page() {
                 {RESUME_DATA.location}
               </a>
             </p>
-            <div className="flex gap-x-1 pt-1 font-mono text-sm text-muted-foreground print:hidden">
+            <div className="flex gap-x-1 pt-1 text-sm text-muted-foreground print:hidden">
               {RESUME_DATA.contact.email ? (
                 <Button
                   className="size-8"
@@ -70,15 +75,15 @@ export default function Page() {
                   asChild
                 >
                   <a href={social.url} target="_blank" rel="noopener noreferrer">
-      <social.icon className="size-4" />
-    </a>
+                    <social.icon className="size-4" />
+                  </a>
                 </Button>
               ))}
-             <div className="size-8 flex items-center justify-center">
+              <div className="size-8 flex items-center justify-center">
                 <ModeToggle />
               </div>
             </div>
-            <div className="hidden flex-col gap-x-1 font-mono text-sm text-muted-foreground print:flex print:text-[12px]">
+            <div className="hidden flex-col gap-x-1 text-sm text-muted-foreground print:flex print:text-[12px]">
               {RESUME_DATA.contact.email ? (
                 <a href={`mailto:${RESUME_DATA.contact.email}`}>
                   <span className="underline">{RESUME_DATA.contact.email}</span>
@@ -99,7 +104,7 @@ export default function Page() {
         </div>
         <Section>
           <h2 className="text-xl font-bold">About</h2>
-          <p className="text-pretty font-mono text-sm text-muted-foreground print:text-[12px]">
+          <p className="text-pretty text-sm text-muted-foreground print:text-[12px]">
             {RESUME_DATA.summary}
           </p>
         </Section>
@@ -110,7 +115,14 @@ export default function Page() {
               <Card key={work.company}>
                 <CardHeader>
                   <div className="flex items-center justify-between gap-x-2 text-base">
-                    <h3 className="inline-flex items-center justify-center gap-x-1 font-semibold leading-none">
+                    <h3 className="inline-flex items-center justify-center gap-x-2 font-semibold leading-none">
+                      {work.logo && (
+                        <img
+                          src={work.logo.src}
+                          alt={`${work.company} logo`}
+                          className="size-5 rounded-sm object-contain"
+                        />
+                      )}
                       <a className="hover:underline" href={work.link}>
                         {work.company}
                       </a>
@@ -132,19 +144,17 @@ export default function Page() {
                     </div>
                   </div>
 
-                  <h4 className="font-mono text-sm leading-none print:text-[12px]">
+                  <h4 className="text-sm leading-none print:text-[12px]">
                     {work.title}
                   </h4>
                 </CardHeader>
-             <CardContent className="mt-2 text-xs print:text-[10px]">
-  <ul className="list-disc pl-4 space-y-1">
-    {work.description.map((point, index) => (
-      <li key={index}>{point}</li>
-    ))}
-  </ul>
-</CardContent>
-
-
+                <CardContent className="mt-2 text-sm print:text-[10px]">
+                  <ul className="list-disc pl-4 space-y-1">
+                    {work.description.map((point, index) => (
+                      <li key={index}>{point}</li>
+                    ))}
+                  </ul>
+                </CardContent>
               </Card>
             );
           })}
@@ -171,7 +181,7 @@ export default function Page() {
             );
           })}
         </Section>
-          <Section>
+        <Section>
           <h2 className="text-xl font-bold">Skills</h2>
           <div className="flex flex-wrap gap-1">
             {RESUME_DATA.skills.map((skill) => {
@@ -184,9 +194,37 @@ export default function Page() {
           </div>
         </Section>
 
-       <Section className="print-force-new-page scroll-mb-16">
+        <Section>
+          <h2 className="text-xl font-bold">Certifications & Courses</h2>
+          <div className="flex flex-col gap-2">
+            {RESUME_DATA.certifications.map((cert) => (
+              <div key={cert.title} className="flex items-center justify-between">
+                <div className="flex flex-col">
+                  <a
+                    href={cert.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-medium hover:underline text-sm"
+                  >
+                    {cert.title}
+                  </a>
+                  <span className="text-xs text-muted-foreground">{cert.issuer}</span>
+                </div>
+                <span className="text-sm tabular-nums text-gray-500 shrink-0 ml-4">{cert.year}</span>
+              </div>
+            ))}
+          </div>
+        </Section>
+
+        <Section className="print-force-new-page scroll-mb-16">
           <h2 className="text-xl font-bold">Projects</h2>
-          <div className="-mx-3 grid grid-cols-1 gap-3 print:grid-cols-3 print:gap-2 md:grid-cols-2 lg:grid-cols-3">
+          <div className={`-mx-3 grid gap-3 print:grid-cols-3 print:gap-2 ${
+            projectCount === 1
+              ? "grid-cols-1"
+              : projectCount === 2
+              ? "grid-cols-1 md:grid-cols-2"
+              : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+          }`}>
             {RESUME_DATA.projects.map((project) => {
               return (
                 <ProjectCard
@@ -194,7 +232,7 @@ export default function Page() {
                   title={project.title}
                   description={project.description}
                   tags={project.techStack}
-                  link={"link" in project ? project.link.href : undefined}
+                  link={project.link?.href}
                 />
               );
             })}
