@@ -1,22 +1,33 @@
 import {
- DivLogo,
- InetumLogo,
+  DivLogo,
+  InetumLogo,
+  MilwaukeeLogo,
 } from "@/images/logos";
 import { GitHubIcon, LinkedInIcon, XIcon } from "@/components/icons";
+
+type Project = {
+  title: string;
+  techStack: readonly string[];
+  description: string;
+  logo: string;
+  link?: {
+    label: string;
+    href: string;
+  };
+};
 
 export const RESUME_DATA = {
   name: "Roberto Castillo",
   initials: "RC",
   location: "México",
   locationLink: "https://www.google.com/maps/place/mexico",
-  about:
-    "QA Engineer",
+  about: "QA Engineer",
   summary:
-    "Experienced QA Engineer with a proven track record across 15+ projects in diverse industries, including e-commerce, logistics, healthcare, finance, food & beverage, and manufacturing. Expertise includes leading over 6 projects with full ownership of the QA process — from defining test strategies and creating comprehensive test plans to executing manual and automated tests. Skilled in a wide range of testing types such as functional, integration, system, user acceptance (UAT), regression, performance, security, accessibility, and exploratory testing. Proficient in tools and technologies including Playwright, Postman, K6, Git, GitHub, GitHub Actions, Azure DevOps, CI/CD, JIRA, ClickUp, Asana, and Figma. Strong technical foundation with experience in HTML, CSS, JavaScript, TypeScript, SQL, AI testing, and data visualization tools like Power BI and Tableau.",
+    "QA Engineer with 3+ years of experience in end-to-end quality tests across 15+ projects in e-commerce, healthcare, logistics, and finance, leading 7 of them end-to-end. Proven ability to own the full testing lifecycle, covering everything from requirements analysis and test design to CI/CD integration and defect triage, in fast-paced consulting environments where adaptability and autonomy are critical. Combines strong automation skills (Playwright, Cypress, Jest) with hands-on experience in enterprise platforms such as Salesforce Marketing Cloud and Sitecore, consistently aligning quality efforts with product goals and client expectations. Leverages AI-assisted workflows, including Claude Code, to accelerate test development and improve overall efficiency. Comfortable working with distributed, international teams and contributing beyond QA when needed.",
   avatarUrl: "https://github.com/Defused15.png",
   personalWebsiteUrl: "",
   contact: {
-    email: "rtc18130984@gmail.com",
+    email: "rct18130984@gmail.com",
     tel: "+528711053221",
     social: [
       {
@@ -29,16 +40,11 @@ export const RESUME_DATA = {
         url: "https://www.linkedin.com/in/rocastil/",
         icon: LinkedInIcon,
       },
-    /*  {
-        name: "X",
-        url: "https://x.com/BartoszJarocki",
-        icon: XIcon,
-      },*/
     ],
   },
   education: [
     {
-      school: "University Instituto Tecnológico de La Laguna",
+      school: "Instituto Tecnológico de La Laguna",
       degree: "Bachelor of Mechatronic Engineering",
       start: "2018",
       end: "2022",
@@ -53,96 +59,152 @@ export const RESUME_DATA = {
       logo: InetumLogo,
       start: "2025",
       end: null,
- description: [
-  "Led the review and analysis of software requirements to ensure clarity, completeness, and testability.",
-  "Created detailed test plans including test strategies that defined scope, objectives, types of testing, resources, and schedules.",
-  "Designed and wrote the complete test suite with test cases based on functional requirements, applying diverse testing techniques.",
-  "Developed and implemented automated tests, integrating them into CI/CD pipelines to enable scheduled regression testing.",
-  "Managed and prioritized bug tracking, ensuring accurate logging and follow-up of issues during the QA process.",
-  "Performed integration testing, system testing, and user acceptance testing (UAT) to validate functionality and performance.",
-  "Created detailed supporting documentation to facilitate and back QA processes and team understanding.",
-  "Generated detailed testing reports to communicate results, issues, and quality metrics to stakeholders.",
-  "Conducted performance testing, including spike and load scenarios, to evaluate scalability and system reliability.",
-  "Executed accessibility testing to ensure compliance with ADA standards and inclusive software design.",
-  "Collaborated closely with cross-functional teams, leading QA efforts and aligning testing activities with development and product goals."
-],
-
-
+      description: [
+        "Led the end-to-end quality strategy for a Sitecore-based CMS platform, covering unit, functional, SIT, UAT, automated, and accessibility testing.",
+        "Created detailed test plans including test strategies that defined scope, objectives, types of testing, resources, and schedules.",
+        "Designed and wrote the complete test suite with test cases based on functional requirements, applying diverse testing techniques.",
+        "Built and maintained Playwright automation scripts integrated into Azure DevOps pipelines for continuous validation.",
+        "Used Google Lighthouse to ensure ADA compliance and WCAG 2.1 standards.",
+        "Conducted performance testing including spike and load scenarios to evaluate scalability and reliability.",
+        "Managed work items, defect tracking, and sprint planning through Azure DevOps, prioritizing issues based on severity and impact.",
+        "Created detailed supporting documentation to facilitate and back QA processes and team understanding.",
+        "Generated detailed testing reports to communicate results, issues, and quality metrics to stakeholders.",
+        "Validated Salesforce Marketing Cloud lead records, ensuring data integrity and accuracy across marketing workflows.",
+      ],
     },
     {
-  company: "Divelement",
-  link: "https://divelement.io/",
-  badges: ["Remote"],
-  title: "QA Engineer",
-  logo: DivLogo,
-  start: "2023",
-  end: 2025,
- description: [
-  "Reviewing and analyzing the software requirements for clarity, completeness, testability, and consistency.",
-  "Creating detailed test plans that outlines the test strategy, objectives, schedule, resources, tools, and environments needed for testing.",
-  "Designing and writing test cases and test scripts based on the software requirements and design documents. This also includes the creation of test data.",
-  "Running the test cases on the software, which includes functional testing, integration testing, system testing, and user acceptance testing.",
-  "Implementing automated testing scripts and frameworks for efficient and consistent testing cycles, encompassing strategy development, script creation, framework setup, and integration with continuous integration/deployment pipelines.",
-  "Recording, tracking, and managing defects found during testing. This includes prioritizing defects based on severity and impact.",
-  "Conducting repeated testing of the software to ensure that newly developed features or bug fixes haven't adversely affected existing functionalities.",
-  "Assessing the software performance in terms of speed, scalability, and stability under different conditions.",
-  "Testing the software from an end-user perspective to ensure it is intuitive, easy to use, and meets user requirements.",
-  "Reviewing all related documentation for accuracy and completeness, and testing the software against the documented requirements.",
-  "Collaborate with cross-functional teams, to understand requirements and provide feedback on software quality."
-],
-}
-
+      company: "Divelement",
+      link: "https://divelement.io/",
+      badges: ["Remote"],
+      title: "QA Engineer",
+      logo: DivLogo,
+      start: "2023",
+      end: "2025",
+      description: [
+        "Reviewed software requirements for clarity, completeness, and testability, then translated them into detailed test plans covering strategy, scope, environments, and schedules.",
+        "Designed and executed manual and automated test cases across functional, integration, system, and UAT phases, including test data creation and regression coverage.",
+        "Built and maintained automation frameworks using Playwright and integrated them into CI/CD pipelines for consistent, repeatable testing cycles.",
+        "Tracked and triaged defects in JIRA, prioritizing by severity and impact.",
+        "Assessed performance, scalability, and stability under varying conditions using K6.",
+        "Validated content-driven applications across multiple CMS platforms including Contentful, Sanity, Netlify, and Drupal.",
+        "Collaborated closely with cross-functional teams to align quality efforts with product goals and deliver clear, actionable feedback throughout the development lifecycle.",
+      ],
+    },
+    {
+      company: "Milwaukee Tools",
+      link: "https://www.milwaukeetool.com",
+      badges: ["On-site"],
+      title: "QA & Testing Intern",
+      logo: MilwaukeeLogo,
+      start: "2022",
+      end: "2022",
+      description: [
+        "Developed a C# application supporting 200+ simultaneous users to manage and store 800+ daily records in a SQL Server database, ensuring performance and reliability at scale.",
+        "Designed the underlying database schema using normalized tables, views, and primary/foreign keys, accommodating 100,000+ records with efficient querying and data export capabilities.",
+        "Built Power BI dashboards to support laboratory management, productivity analysis, and executive reporting, translating raw operational data into actionable business insights.",
+      ],
+    },
   ],
   skills: [
-    "HTML",
-    "CSS",
+    // Programming Languages
     "JavaScript",
     "TypeScript",
+    "HTML",
+    "CSS",
     "SQL",
-    "Manual Testing",
+    // Testing Tools & Frameworks
+    "Playwright",
+    "Cypress",
+    "Jest",
+    "Postman",
+    "K6",
+    "Google Lighthouse",
+    "Burp Suite",
+    // CI/CD & DevOps
+    "Azure DevOps",
+    "GitHub Actions",
+    "CI/CD",
+    "Git",
+    "GitHub",
+    // Project Management
+    "JIRA",
+    "Asana",
+    "ClickUp",
+    // CMS & Marketing Platforms
+    "Sitecore",
+    "Salesforce Marketing Cloud",
+    "Contentful",
+    "Sanity",
+    "Drupal",
+    // AI Tools
+    "Claude Code",
+    "AI-Powered Testing",
+    // Data & Design
+    "Power BI",
+    "Tableau",
+    "Figma",
+    // Testing Types
     "Automation Testing",
     "Functional Testing",
     "Integration Testing",
     "System Testing",
     "User Acceptance Testing (UAT)",
-    "Non-Functional Testing",
-    "Penetration Testing",
-    "Security Testing",
-    "Accessibility Testing",
-    "Performance Testing",
-    "AI Testing",
     "Regression Testing",
-    "Smoke Testing",
-    "Sanity Testing",
+    "Performance Testing",
+    "Accessibility Testing (ADA / WCAG 2.1)",
+    "Security Testing (OWASP)",
     "Exploratory Testing",
-    "Test Planning",
-    "Test Case Design",
-    "Test Execution",
-    "Playwright",
-    "K6",
-    "Postman (API testing)",
-    "Git",
-    "GitHub",
-    "Github Actions",
-    "Azure DevOps",
-    "CI/CD",
-    "JIRA",
-    "Clickup",
-    "Asana",
-    "Agile Development",
-    "Figma",
-    "Power BI",
-    "Tableau",
-  ]
-  ,
-  
+    // Leadership & Strategy
+    "Test Strategy & Planning",
+  ],
+  certifications: [
+    {
+      title: "Claude Code in Action",
+      issuer: "Anthropic",
+      year: "2026",
+      url: "https://verify.skilljar.com/c/q968tshgyfc9",
+    },
+    {
+      title: "Introduction to Agent Skills",
+      issuer: "Anthropic",
+      year: "2026",
+      url: "https://verify.skilljar.com/c/pevyfncx8rbp",
+    },
+    {
+      title: "Introduction to Model Context Protocol",
+      issuer: "Anthropic",
+      year: "2026",
+      url: "https://verify.skilljar.com/c/nrdyumuk4zqg",
+    },
+    {
+      title: "Mobile App Metrics & Optimization",
+      issuer: "Platzi",
+      year: "2025",
+      url: "https://platzi.com/p/roberto.castillo6549/curso/11930-course/diploma/detalle/",
+    },
+    {
+      title: "Bug Bounty & Web Security Testing",
+      issuer: "Udemy",
+      year: "2024",
+      url: "https://www.udemy.com/certificate/UC-ca2d1e93-8ffb-4c40-8260-560e8b6e2653/",
+    },
+    {
+      title: "Google Cloud Skills Boost",
+      issuer: "Google",
+      year: "2023",
+      url: "https://www.cloudskillsboost.google/public_profiles/a2e36a7b-5b82-49c3-a098-153eec5e545f",
+    },
+    {
+      title: "Google Data Analytics",
+      issuer: "Coursera",
+      year: "2022",
+      url: "https://coursera.org/share/8761afde9926f90f13b641f355e4bcd3",
+    },
+  ],
   projects: [
     {
       title: "QA Playground Test Automation",
-      techStack: [
-        "Playwright",
-        "Github Actions",
-      ],
+      techStack: ["Playwright", "Github Actions"],
       description:
         "The QA Playground page has Mini Web Apps that I use to showcase my test skills. I have created a GitHub repository that contains the code for the test automation and CI/CD pipeline.",
       logo: "",
@@ -151,6 +213,16 @@ export const RESUME_DATA = {
         href: "https://github.com/Defused15/QA-Playground-Tests",
       },
     },
-  ],
-
+    {
+      title: "Minimalist CV",
+      techStack: ["Next.js", "TypeScript", "Tailwind CSS", "Jest", "Stryker", "GitHub Actions"],
+      description:
+        "Personal CV web app forked from an open-source template and extended with dark mode support and a full testing suite. Features 77 unit tests with 73.86% line coverage and a 75.47% mutation score validated with Stryker Mutator.",
+      logo: "",
+      link: {
+        label: "github.com",
+        href: "https://github.com/Defused15/roberto-castillo-terrazas-cv",
+      },
+    },
+  ] as Project[],
 } as const;

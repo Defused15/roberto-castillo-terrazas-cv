@@ -1,12 +1,19 @@
 import { cn } from "@/lib/utils";
 import React from "react";
 
-export interface BadgeProps extends React.HTMLAttributes<HTMLDivElement> {}
+export interface SectionProps extends React.HTMLAttributes<HTMLElement> {
+  ariaLabel?: string;
+}
 
-export function Section({ className, ...props }: BadgeProps) {
+export function Section({ className, ariaLabel, ...props }: SectionProps) {
   return (
-    <section 
-      className={cn("flex  min-h-0 flex-col gap-y-3 bg-white dark:bg-gray-900", className)}
+    <section
+      role="region"
+      aria-label={ariaLabel}
+      className={cn(
+        "flex min-h-0 flex-col gap-y-3 bg-white dark:bg-gray-900",
+        className
+      )}
       {...props}
     />
   );
