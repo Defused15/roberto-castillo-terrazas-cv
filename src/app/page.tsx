@@ -20,6 +20,8 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
+  const projectCount = RESUME_DATA.projects.length as number;
+
   return (
     <main className={`${inter.className} container bg-white dark:bg-gray-900 relative mx-auto scroll-my-12 overflow-auto p-4 print:p-12 md:p-16`}>
       <section className="mx-auto bg-white dark:bg-gray-900 w-full max-w-2xl space-y-8 bg-white print:space-y-4">
@@ -217,9 +219,9 @@ export default function Page() {
         <Section className="print-force-new-page scroll-mb-16">
           <h2 className="text-xl font-bold">Projects</h2>
           <div className={`-mx-3 grid gap-3 print:grid-cols-3 print:gap-2 ${
-            RESUME_DATA.projects.length === 1
+            projectCount === 1
               ? "grid-cols-1"
-              : RESUME_DATA.projects.length === 2
+              : projectCount === 2
               ? "grid-cols-1 md:grid-cols-2"
               : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
           }`}>
