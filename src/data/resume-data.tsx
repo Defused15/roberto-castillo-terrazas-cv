@@ -5,6 +5,17 @@ import {
 } from "@/images/logos";
 import { GitHubIcon, LinkedInIcon, XIcon } from "@/components/icons";
 
+type Project = {
+  title: string;
+  techStack: readonly string[];
+  description: string;
+  logo: string;
+  link?: {
+    label: string;
+    href: string;
+  };
+};
+
 export const RESUME_DATA = {
   name: "Roberto Castillo",
   initials: "RC",
@@ -213,5 +224,5 @@ export const RESUME_DATA = {
         href: "https://github.com/Defused15/roberto-castillo-terrazas-cv",
       },
     },
-  ],
+  ] as Project[],
 } as const;
