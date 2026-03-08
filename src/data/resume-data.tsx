@@ -202,5 +202,16 @@ export const RESUME_DATA = {
         href: "https://github.com/Defused15/QA-Playground-Tests",
       },
     },
+    {
+      title: "Minimalist CV",
+      techStack: ["Next.js", "TypeScript", "Tailwind CSS", "Jest", "Stryker", "GitHub Actions"],
+      description:
+        "Personal CV web app forked from an open-source template and extended with dark mode support and a full testing suite. Features 77 unit tests with 73.86% line coverage and a 75.47% mutation score validated with Stryker Mutator.",
+      logo: "",
+      link: {
+        label: "github.com",
+        href: "https://github.com/Defused15/roberto-castillo-terrazas-cv",
+      },
+    },
   ],
 } as const;
