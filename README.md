@@ -154,6 +154,55 @@ Mutation Score:  75.47%
 
 ---
 
+## CI/CD — GitHub Actions & Jest Report Hub
+
+The project uses two YAML files to automate testing and publish results on every push to `dev` or pull request to `main`.
+
+Live test results are visible on the QA dashboard: **[qa.rcastillo.dev](https://qa.rcastillo.dev)**
+
+The dashboard is powered by a separate **Test Hub** repo (`Defused15/test-hub`) that acts as a data store. After each CI run, the `jest-report-hub` action pushes a `latest.json` file with the Jest results to that repo using the GitHub Contents API. The QA dashboard reads those JSON files and renders the metrics — pass rate, failed tests, and coverage — per project, without requiring any external database or backend.
+
+### Workflow: `GithubActions.yml`
+
+Located at [`.github/workflows/GithubActions.yml`](.github/workflows/GithubActions.yml), this workflow runs two sequential jobs:
+
+| Job | Trigger | Description |
+|---|---|---|
+| `test` | push to `dev` / PR to `main` | Installs deps, runs Jest with coverage, then calls the reusable action to export and push the report |
+| `mutation` | after `test` passes | Runs Stryker and uploads the HTML mutation report as an artifact (retained 7 days) |
+
+### Reusable Action: `jest-report-hub`
+
+Located at [`.github/actions/jest-report-hub/action.yml`](.github/actions/jest-report-hub/action.yml), this composite action encapsulates all Jest report logic so it can be reused across projects.
+
+**Inputs:**
+
+| Input | Required | Description |
+|---|---|---|
+| `hub_token` | yes | GitHub token with write access to the hub repo |
+| `hub_repo` | yes | Target repo in `owner/repo` format |
+| `project_name` | yes | Folder key used to store the report in the hub |
+
+**Steps it runs:**
+
+1. **Export Jest JSON report** — runs `npx jest --json` and writes `jest-report/report.json`
+2. **Upload coverage artifact** — uploads the `coverage/` folder as `coverage-report` (retained 7 days)
+3. **Push report to QA Hub** — uses the GitHub Contents API to create or update `projects/<project_name>/latest.json` in the hub repo
+4. **Check test results** — reads the JSON report and fails the job if any tests failed
+
+**Usage example in a workflow:**
+
+```yaml
+- name: Jest Report & Push to QA Hub
+  uses: ./.github/actions/jest-report-hub
+  with:
+    hub_token: ${{ secrets.HUB_TOKEN }}
+    hub_repo: Defused15/test-hub
+    project_name: roberto-castillo-terrazas-cv
+```
+
+---
+
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
