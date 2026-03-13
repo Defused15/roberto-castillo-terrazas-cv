@@ -29,7 +29,7 @@ jobs:
         continue-on-error: true
 
       - name: Export Jest JSON report
-        run: npx jest --json --outputFile=jest-report/report.json
+        run: mkdir -p jest-report && npx jest --json --outputFile=jest-report/report.json
         continue-on-error: true
 
       - name: Upload coverage report
@@ -52,8 +52,8 @@ jobs:
 
             const reportPath = './jest-report/report.json';
             if (!fs.existsSync(reportPath)) {
-              console.log('⚠️  report.json not found, skipping hub upload');
-              process.exit(0);
+              console.error('❌  report.json not found, cannot upload to hub');
+              process.exit(1);
             }
 
             const content = fs.readFileSync(reportPath).toString('base64');
