@@ -28,102 +28,12 @@ jobs:
         run: npm run coverage
         continue-on-error: true
 
-      - name: Export Jest JSON report
-        run: mkdir -p jest-report && npx jest --json --outputFile=jest-report/report.json
-        continue-on-error: true
-
-      - name: Upload coverage report
-        uses: actions/upload-artifact@v4
+      - name: Jest Report & Push to QA Hub
+        uses: ./.github/actions/jest-report-hub
         with:
-          name: coverage-report
-          path: coverage/
-          retention-days: 7
-
-      - name: Push report to QA Hub
-        if: always()
-        env:
-          HUB_TOKEN: ${{ secrets.HUB_TOKEN }}
-          HUB_REPO: Defused15/test-hub
-          PROJECT_NAME: roberto-castillo-terrazas-cv
-        run: |
-          node -e "
-            const fs    = require('fs');
-            const https = require('https');
-
-            const reportPath = './jest-report/report.json';
-            if (!fs.existsSync(reportPath)) {
-              console.error('❌  report.json not found, cannot upload to hub');
-              process.exit(1);
-            }
-
-            const content = fs.readFileSync(reportPath).toString('base64');
-            const token   = process.env.HUB_TOKEN;
-            const repo    = process.env.HUB_REPO;
-            const project = process.env.PROJECT_NAME;
-            const apiPath = '/repos/' + repo + '/contents/projects/' + project + '/latest.json';
-
-            const headers = {
-              'Authorization': 'Bearer ' + token,
-              'Accept':        'application/vnd.github+json',
-              'User-Agent':    'qa-hub'
-            };
-
-            const getReq = https.request(
-              { hostname: 'api.github.com', path: apiPath, method: 'GET', headers },
-              res => {
-                let data = '';
-                res.on('data', c => data += c);
-                res.on('end', () => {
-                  let sha = '';
-                  try { sha = JSON.parse(data).sha || ''; } catch {}
-
-                  const body = JSON.stringify({
-                    message: 'chore: update ' + project + ' report',
-                    content,
-                    ...(sha ? { sha } : {})
-                  });
-
-                  const putReq = https.request(
-                    {
-                      hostname: 'api.github.com',
-                      path: apiPath,
-                      method: 'PUT',
-                      headers: { ...headers, 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(body) }
-                    },
-                    r => {
-                      let out = '';
-                      r.on('data', c => out += c);
-                      r.on('end', () => {
-                        if (r.statusCode === 200 || r.statusCode === 201) {
-                          console.log('✅  Report pushed to hub (HTTP ' + r.statusCode + ')');
-                        } else {
-                          console.error('❌  Hub upload failed (HTTP ' + r.statusCode + ')');
-                          console.error(out);
-                          process.exit(1);
-                        }
-                      });
-                    }
-                  );
-                  putReq.write(body);
-                  putReq.end();
-                });
-              }
-            );
-            getReq.end();
-          "
-
-      - name: Check test results
-        run: |
-          if [ -f ./jest-report/report.json ]; then
-            FAILED=$(node -e "
-              const r = JSON.parse(require('fs').readFileSync('./jest-report/report.json'));
-              console.log(r.numFailedTests ?? 0);
-            ")
-            if [ "$FAILED" -gt "0" ]; then
-              echo "❌ $FAILED test(s) failed"
-              exit 1
-            fi
-          fi
+          hub_token: ${{ secrets.HUB_TOKEN }}
+          hub_repo: Defused15/test-hub
+          project_name: roberto-castillo-terrazas-cv
 
   mutation:
     name: Mutation Testing
