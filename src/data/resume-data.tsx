@@ -14,6 +14,7 @@ type Project = {
     label: string;
     href: string;
   };
+  githubLink?: string;
 };
 
 export const RESUME_DATA = {
@@ -203,26 +204,40 @@ export const RESUME_DATA = {
   ],
   projects: [
     {
+      title: "QA Test Hub",
+      techStack: ["JavaScript", "GitHub Actions", "GitHub Pages"],
+      description:
+        "Aggregated test dashboard that collects JSON reports from multiple QA project repos via the GitHub API and rebuilds a unified live dashboard on every push. Supports Playwright and Jest reporters.",
+      logo: "",
+      link: {
+        label: "qa.rcastillo.dev",
+        href: "https://qa.rcastillo.dev",
+      },
+      githubLink: "https://github.com/Defused15/test-hub",
+    },
+    {
       title: "QA Playground Test Automation",
       techStack: ["Playwright", "Github Actions"],
       description:
         "The QA Playground page has Mini Web Apps that I use to showcase my test skills. I have created a GitHub repository that contains the code for the test automation and CI/CD pipeline.",
       logo: "",
       link: {
-        label: "github.com",
-        href: "https://github.com/Defused15/QA-Playground-Tests",
+        label: "defused15.github.io",
+        href: "https://defused15.github.io/QA-Playground-Tests/dashboard.html",
       },
+      githubLink: "https://github.com/Defused15/QA-Playground-Tests",
     },
     {
       title: "Minimalist CV",
       techStack: ["Next.js", "TypeScript", "Tailwind CSS", "Jest", "Stryker", "GitHub Actions"],
       description:
-        "Personal CV web app forked from an open-source template and extended with dark mode support and a full testing suite. Features 77 unit tests with 73.86% line coverage and a 75.47% mutation score validated with Stryker Mutator.",
+        "Personal CV web app forked from an open-source template and extended with dark mode support and a full testing suite. Features 88 unit tests with 73.63% line coverage and a 75.47% mutation score validated with Stryker Mutator.",
       logo: "",
       link: {
-        label: "github.com",
-        href: "https://github.com/Defused15/roberto-castillo-terrazas-cv",
+        label: "defused15.github.io",
+        href: "https://rcastillo.dev",
       },
+      githubLink: "https://github.com/Defused15/roberto-castillo-terrazas-cv",
     },
   ] as Project[],
 } as const;

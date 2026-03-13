@@ -2,6 +2,8 @@
 
 # Minimalist CV [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FBartoszJarocki%2Fcv) ![CI](https://github.com/Defused15/roberto-castillo-terrazas-cv/actions/workflows/ci.yml/badge.svg)
 
+> **Live site:** [rcastillo.dev](https://www.rcastillo.dev/)
+
 Simple web app that renders minimalist CV with print-friendly layout.
 
 Built with Next.js and shadcn/ui, deployed on Vercel.
@@ -26,6 +28,8 @@ Reports are automatically deployed to GitHub Pages on every push to `main`.
 - 🧪 **Unit tests** — written with Jest and React Testing Library
 - 🧬 **Mutation testing** — configured Stryker Mutator to validate test effectiveness
 - 📊 **Custom test dashboard** — self-contained HTML report generated from Jest's JSON output and deployed to GitHub Pages
+- 🔗 **Project card enhancements** — project titles link to live websites; a separate GitHub icon + label links to each repository
+- 🗂️ **QA Test Hub integration** — CV lists the QA Test Hub project (`qa.rcastillo.dev`), an aggregated dashboard that collects test results from multiple repos
 
 ---
 
@@ -131,9 +135,9 @@ Latest results:
 
 ```
 Test Suites: 5 passed, 5 total
-Tests:       77 passed, 77 total
-Time:        ~2.9s
-Line Coverage: 73.86%
+Tests:       88 passed, 88 total
+Time:        ~3.2s
+Line Coverage: 73.63%
 ```
 
 ---

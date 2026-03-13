@@ -260,11 +260,55 @@ describe("RESUME_DATA", () => {
       });
     });
 
+    it("has exactly 3 projects", () => {
+      expect(RESUME_DATA.projects.length).toBe(3);
+    });
+
     it("QA Playground project exists", () => {
       const qaProject = RESUME_DATA.projects.find(
         (p) => p.title === "QA Playground Test Automation"
       );
       expect(qaProject).toBeDefined();
+    });
+
+    it("QA Test Hub project exists with correct fields", () => {
+      const hub = RESUME_DATA.projects.find((p) => p.title === "QA Test Hub");
+      expect(hub).toBeDefined();
+      expect(hub?.link?.href).toBe("https://qa.rcastillo.dev");
+      expect(hub?.githubLink).toBe("https://github.com/Defused15/test-hub");
+      expect(hub?.techStack).toContain("GitHub Actions");
+    });
+
+    it("Minimalist CV project exists with correct fields", () => {
+      const cv = RESUME_DATA.projects.find((p) => p.title === "Minimalist CV");
+      expect(cv).toBeDefined();
+      expect(cv?.githubLink).toBe("https://github.com/Defused15/roberto-castillo-terrazas-cv");
+      expect(cv?.techStack).toContain("Jest");
+      expect(cv?.techStack).toContain("Stryker");
+    });
+
+    it("all projects with a githubLink have a valid GitHub URL", () => {
+      RESUME_DATA.projects.forEach((project) => {
+        if (project.githubLink) {
+          expect(project.githubLink).toMatch(/^https:\/\/github\.com\/.+/);
+        }
+      });
+    });
+
+    it("all project githubLinks point to the Defused15 account", () => {
+      RESUME_DATA.projects.forEach((project) => {
+        if (project.githubLink) {
+          expect(project.githubLink).toContain("github.com/Defused15");
+        }
+      });
+    });
+
+    it("project link.href does not point to GitHub when githubLink is also present", () => {
+      RESUME_DATA.projects.forEach((project) => {
+        if (project.link && project.githubLink) {
+          expect(project.link.href).not.toMatch(/^https:\/\/github\.com/);
+        }
+      });
     });
   });
 });
