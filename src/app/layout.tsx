@@ -84,8 +84,29 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             {children}
-          </ThemeProvider></body>
-      <Analytics />
+          </ThemeProvider>
+          <Analytics />
+          <Script
+            id="remove-vercel-toolbar"
+            strategy="afterInteractive"
+            dangerouslySetInnerHTML={{
+              __html: `
+                (function() {
+                  function removeToolbar() {
+                    var selectors = ['vercel-live-feedback', 'vercel-toolbar', '#vercel-live-feedback', '[data-vercel-toolbar]'];
+                    selectors.forEach(function(sel) {
+                      var el = document.querySelector(sel);
+                      if (el) el.remove();
+                    });
+                  }
+                  removeToolbar();
+                  var observer = new MutationObserver(removeToolbar);
+                  observer.observe(document.documentElement, { childList: true, subtree: true });
+                })();
+              `,
+            }}
+          />
+      </body>
     </html>
   );
 }
