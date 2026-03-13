@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "test": "jest",
-    "coverage": "jest --coverage"
+    "coverage": "jest --coverage",
+    "dashboard": "jest --json --outputFile=jest-report.json && npm run dashboard:build && node serve-dashboard.mjs",
+    "dashboard:build": "node generate-jest-dashboard.mjs --json ./jest-report.json --html ./reports/jest-dashboard.html"
   },
   "dependencies": {
     "@apollo/server": "^4.10.2",
