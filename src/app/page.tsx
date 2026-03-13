@@ -238,6 +238,7 @@ export default function Page() {
                   description={project.description}
                   tags={project.techStack}
                   link={project.link?.href}
+                  githubLink={project.githubLink}
                 />
               );
             })}

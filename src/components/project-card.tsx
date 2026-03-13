@@ -6,12 +6,14 @@ import {
   CardTitle,
 } from "./ui/card";
 import { Badge } from "./ui/badge";
+import { GitHubIcon } from "./icons";
 
 interface Props {
   title: string;
   description: string;
   tags: readonly string[];
   link?: string;
+  githubLink?: string;
 }
 
 function getCleanLink(link?: string) {
@@ -19,25 +21,37 @@ function getCleanLink(link?: string) {
   return link.replace(/^https?:\/\//i, "").replace(/^www\./i, "");
 }
 
-export function ProjectCard({ title, description, tags, link }: Props) {
+export function ProjectCard({ title, description, tags, link, githubLink }: Props) {
   return (
     <Card className="flex flex-col overflow-hidden border border-muted p-3">
       <CardHeader>
         <div className="space-y-1">
           <CardTitle className="text-base">
-            {link ? (
-              <a
-                href={link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 hover:underline"
-              >
-                {title}
-                {link && <span className="size-1 rounded-full bg-green-500" />}
-              </a>
-            ) : (
-              title
-            )}
+            <div className="inline-flex items-center gap-2">
+              {link ? (
+                <a
+                  href={link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:underline"
+                >
+                  {title}
+                </a>
+              ) : (
+                title
+              )}
+              {githubLink && (
+                <a
+                  href={githubLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-xs font-normal text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  <GitHubIcon className="size-3" />
+                  <span>GitHub repo</span>
+                </a>
+              )}
+            </div>
           </CardTitle>
 
           <div className="hidden text-xs underline print:visible">

@@ -32,15 +32,34 @@ describe("ProjectCard", () => {
   });
 
   describe("Link behavior", () => {
-    const projectLink = "https://github.com/Defused15/QA-Playground-Tests";
+    const projectLink = "https://defused15.github.io/QA-Playground-Tests/dashboard.html";
+    const githubLink = "https://github.com/Defused15/QA-Playground-Tests";
 
-    it("renders title as a link with green dot when link is provided", () => {
-      const { container } = render(<ProjectCard {...defaultProps} link={projectLink} />);
+    it("renders title as a link to the website when link is provided", () => {
+      render(<ProjectCard {...defaultProps} link={projectLink} />);
       const link = screen.getByRole("link", { name: defaultProps.title });
       expect(link).toHaveAttribute("href", projectLink);
       expect(link).toHaveAttribute("target", "_blank");
       expect(link).toHaveAttribute("rel", "noopener noreferrer");
-      expect(container.querySelector(".bg-green-500")).toBeInTheDocument();
+    });
+
+    it("renders GitHub repo link with label text when githubLink is provided", () => {
+      render(<ProjectCard {...defaultProps} githubLink={githubLink} />);
+      const ghLink = screen.getByRole("link", { name: /github repo/i });
+      expect(ghLink).toHaveAttribute("href", githubLink);
+      expect(ghLink).toHaveAttribute("target", "_blank");
+      expect(ghLink).toHaveAttribute("rel", "noopener noreferrer");
+    });
+
+    it("renders 'GitHub repo' label text when githubLink is provided", () => {
+      render(<ProjectCard {...defaultProps} githubLink={githubLink} />);
+      expect(screen.getByText("GitHub repo")).toBeInTheDocument();
+    });
+
+    it("does not render GitHub repo link when githubLink is not provided", () => {
+      render(<ProjectCard {...defaultProps} />);
+      expect(screen.queryByRole("link", { name: /github repo/i })).not.toBeInTheDocument();
+      expect(screen.queryByText("GitHub repo")).not.toBeInTheDocument();
     });
 
     it("renders cleaned link text in small div", () => {
@@ -50,17 +69,31 @@ describe("ProjectCard", () => {
           return (
             element?.tagName === "DIV" &&
             content.replace(/\s+/g, "") ===
-              "github.com/Defused15/QA-Playground-Tests".replace(/\s+/g, "")
+              "defused15.github.io/QA-Playground-Tests/dashboard.html".replace(/\s+/g, "")
           );
         })
       ).toBeInTheDocument();
     });
 
-    it("renders title as plain text and no green dot when no link is provided", () => {
-      const { container } = render(<ProjectCard {...defaultProps} />);
+    it("renders title as plain text when no link is provided", () => {
+      render(<ProjectCard {...defaultProps} />);
       expect(screen.queryByRole("link", { name: defaultProps.title })).not.toBeInTheDocument();
       expect(screen.getByText(defaultProps.title)).toBeInTheDocument();
-      expect(container.querySelector(".bg-green-500")).not.toBeInTheDocument();
+    });
+
+    it("renders both website link and GitHub repo link when both are provided", () => {
+      render(<ProjectCard {...defaultProps} link={projectLink} githubLink={githubLink} />);
+      const titleLink = screen.getByRole("link", { name: defaultProps.title });
+      const ghLink = screen.getByRole("link", { name: /github repo/i });
+      expect(titleLink).toHaveAttribute("href", projectLink);
+      expect(ghLink).toHaveAttribute("href", githubLink);
+    });
+
+    it("website link and GitHub repo link point to different URLs", () => {
+      render(<ProjectCard {...defaultProps} link={projectLink} githubLink={githubLink} />);
+      const titleLink = screen.getByRole("link", { name: defaultProps.title });
+      const ghLink = screen.getByRole("link", { name: /github repo/i });
+      expect(titleLink.getAttribute("href")).not.toBe(ghLink.getAttribute("href"));
     });
   });
 });
