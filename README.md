@@ -10,11 +10,22 @@ Built with Next.js and shadcn/ui, deployed on Vercel.
 
 ---
 
+## 📊 Test Reports
+
+| Report | Link |
+|--------|------|
+| 🧪 Jest Dashboard | [defused15.github.io/roberto-castillo-terrazas-cv/jest-dashboard.html](https://defused15.github.io/roberto-castillo-terrazas-cv/jest-dashboard.html) |
+
+Reports are automatically deployed to GitHub Pages on every push to `main`.
+
+---
+
 ## ✨ My Contributions
 
 - 🌙 **Dark mode** — implemented using `next-themes` with a custom toggle component
 - 🧪 **Unit tests** — written with Jest and React Testing Library
 - 🧬 **Mutation testing** — configured Stryker Mutator to validate test effectiveness
+- 📊 **Custom test dashboard** — self-contained HTML report generated from Jest's JSON output and deployed to GitHub Pages
 
 ---
 
@@ -108,6 +119,14 @@ Run with coverage:
 npm run coverage
 ```
 
+Generate and open the custom dashboard locally:
+
+```bash
+npm run dashboard
+```
+
+This runs Jest, generates a self-contained HTML report, and opens it at `http://localhost:4000`.
+
 Latest results:
 
 ```
@@ -168,7 +187,8 @@ Located at [`.github/workflows/GithubActions.yml`](.github/workflows/GithubActio
 
 | Job | Trigger | Description |
 |---|---|---|
-| `test` | push to `dev` / PR to `main` | Installs deps, runs Jest with coverage, then calls the reusable action to export and push the report |
+| `test` | push to `dev` / `main` / PR to `main` | Runs Jest, pushes the report to the QA Hub, and on `main` also generates the dashboard |
+| `deploy-dashboard` | push to `main` only | Publishes the Jest dashboard to GitHub Pages |
 | `mutation` | after `test` passes | Runs Stryker and uploads the HTML mutation report as an artifact (retained 7 days) |
 
 ### Reusable Action: `jest-report-hub`
