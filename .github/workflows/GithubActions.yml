@@ -24,7 +24,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Jest Report & Push to QA Hub
+      - name: Jest Report
         uses: ./.github/actions/jest-report-hub
         with:
           hub_token: ${{ secrets.HUB_TOKEN }}
