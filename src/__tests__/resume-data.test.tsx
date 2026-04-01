@@ -260,8 +260,8 @@ describe("RESUME_DATA", () => {
       });
     });
 
-    it("has exactly 3 projects", () => {
-      expect(RESUME_DATA.projects.length).toBe(3);
+    it("has exactly 4 projects", () => {
+      expect(RESUME_DATA.projects.length).toBe(4);
     });
 
     it("QA Playground project exists", () => {

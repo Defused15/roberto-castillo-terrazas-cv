@@ -237,7 +237,7 @@ export const RESUME_DATA = {
         label: "defused15.github.io",
         href: "https://defused15.github.io/restful-booker-api-testing/",
       },
-      githubLink: "https://github.com/defused15/restful-booker-api-testing",
+      githubLink: "https://github.com/Defused15/restful-booker-api-testing",
     },
     {
       title: "Minimalist CV",
