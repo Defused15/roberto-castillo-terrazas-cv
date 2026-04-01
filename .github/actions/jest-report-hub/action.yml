@@ -1,4 +1,4 @@
-name: "Jest Report & Push to QA Hub"
+name: "Jest Report"
 description: "Generates Jest JSON report, uploads coverage artifact, and pushes to QA Hub. Does not assert test results — check separately."
 
 inputs:
