@@ -31,6 +31,20 @@ jobs:
           hub_repo: Defused15/test-hub
           project_name: roberto-castillo-terrazas-cv
 
+      - name: Check test results
+        shell: bash
+        run: |
+          if [ -f ./jest-report/report.json ]; then
+            FAILED=$(node -e "
+              const r = JSON.parse(require('fs').readFileSync('./jest-report/report.json'));
+              console.log(r.numFailedTests ?? 0);
+            ")
+            if [ "$FAILED" -gt "0" ]; then
+              echo "❌ $FAILED test(s) failed"
+              exit 1
+            fi
+          fi
+
       - name: Generate Jest dashboard
         if: github.ref == 'refs/heads/main'
         run: node generate-jest-dashboard.mjs --json ./jest-report/report.json --html ./reports/jest-dashboard.html
