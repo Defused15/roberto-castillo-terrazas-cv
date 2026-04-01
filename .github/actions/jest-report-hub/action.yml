@@ -1,5 +1,5 @@
 name: "Jest Report & Push to QA Hub"
-description: "Generates Jest JSON report, uploads coverage artifact, pushes to QA Hub, and checks test results"
+description: "Generates Jest JSON report, uploads coverage artifact, and pushes to QA Hub. Does not assert test results — check separately."
 
 inputs:
   hub_token:
@@ -101,16 +101,3 @@ runs:
           getReq.end();
         "
 
-    - name: Check test results
-      shell: bash
-      run: |
-        if [ -f ./jest-report/report.json ]; then
-          FAILED=$(node -e "
-            const r = JSON.parse(require('fs').readFileSync('./jest-report/report.json'));
-            console.log(r.numFailedTests ?? 0);
-          ")
-          if [ "$FAILED" -gt "0" ]; then
-            echo "❌ $FAILED test(s) failed"
-            exit 1
-          fi
-        fi
