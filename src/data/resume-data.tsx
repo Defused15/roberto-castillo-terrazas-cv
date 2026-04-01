@@ -228,6 +228,18 @@ export const RESUME_DATA = {
       githubLink: "https://github.com/Defused15/QA-Playground-Tests",
     },
     {
+      title: "Restful Booker API Testing",
+      techStack: ["Postman", "Newman", "GitHub Actions"],
+      description:
+        "Postman collection for the Restful Booker API covering happy path, negative, edge, security, and performance scenarios. Automated via Newman and GitHub Actions with HTML reports published to GitHub Pages.",
+      logo: "",
+      link: {
+        label: "defused15.github.io",
+        href: "https://defused15.github.io/restful-booker-api-testing/",
+      },
+      githubLink: "https://github.com/defused15/restful-booker-api-testing",
+    },
+    {
       title: "Minimalist CV",
       techStack: ["Next.js", "TypeScript", "Tailwind CSS", "Jest", "Stryker", "GitHub Actions"],
       description:
