@@ -58,3 +58,10 @@ runs:
         fi
 
         echo "✅ Report pushed to hub"
+
+        # Trigger the Test Hub explicitly to refresh the dashboard
+        echo "🚀 Triggering build in $HUB_REPO..."
+        GH_TOKEN=$HUB_TOKEN gh api repos/$HUB_REPO/dispatches \
+          --method POST \
+          -f event_type="test-hub-trigger" \
+          -f client_payload[project]=$PROJECT_NAME
