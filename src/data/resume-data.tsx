@@ -3,7 +3,7 @@ import {
   InetumLogo,
   MilwaukeeLogo,
 } from "@/images/logos";
-import { GitHubIcon, LinkedInIcon, XIcon } from "@/components/icons";
+import { GitHubIcon, LinkedInIcon } from "@/components/icons";
 
 type Project = {
   title: string;
@@ -22,9 +22,9 @@ export const RESUME_DATA = {
   initials: "RC",
   location: "México",
   locationLink: "https://www.google.com/maps/place/mexico",
-  about: "QA Engineer",
+  about: "QA Engineer | SDET AI Augmented",
   summary:
-    "QA Engineer with 3+ years of experience in end-to-end quality tests across 15+ projects in e-commerce, healthcare, logistics, and finance, leading 7 of them end-to-end. Proven ability to own the full testing lifecycle, covering everything from requirements analysis and test design to CI/CD integration and defect triage, in fast-paced consulting environments where adaptability and autonomy are critical. Combines strong automation skills (Playwright, Cypress, Jest) with hands-on experience in enterprise platforms such as Salesforce Marketing Cloud and Sitecore, consistently aligning quality efforts with product goals and client expectations. Leverages AI-assisted workflows, including Claude Code, to accelerate test development and improve overall efficiency. Comfortable working with distributed, international teams and contributing beyond QA when needed.",
+    "QA Engineer with 3+ years of experience contributing to and leading end-to-end quality strategies across 15+ projects in e-commerce, healthcare, logistics and finance within fast-paced IT consulting environments. Proven ability to own the full testing lifecycle from requirements analysis and shift-left validation to CI/CD integration, API testing and defect triage, adapting quickly across industries, teams and tech stacks. Combines strong automation skills (Playwright, Cypress, Jest) and API testing expertise (Postman, Pact) with hands-on experience in enterprise platforms such as Salesforce, HubSpot and Stripe. Leverages AI-augmented workflows including multi-agent systems, custom agent skills and autonomous CI/CD remediation workflows using Claude Code and MCP to accelerate delivery and reduce manual intervention. Comfortable working with distributed, international teams and contributing beyond QA when needed.",
   avatarUrl: "https://github.com/Defused15.png",
   personalWebsiteUrl: "",
   contact: {
@@ -61,16 +61,16 @@ export const RESUME_DATA = {
       start: "2025",
       end: null,
       description: [
-        "Led the end-to-end quality strategy for a Sitecore-based CMS platform, covering unit, functional, SIT, UAT, automated, and accessibility testing.",
-        "Created detailed test plans including test strategies that defined scope, objectives, types of testing, resources, and schedules.",
-        "Designed and wrote the complete test suite with test cases based on functional requirements, applying diverse testing techniques.",
-        "Built and maintained Playwright automation scripts integrated into Azure DevOps pipelines for continuous validation.",
-        "Used Google Lighthouse to ensure ADA compliance and WCAG 2.1 standards.",
-        "Conducted performance testing including spike and load scenarios to evaluate scalability and reliability.",
-        "Managed work items, defect tracking, and sprint planning through Azure DevOps, prioritizing issues based on severity and impact.",
-        "Created detailed supporting documentation to facilitate and back QA processes and team understanding.",
-        "Generated detailed testing reports to communicate results, issues, and quality metrics to stakeholders.",
-        "Validated Salesforce Marketing Cloud lead records, ensuring data integrity and accuracy across marketing workflows.",
+        "Led the end-to-end quality strategy for a Sitecore-based CMS platform, covering functional, SIT, UAT, regression and accessibility testing phases.",
+        "Applied shift-left practices by reviewing UI/UX designs and analyzing tickets for ambiguities prior to development, preventing late-stage rework by resolving requirement gaps early.",
+        "Authored test plans and strategies for each release cycle, defining scope, entry/exit criteria, risk coverage and environment requirements aligned with sprint goals and business objectives.",
+        "Designed and executed test cases using equivalence partitioning, boundary value analysis and exploratory techniques, ensuring comprehensive coverage across all user-facing workflows and edge cases.",
+        "Integrated Playwright E2E and regression automation into Azure DevOps pipelines, reducing manual regression effort and enabling reliable continuous delivery across release cycles.",
+        "Identified and tracked WCAG 2.1 accessibility violations using Axe and Google Lighthouse, coordinating with developers to remediate findings and achieve ADA compliance across all platform pages.",
+        "Designed and executed spike and load test scenarios with K6, identifying performance bottlenecks under peak traffic conditions and validating system stability thresholds before each production release.",
+        "Triaged defects and managed work items in Azure Boards, prioritizing by severity and business impact and coordinating sprint planning to maintain release cadence and quality gates.",
+        "Produced QA documentation including test plans, test case repositories, defect taxonomy guidelines and release checklists to standardize quality practices across the team.",
+        "Validated Salesforce Marketing Cloud lead records by verifying field mapping, data types and workflow triggers, ensuring data integrity across marketing automation pipelines.",
       ],
     },
     {
@@ -82,13 +82,15 @@ export const RESUME_DATA = {
       start: "2023",
       end: "2025",
       description: [
-        "Reviewed software requirements for clarity, completeness, and testability, then translated them into detailed test plans covering strategy, scope, environments, and schedules.",
-        "Designed and executed manual and automated test cases across functional, integration, system, and UAT phases, including test data creation and regression coverage.",
-        "Built and maintained automation frameworks using Playwright and integrated them into CI/CD pipelines for consistent, repeatable testing cycles.",
-        "Tracked and triaged defects in JIRA, prioritizing by severity and impact.",
-        "Assessed performance, scalability, and stability under varying conditions using K6.",
-        "Validated content-driven applications across multiple CMS platforms including Contentful, Sanity, Netlify, and Drupal.",
-        "Collaborated closely with cross-functional teams to align quality efforts with product goals and deliver clear, actionable feedback throughout the development lifecycle.",
+        "Owned end-to-end QA delivery across multiple concurrent client projects in e-commerce, healthcare and logistics, adapting test strategies to diverse tech stacks and delivery rhythms.",
+        "Analyzed requirements for clarity, completeness and testability, translating them into test plans that defined strategy, scope, environments and entry/exit criteria aligned with each project's goals.",
+        "Delivered manual and automated test coverage across functional, integration, system and UAT phases, including test data creation and regression suites, consistently surfacing critical defects before production releases.",
+        "Engineered and maintained Playwright automation frameworks using Page Object Model (POM), integrated into CI/CD pipelines to ensure consistent and repeatable regression coverage across every release.",
+        "Conducted API testing with Postman across REST integrations and ran OWASP ZAP scans and dependency checks to identify vulnerabilities and validate secure data handling across projects.",
+        "Validated performance, scalability and stability under varying load conditions using K6, uncovering bottlenecks and stability risks ahead of production deployments.",
+        "Owned defect triage in JIRA, prioritizing issues by severity and business impact to keep delivery on track.",
+        "Validated content rendering, data integrity and workflow behavior across CMS-driven applications built on Contentful, Sanity, Netlify and Drupal.",
+        "Collaborated with developers and PMs in Agile Scrum sprints to define acceptance criteria and validate deliverables against product requirements.",
       ],
     },
     {
@@ -100,63 +102,53 @@ export const RESUME_DATA = {
       start: "2022",
       end: "2022",
       description: [
-        "Developed a C# application supporting 200+ simultaneous users to manage and store 800+ daily records in a SQL Server database, ensuring performance and reliability at scale.",
-        "Designed the underlying database schema using normalized tables, views, and primary/foreign keys, accommodating 100,000+ records with efficient querying and data export capabilities.",
+        "Developed a C# application supporting 200+ concurrent users managing 800+ daily records in SQL Server, designing the full database schema and serving as sole QA owner across functional, regression and data validation testing.",
+        "Validated data accuracy directly in SQL Server by writing queries to verify record integrity, detect anomalies and confirm correct storage across all database operations.",
         "Built Power BI dashboards to support laboratory management, productivity analysis, and executive reporting, translating raw operational data into actionable business insights.",
       ],
     },
   ],
   skills: [
-    // Programming Languages
-    "JavaScript",
-    "TypeScript",
-    "HTML",
-    "CSS",
-    "SQL",
-    // Testing Tools & Frameworks
-    "Playwright",
-    "Cypress",
-    "Jest",
-    "Postman",
-    "K6",
-    "Google Lighthouse",
-    "Burp Suite",
-    // CI/CD & DevOps
-    "Azure DevOps",
-    "GitHub Actions",
-    "CI/CD",
-    "Git",
-    "GitHub",
-    // Project Management
-    "JIRA",
-    "Asana",
-    "ClickUp",
-    // CMS & Marketing Platforms
-    "Sitecore",
-    "Salesforce Marketing Cloud",
-    "Contentful",
-    "Sanity",
-    "Drupal",
-    // AI Tools
-    "Claude Code",
-    "AI-Powered Testing",
-    // Data & Design
-    "Power BI",
-    "Tableau",
-    "Figma",
-    // Testing Types
-    "Automation Testing",
-    "Functional Testing",
-    "Integration Testing",
-    "System Testing",
-    "User Acceptance Testing (UAT)",
-    "Regression Testing",
-    "Performance Testing",
-    "Accessibility Testing (ADA / WCAG 2.1)",
-    "Security Testing (OWASP)",
-    "Exploratory Testing",
-    // Leadership & Strategy
-    "Test Strategy & Planning",
+    {
+      category: "Programming",
+      items: ["JavaScript", "TypeScript", "HTML", "CSS", "SQL"],
+    },
+    {
+      category: "Testing Frameworks & Tools",
+      items: ["Playwright", "Cypress", "Jest", "Postman", "Bruno", "Insomnia", "Pact", "Swagger / OpenAPI"],
+    },
+    {
+      category: "Performance & Security",
+      items: ["K6", "JMeter", "Blazemeter", "OWASP ZAP", "OWASP Dependency Check", "Burp Suite"],
+    },
+    {
+      category: "Accessibility & Observability",
+      items: ["Axe", "Google Lighthouse", "Sentry"],
+    },
+    {
+      category: "CI/CD & DevOps",
+      items: ["Azure DevOps", "GitHub Actions", "Git", "GitHub", "Docker"],
+    },
+    {
+      category: "Project Management",
+      items: ["JIRA", "Asana", "ClickUp", "Azure Boards", "Azure Test Plans", "Qase", "Agile"],
+    },
+    {
+      category: "Platforms & Integrations",
+      items: ["Salesforce Marketing Cloud", "HubSpot", "Sitecore", "Contentful", "Sanity", "Netlify", "Drupal", "Stripe", "Google Analytics", "Mixpanel"],
+    },
+    {
+      category: "AI Tools",
+      items: ["Claude Code", "Anthropic API", "Model Context Protocol (MCP)", "AI-Powered Testing"],
+    },
+    {
+      category: "Data & Design",
+      items: ["Power BI", "Tableau", "Excel", "Figma", "Adobe Creative Suite"],
+    },
+    {
+      category: "Testing Methodologies",
+      items: ["Functional Testing", "Integration Testing", "System Testing", "UAT", "Regression Testing", "Smoke Testing", "Sanity Testing", "Cross-browser Testing", "Performance Testing", "Accessibility Testing (ADA / WCAG 2.1)", "Security Testing (OWASP)", "REST API Testing", "Exploratory Testing", "Test Strategy & Planning", "Test Automation Framework Design"],
+    },
   ],
   certifications: [
     {
@@ -184,6 +176,12 @@ export const RESUME_DATA = {
       url: "https://platzi.com/p/roberto.castillo6549/curso/11930-course/diploma/detalle/",
     },
     {
+      title: "Google Data Analytics",
+      issuer: "Cisco",
+      year: "2025",
+      url: "https://www.credly.com/users/roberto-castillo.7a5e2dcd/badges/credly",
+    },
+    {
       title: "Bug Bounty & Web Security Testing",
       issuer: "Udemy",
       year: "2024",
@@ -201,6 +199,11 @@ export const RESUME_DATA = {
       year: "2022",
       url: "https://coursera.org/share/8761afde9926f90f13b641f355e4bcd3",
     },
+  ],
+  languages: [
+    { language: "English", proficiency: "C1 Proficient" },
+    { language: "Spanish", proficiency: "Native" },
+    { language: "Italian", proficiency: "Basic" },
   ],
   projects: [
     {
@@ -243,7 +246,7 @@ export const RESUME_DATA = {
       title: "Minimalist CV",
       techStack: ["Next.js", "TypeScript", "Tailwind CSS", "Jest", "Stryker", "GitHub Actions"],
       description:
-        "Personal CV web app forked from an open-source template and extended with dark mode support and an unit testing suite. Features 88 unit tests with 73.63% line coverage and a 75.47% mutation score validated with Stryker Mutator.",
+        "Personal CV web app forked from an open-source template and extended with dark mode support and an unit testing suite. Features 96 unit tests with 73.26% line coverage and a 75.47% mutation score validated with Stryker Mutator.",
       logo: "",
       link: {
         label: "defused15.github.io",

@@ -172,31 +172,59 @@ describe("RESUME_DATA", () => {
 
   // ───────────── Skills ─────────────
   describe("Skills", () => {
-    it("has at least one skill", () => {
+    const allSkills = RESUME_DATA.skills.flatMap((group) => group.items);
+
+    it("has at least one skill group", () => {
       expect(RESUME_DATA.skills.length).toBeGreaterThan(0);
     });
 
+    it("each group has a category and items", () => {
+      RESUME_DATA.skills.forEach((group) => {
+        expect(group.category).toBeTruthy();
+        expect(group.items.length).toBeGreaterThan(0);
+      });
+    });
+
     it("contains core QA tools", () => {
-      expect(RESUME_DATA.skills).toContain("Playwright");
-      expect(RESUME_DATA.skills).toContain("Cypress");
-      expect(RESUME_DATA.skills).toContain("Jest");
+      expect(allSkills).toContain("Playwright");
+      expect(allSkills).toContain("Cypress");
+      expect(allSkills).toContain("Jest");
     });
 
     it("contains Salesforce Marketing Cloud", () => {
-      expect(RESUME_DATA.skills).toContain("Salesforce Marketing Cloud");
+      expect(allSkills).toContain("Salesforce Marketing Cloud");
     });
 
     it("contains AI-Powered Testing", () => {
-      expect(RESUME_DATA.skills).toContain("AI-Powered Testing");
+      expect(allSkills).toContain("AI-Powered Testing");
+    });
+
+    it("contains ATS-critical skills", () => {
+      expect(allSkills).toContain("REST API Testing");
+      expect(allSkills).toContain("Docker");
+      expect(allSkills).toContain("Agile");
+      expect(allSkills).toContain("Swagger / OpenAPI");
+      expect(allSkills).toContain("Test Automation Framework Design");
+    });
+
+    it("contains performance and security tools", () => {
+      expect(allSkills).toContain("K6");
+      expect(allSkills).toContain("OWASP ZAP");
+      expect(allSkills).toContain("Burp Suite");
+    });
+
+    it("contains accessibility tools", () => {
+      expect(allSkills).toContain("Axe");
+      expect(allSkills).toContain("Google Lighthouse");
     });
 
     it("has no duplicate skills", () => {
-      const unique = new Set(RESUME_DATA.skills);
-      expect(unique.size).toBe(RESUME_DATA.skills.length);
+      const unique = new Set(allSkills);
+      expect(unique.size).toBe(allSkills.length);
     });
 
     it("all skills are non-empty strings", () => {
-      RESUME_DATA.skills.forEach((skill) => {
+      allSkills.forEach((skill) => {
         expect(typeof skill).toBe("string");
         expect(skill.trim().length).toBeGreaterThan(0);
       });
@@ -230,6 +258,31 @@ describe("RESUME_DATA", () => {
         (c) => c.issuer === "Anthropic"
       );
       expect(anthropicCerts.length).toBeGreaterThanOrEqual(3);
+    });
+  });
+
+  // ───────────── Languages ─────────────
+  describe("Languages", () => {
+    it("has at least one language", () => {
+      expect(RESUME_DATA.languages.length).toBeGreaterThan(0);
+    });
+
+    it("all languages have language and proficiency fields", () => {
+      RESUME_DATA.languages.forEach((lang) => {
+        expect(lang.language).toBeTruthy();
+        expect(lang.proficiency).toBeTruthy();
+      });
+    });
+
+    it("includes English and Spanish", () => {
+      const names = RESUME_DATA.languages.map((l) => l.language);
+      expect(names).toContain("English");
+      expect(names).toContain("Spanish");
+    });
+
+    it("English proficiency is defined", () => {
+      const english = RESUME_DATA.languages.find((l) => l.language === "English");
+      expect(english?.proficiency).toBeTruthy();
     });
   });
 

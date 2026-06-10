@@ -211,8 +211,9 @@ Located at [`.github/actions/jest-report-hub/action.yml`](.github/actions/jest-r
 
 1. **Export Jest JSON report** — runs `npx jest --json` and writes `jest-report/report.json`
 2. **Upload coverage artifact** — uploads the `coverage/` folder as `coverage-report` (retained 7 days)
-3. **Push report to QA Hub** — uses the GitHub Contents API to create or update `projects/<project_name>/latest.json` in the hub repo
-4. **Check test results** — reads the JSON report and fails the job if any tests failed
+3. **Push report to QA Hub** — uses the GitHub Contents API to create or update `projects/<project_name>/latest.json` in the hub repo.
+4. **Trigger Hub Build** — sends a `repository_dispatch` event of type `test-hub-trigger` to the hub repo to force a dashboard rebuild.
+5. **Check test results** — reads the JSON report and fails the job if any tests failed
 
 **Usage example in a workflow:**
 
