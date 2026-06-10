@@ -187,14 +187,21 @@ export default function Page() {
         </Section>
         <Section>
           <h2 className="text-xl font-bold">Skills</h2>
-          <div className="flex flex-wrap gap-1">
-            {RESUME_DATA.skills.map((skill) => {
-              return (
-                <Badge className="print:text-[10px]" key={skill}>
-                  {skill}
-                </Badge>
-              );
-            })}
+          <div className="flex flex-col gap-3">
+            {RESUME_DATA.skills.map((group) => (
+              <div key={group.category}>
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1">
+                  {group.category}
+                </p>
+                <div className="flex flex-wrap gap-1">
+                  {group.items.map((skill) => (
+                    <Badge className="print:text-[10px]" key={skill}>
+                      {skill}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+            ))}
           </div>
         </Section>
 
@@ -215,6 +222,18 @@ export default function Page() {
                   <span className="text-xs text-muted-foreground">{cert.issuer}</span>
                 </div>
                 <span className="text-sm tabular-nums text-gray-500 shrink-0 ml-4">{cert.year}</span>
+              </div>
+            ))}
+          </div>
+        </Section>
+
+        <Section>
+          <h2 className="text-xl font-bold">Languages</h2>
+          <div className="flex gap-6">
+            {RESUME_DATA.languages.map((lang) => (
+              <div key={lang.language} className="flex flex-col">
+                <span className="text-sm font-medium">{lang.language}</span>
+                <span className="text-xs text-muted-foreground">{lang.proficiency}</span>
               </div>
             ))}
           </div>
