@@ -45,7 +45,7 @@ export const RESUME_DATA_ES: ResumeData = {
         "Realicé pruebas de API con Postman sobre integraciones REST y ejecuté escaneos con OWASP ZAP y revisiones de dependencias para identificar vulnerabilidades y validar el manejo seguro de datos en los distintos proyectos.",
         "Ejecuté pruebas de carga con k6 bajo distintas condiciones para validar el rendimiento, la escalabilidad y la estabilidad, detectando cuellos de botella y riesgos antes de los despliegues a producción.",
         "Lideré el triage de defectos en Jira, priorizando los issues por severidad e impacto en el negocio para cumplir las entregas en tiempo y forma.",
-        "Probé el renderizado de contenido, la integridad de datos y el comportamiento de los flujos en aplicaciones basadas en CMS construidas con Contentful, Sanity y Drupal y desplegadas en Netlify.",
+        "Probé el renderizado de contenido, la integridad de datos y el comportamiento de los flujos en aplicaciones basadas en CMS construidas con Contentful, Sanity, Netlify CMS (Decap) y Drupal.",
         "Colaboré con desarrolladores y PMs en sprints de Agile Scrum para definir criterios de aceptación y validar que los entregables cumplieran con los requerimientos del producto.",
       ],
     },

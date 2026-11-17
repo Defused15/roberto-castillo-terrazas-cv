@@ -78,7 +78,7 @@ export const RESUME_DATA_EN: ResumeData = {
         "Conducted API testing with Postman across REST integrations and ran OWASP ZAP scans and dependency checks to identify vulnerabilities and validate secure data handling across projects.",
         "Ran k6 load tests under varying conditions to validate performance, scalability and stability, uncovering bottlenecks and risks ahead of production deployments.",
         "Led defect triage in Jira, prioritizing issues by severity and business impact to keep delivery on track.",
-        "Tested content rendering, data integrity and workflow behavior across CMS-driven applications built on Contentful, Sanity and Drupal and deployed on Netlify.",
+        "Tested content rendering, data integrity and workflow behavior across CMS-driven applications built on Contentful, Sanity, Netlify CMS (Decap) and Drupal.",
         "Collaborated with developers and PMs in Agile Scrum sprints to define acceptance criteria and validate deliverables against product requirements.",
       ],
     },
@@ -124,7 +124,7 @@ export const RESUME_DATA_EN: ResumeData = {
     },
     {
       category: "Platforms & Integrations",
-      items: ["Salesforce Marketing Cloud", "HubSpot", "Sitecore", "Contentful", "Sanity", "Netlify", "Drupal", "Stripe", "Google Analytics", "Mixpanel"],
+      items: ["Salesforce Marketing Cloud", "HubSpot", "Sitecore", "Contentful", "Sanity", "Netlify CMS (Decap)", "Drupal", "Stripe", "Google Analytics", "Mixpanel"],
     },
     {
       category: "AI Tools",
