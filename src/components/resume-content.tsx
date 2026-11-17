@@ -11,23 +11,7 @@ import { ProjectCard } from "@/components/project-card";
 import { ModeToggle } from "@/components/darkmode";
 import { LanguageToggle } from "@/components/language-toggle";
 import { useLanguage } from "@/components/language-provider";
-
-const PHONE_GROUPS: Record<string, readonly number[]> = {
-  "+34": [3, 3, 3],
-  "+52": [3, 3, 4],
-};
-
-function formatPhone(e164: string): string {
-  const code = Object.keys(PHONE_GROUPS).find((c) => e164.startsWith(c));
-  if (!code) return e164;
-  let rest = e164.slice(code.length);
-  const parts = PHONE_GROUPS[code].map((n) => {
-    const part = rest.slice(0, n);
-    rest = rest.slice(n);
-    return part;
-  });
-  return [code, ...parts, rest].filter(Boolean).join(" ");
-}
+import { formatPhone } from "@/lib/format-phone";
 
 export function ResumeContent() {
   const { data } = useLanguage();
