@@ -98,12 +98,11 @@ describe("LanguageProvider", () => {
     expect(screen.getByTestId("about")).toHaveTextContent("Acerca de");
   });
 
-  it("server-renders English even when es is stored", () => {
+  it("server-renders English even when es is stored", async () => {
     const g = global as unknown as { TextEncoder?: unknown };
     const original = g.TextEncoder;
     g.TextEncoder = TextEncoder;
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const { renderToString } = require("react-dom/server");
+    const { renderToString } = await import("react-dom/server");
     localStorage.setItem("cv-lang", "es");
     let html: string;
     try {
