@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/components/language-provider";
 import { trackWhenReady } from "@/lib/analytics";
 
+// Stryker disable next-line all: entrance animation delay, verified visually
 function stagger(n: number): React.CSSProperties {
   return { "--stagger": n } as React.CSSProperties;
 }

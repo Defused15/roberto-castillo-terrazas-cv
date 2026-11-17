@@ -27,6 +27,8 @@
     "src/components/project-card.tsx",
     "src/components/darkmode.tsx",
     "src/components/profile-avatar.tsx",
+    "src/components/analytics-provider.tsx",
+    "src/components/not-found-content.tsx",
     "src/components/ui/section.tsx",
     "src/data/resume-data.types.ts",
     "src/app/structured-data.ts",
