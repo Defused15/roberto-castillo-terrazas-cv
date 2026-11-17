@@ -240,7 +240,7 @@ export const RESUME_DATA_EN: ResumeData = {
       title: "Minimalist CV",
       techStack: ["Next.js", "TypeScript", "Tailwind CSS", "Jest", "Stryker", "GitHub Actions"],
       description:
-        "Personal CV web app forked from an open-source template and extended with dark mode support and a unit testing suite. Features 140+ unit tests validated with Stryker Mutator mutation testing.",
+        "Personal CV web app forked from an open-source template and extended with dark mode support and a unit testing suite. Features 140+ unit tests across the EN and ES versions, validated with Stryker Mutator mutation testing.",
       link: {
         label: "rcastillo.dev",
         href: "https://rcastillo.dev",

@@ -78,7 +78,7 @@ Reports are automatically deployed to GitHub Pages on every push to `main`.
 
 ### Unit Tests — Jest + React Testing Library
 
-Tests assert behavior and content invariants, not markup or copy. Expectations are derived from the resume data, so adding a job or a project never needs a test change, while dropping one from the page fails a test.
+Tests assert behavior and content invariants. Expected text comes from the resume data and UI strings instead of hard-coded copy, so adding a job or a project never needs a test change, while dropping one from the page fails a test. The only markup checked is the print contract (which content is screen-only or print-only), because jsdom cannot render print media.
 
 | Test Suite | Description |
 |---|---|
@@ -91,7 +91,7 @@ Tests assert behavior and content invariants, not markup or copy. Expectations a
 | `components/project-card.test.tsx` | Project links, repository label and the printed address |
 | `components/ui/section.test.tsx` | Sections are region landmarks named by their heading |
 | `components/profile-avatar.test.tsx` | Avatar image and initials fallback |
-| `components/not-found-content.test.tsx` | 404 page in both languages, noindex, reduced motion |
+| `app/not-found.test.tsx` | 404 page in both languages, noindex, reduced motion |
 | `lib/format-phone.test.ts` | Phone number formatting per country |
 | `app/seo-routes.test.ts` | robots.txt, sitemap, web manifest and site metadata |
 | `app/structured-data.test.ts`, `app/page.test.tsx` | JSON-LD Person schema, privacy and safe serialization |
@@ -118,7 +118,7 @@ npm run dashboard
 
 This runs Jest, generates a self-contained HTML report, and opens it at `http://localhost:4000`.
 
-The suite contains 140+ unit tests. Run `npm run coverage` to see the current coverage figures; CI fails if global coverage drops below the thresholds in `jest.config.js`.
+The suite contains 140+ unit tests across the EN and ES versions: data-driven cases run once per language. Coverage is measured on the app's own components, resume data, SEO route modules and helpers; CI fails if it drops below the thresholds in `jest.config.js`. Run `npm run coverage` to see the current figures.
 
 ---
 
@@ -138,7 +138,7 @@ An HTML report is generated at:
 reports/mutation/mutation.html
 ```
 
-The report shows the current mutation score and a per-file breakdown. The run fails below the `break` threshold in `stryker.config.json`. Purely presentational class expressions and documented equivalent mutants are excluded inline with a `// Stryker disable` comment that states the reason.
+The report shows the current mutation score and a per-file breakdown. Stryker mutates the logic-bearing modules: the resume page, the language provider and toggle, the theme toggle, the project card, the section and avatar components, the JSON-LD builder, the language helpers and `src/lib`. The current score is 98.7%, and the run fails below the `break` threshold in `stryker.config.json`.
 
 ---
 
