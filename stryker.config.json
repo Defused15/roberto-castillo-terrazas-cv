@@ -15,9 +15,9 @@
   "incrementalFile": "reports/stryker-incremental.json",
 
   "thresholds": {
-    "high": 80,
-    "low": 60,
-    "break": 50
+    "high": 98,
+    "low": 96,
+    "break": 96
   },
 
   "mutate": [
@@ -26,6 +26,9 @@
     "src/components/language-toggle.tsx",
     "src/components/project-card.tsx",
     "src/components/darkmode.tsx",
+    "src/components/profile-avatar.tsx",
+    "src/components/ui/section.tsx",
+    "src/data/resume-data.types.ts",
     "src/app/structured-data.ts",
     "src/lib/**/*.ts",
     "!src/**/__tests__/**",
