@@ -24,12 +24,12 @@ const LanguageContext = React.createContext<LanguageContextValue>({
 })
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [lang, setLang] = React.useState<Lang>("en")
+  const [lang, setLangState] = React.useState<Lang>("en")
 
   React.useEffect(() => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY)
-      if (isLang(stored)) setLang(stored)
+      if (isLang(stored)) setLangState(stored)
     } catch {
       // storage unavailable; keep default
     }
@@ -37,16 +37,20 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
 
   React.useEffect(() => {
     document.documentElement.lang = lang
+  }, [lang])
+
+  const setLang = React.useCallback((next: Lang) => {
+    setLangState(next)
     try {
-      localStorage.setItem(STORAGE_KEY, lang)
+      localStorage.setItem(STORAGE_KEY, next)
     } catch {
       // storage unavailable; ignore
     }
-  }, [lang])
+  }, [])
 
   const value = React.useMemo(
     () => ({ lang, setLang, data: RESUME_DATA_BY_LANG[lang] }),
-    [lang]
+    [lang, setLang]
   )
 
   return (

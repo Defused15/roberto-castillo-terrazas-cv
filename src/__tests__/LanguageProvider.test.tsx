@@ -54,6 +54,20 @@ describe("LanguageProvider", () => {
       </LanguageProvider>
     );
     expect(screen.getByTestId("about")).toHaveTextContent("Acerca de");
+    expect(localStorage.getItem("cv-lang")).toBe("es");
+  });
+
+  it("keeps a stored es language under StrictMode", () => {
+    localStorage.setItem("cv-lang", "es");
+    render(
+      <React.StrictMode>
+        <LanguageProvider>
+          <Consumer />
+        </LanguageProvider>
+      </React.StrictMode>
+    );
+    expect(screen.getByTestId("about")).toHaveTextContent("Acerca de");
+    expect(localStorage.getItem("cv-lang")).toBe("es");
   });
 
   it("ignores an invalid stored language", () => {
@@ -85,15 +99,22 @@ describe("LanguageProvider", () => {
   });
 
   it("server-renders English even when es is stored", () => {
-    (global as unknown as { TextEncoder: unknown }).TextEncoder = TextEncoder;
+    const g = global as unknown as { TextEncoder?: unknown };
+    const original = g.TextEncoder;
+    g.TextEncoder = TextEncoder;
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     const { renderToString } = require("react-dom/server");
     localStorage.setItem("cv-lang", "es");
-    const html = renderToString(
-      <LanguageProvider>
-        <Consumer />
-      </LanguageProvider>
-    );
+    let html: string;
+    try {
+      html = renderToString(
+        <LanguageProvider>
+          <Consumer />
+        </LanguageProvider>
+      );
+    } finally {
+      g.TextEncoder = original;
+    }
     expect(html).toContain("About");
     expect(html).not.toContain("Acerca de");
   });
