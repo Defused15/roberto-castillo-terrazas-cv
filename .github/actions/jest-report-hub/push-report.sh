@@ -50,8 +50,9 @@ while :; do
   fi
 
   cat "$ERR" >&2
-  # 409 = sha mismatch; 422 = sha missing/stale (file created concurrently). Anything else is not retryable.
-  if ! grep -q -E 'HTTP 4(09|22)' "$ERR"; then
+  # 409 = sha mismatch; 422 only when it is about the sha (file created concurrently, sha not
+  # supplied). Anything else, including other 422 validation errors, is not retryable.
+  if ! { grep -q 'HTTP 409' "$ERR" || { grep -q 'HTTP 422' "$ERR" && grep -q -i 'sha' "$ERR"; }; }; then
     echo "::error::Hub PUT failed with a non-retryable error"
     exit 1
   fi
