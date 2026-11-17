@@ -40,22 +40,21 @@ runs:
           exit 1
         fi
 
-        CONTENT=$(base64 -w0 ./jest-report/report.json)
         SHA=$(GH_TOKEN=$HUB_TOKEN gh api "repos/$HUB_REPO/contents/projects/$PROJECT_NAME/latest.json" \
           --jq '.sha' 2>/dev/null || echo "")
 
-        if [ -n "$SHA" ]; then
-          GH_TOKEN=$HUB_TOKEN gh api "repos/$HUB_REPO/contents/projects/$PROJECT_NAME/latest.json" \
-            --method PUT \
-            -f message="chore: update $PROJECT_NAME report" \
-            -f content="$CONTENT" \
-            -f sha="$SHA"
-        else
-          GH_TOKEN=$HUB_TOKEN gh api "repos/$HUB_REPO/contents/projects/$PROJECT_NAME/latest.json" \
-            --method PUT \
-            -f message="chore: update $PROJECT_NAME report" \
-            -f content="$CONTENT"
-        fi
+        # Build the request body in a file: the base64 report is too large to pass as a CLI argument
+        base64 -w0 ./jest-report/report.json > "$RUNNER_TEMP/report.b64"
+        jq -n \
+          --arg message "chore: update $PROJECT_NAME report" \
+          --rawfile content "$RUNNER_TEMP/report.b64" \
+          --arg sha "$SHA" \
+          '{message: $message, content: $content} + (if $sha == "" then {} else {sha: $sha} end)' \
+          > "$RUNNER_TEMP/hub-payload.json"
+
+        GH_TOKEN=$HUB_TOKEN gh api "repos/$HUB_REPO/contents/projects/$PROJECT_NAME/latest.json" \
+          --method PUT \
+          --input "$RUNNER_TEMP/hub-payload.json"
 
         echo "✅ Report pushed to hub"
 

@@ -126,5 +126,10 @@ export const RESUME_DATA_ES: ResumeData = {
       system: "Sistema",
     },
     languageToggle: "Cambiar idioma",
+    notFound: {
+      title: "Página no encontrada",
+      description: "La página que buscas no existe.",
+      backHome: "Volver al CV",
+    },
   },
 };

@@ -1,12 +1,17 @@
-import { Metadata } from "next";
 import { RESUME_DATA } from "@/data/resume-data";
 import { ResumeContent } from "@/components/resume-content";
-
-export const metadata: Metadata = {
-  title: `${RESUME_DATA.name} | ${RESUME_DATA.about}`,
-  description: RESUME_DATA.summary,
-};
+import { buildPersonJsonLd, serializeJsonLd } from "./structured-data";
 
 export default function Page() {
-  return <ResumeContent />;
+  const jsonLd = serializeJsonLd(buildPersonJsonLd(RESUME_DATA));
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: jsonLd }}
+      />
+      <ResumeContent />
+    </>
+  );
 }

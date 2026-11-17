@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ProfileAvatar } from "@/components/profile-avatar";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Section } from "@/components/ui/section";
@@ -145,10 +145,11 @@ export function ResumeContent() {
             </div>
           </div>
 
-          <Avatar className="size-28">
-            <AvatarImage alt={data.name} src={data.avatarUrl} />
-            <AvatarFallback>{data.initials}</AvatarFallback>
-          </Avatar>
+          <ProfileAvatar
+            src={data.avatarUrl}
+            alt={data.name}
+            fallback={data.initials}
+          />
         </div>
         <Section>
           <h2 className="text-xl font-bold">{data.ui.sections.about}</h2>
@@ -300,6 +301,7 @@ export function ResumeContent() {
                   description={project.description}
                   tags={project.techStack}
                   link={project.link?.href}
+                  linkLabel={project.link?.label}
                   githubLink={project.githubLink}
                   githubLabel={data.ui.githubRepo}
                 />

@@ -1,0 +1,18 @@
+import type { MetadataRoute } from "next";
+import { SITE_DESCRIPTION, SITE_TITLE } from "./site-config";
+
+export default function manifest(): MetadataRoute.Manifest {
+  return {
+    name: SITE_TITLE,
+    short_name: "R. Castillo",
+    description: SITE_DESCRIPTION,
+    start_url: "/",
+    display: "browser",
+    background_color: "#ffffff",
+    theme_color: "#111827",
+    icons: [
+      { src: "/android-chrome-192x192.png", sizes: "192x192", type: "image/png" },
+      { src: "/android-chrome-512x512.png", sizes: "512x512", type: "image/png" },
+    ],
+  };
+}

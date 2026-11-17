@@ -176,6 +176,11 @@ describe("resume data i18n", () => {
           system: "Sistema",
         },
         languageToggle: "Cambiar idioma",
+        notFound: {
+          title: "Página no encontrada",
+          description: "La página que buscas no existe.",
+          backHome: "Volver al CV",
+        },
       });
     });
 

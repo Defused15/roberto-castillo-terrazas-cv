@@ -75,6 +75,25 @@ describe("ProjectCard", () => {
       ).toBeInTheDocument();
     });
 
+    it("prints the link label in a print-visible block", () => {
+      render(<ProjectCard {...defaultProps} link={projectLink} linkLabel="qa.rcastillo.dev" />);
+      const el = screen.getByText("qa.rcastillo.dev");
+      expect(el).toHaveClass("print:block");
+      expect(el).toHaveClass("hidden");
+      expect(el).not.toHaveClass("print:visible");
+    });
+
+    it("falls back to the cleaned URL for print when no label is given", () => {
+      render(<ProjectCard {...defaultProps} link={projectLink} />);
+      const el = screen.getByText("defused15.github.io/QA-Playground-Tests/dashboard.html");
+      expect(el).toHaveClass("print:block");
+    });
+
+    it("renders no print URL block without link or label", () => {
+      const { container } = render(<ProjectCard {...defaultProps} />);
+      expect(container.querySelector(".print\\:block")).toBeNull();
+    });
+
     it("renders title as plain text when no link is provided", () => {
       render(<ProjectCard {...defaultProps} />);
       expect(screen.queryByRole("link", { name: defaultProps.title })).not.toBeInTheDocument();

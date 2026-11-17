@@ -15,7 +15,6 @@
   "dependencies": {
     "@apollo/server": "^4.10.2",
     "@as-integrations/next": "^3.0.0",
-    "@radix-ui/react-avatar": "^1.0.4",
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-dropdown-menu": "^2.1.14",
     "@radix-ui/react-slot": "^1.0.2",

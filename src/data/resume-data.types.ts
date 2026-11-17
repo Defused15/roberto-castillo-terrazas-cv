@@ -83,5 +83,6 @@ export type ResumeData = {
     githubRepo: string;
     theme: { toggle: string; light: string; dark: string; system: string };
     languageToggle: string;
+    notFound: { title: string; description: string; backHome: string };
   };
 };
