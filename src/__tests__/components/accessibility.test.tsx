@@ -34,4 +34,14 @@ describe("accessibility", () => {
     const { container } = renderWithProviders(<NotFound />, { lang });
     expect(await axe(container)).toHaveNoViolations();
   });
+
+  it.each(LANGS)("[%s] the CV page has no axe violations in dark mode", async (lang) => {
+    document.documentElement.classList.add("dark");
+    try {
+      const { container } = renderWithProviders(<ResumeContent />, { lang });
+      expect(await axe(container)).toHaveNoViolations();
+    } finally {
+      document.documentElement.classList.remove("dark");
+    }
+  });
 });

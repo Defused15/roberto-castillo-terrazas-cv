@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import { ProfileAvatar } from "@/components/profile-avatar";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -42,8 +43,8 @@ export function ResumeView({ data }: { data: ResumeData }) {
 
   return (
     <>
-    <main className="container bg-white dark:bg-gray-900 relative mx-auto scroll-my-12 overflow-auto p-4 print:p-12 md:p-16">
-      <section className="mx-auto bg-white dark:bg-gray-900 w-full max-w-2xl space-y-8 bg-white print:space-y-4">
+    <main id="main-content" className="container bg-background print:bg-white relative mx-auto scroll-my-12 overflow-auto p-4 print:p-12 md:p-16">
+      <section className="mx-auto bg-background print:bg-white w-full max-w-2xl space-y-8 print:space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex-1 space-y-1.5">
             <h1 className="text-2xl font-bold">{data.name}</h1>
@@ -190,9 +191,11 @@ export function ResumeView({ data }: { data: ResumeData }) {
                 <CardHeader>
                   <div className="flex items-center justify-between gap-x-2 text-base">
                     <h3 className="inline-flex items-center justify-center gap-x-2 font-semibold leading-none">
-                      <img
-                        src={work.logo.src}
+                      <Image
+                        src={work.logo}
                         alt={`${work.company} logo`}
+                        width={20}
+                        height={20}
                         className="size-5 rounded-sm object-contain"
                       />
                       <a className="hover:underline" href={work.link}>
@@ -211,7 +214,7 @@ export function ResumeView({ data }: { data: ResumeData }) {
                         ))}
                       </span>
                     </h3>
-                    <div className="text-sm tabular-nums text-gray-500">
+                    <div className="text-sm tabular-nums text-muted-foreground">
                       {work.start} - {work.end ?? data.ui.present}
                     </div>
                   </div>
@@ -240,7 +243,7 @@ export function ResumeView({ data }: { data: ResumeData }) {
                     <h3 className="font-semibold leading-none">
                       {education.school}
                     </h3>
-                    <div className="text-sm tabular-nums text-gray-500">
+                    <div className="text-sm tabular-nums text-muted-foreground">
                       {education.start} - {education.end ?? data.ui.present}
                     </div>
                   </div>
@@ -287,7 +290,7 @@ export function ResumeView({ data }: { data: ResumeData }) {
                   </a>
                   <span className="text-xs text-muted-foreground">{cert.issuer}</span>
                 </div>
-                <span className="text-sm tabular-nums text-gray-500 shrink-0 ml-4">{cert.year}</span>
+                <span className="text-sm tabular-nums text-muted-foreground shrink-0 ml-4">{cert.year}</span>
               </div>
             ))}
           </div>

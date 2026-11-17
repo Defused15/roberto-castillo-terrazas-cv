@@ -59,7 +59,7 @@ export function ProjectCard({
                   onClick={() => track("project_repo", { project: title })}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-xs font-normal text-muted-foreground hover:text-foreground transition-colors"
+                  className="inline-flex items-center gap-1 text-xs font-normal text-muted-foreground transition-colors hover:text-foreground hover:underline"
                 >
                   <GitHubIcon className="size-3" />
                   <span>{githubLabel}</span>

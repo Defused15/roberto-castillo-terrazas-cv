@@ -41,7 +41,7 @@ export function PrivacyContent() {
   const privacy = data.ui.privacy;
 
   return (
-    <main className="container relative mx-auto bg-white p-4 dark:bg-gray-900 md:p-16">
+    <main className="container relative mx-auto bg-background p-4 md:p-16">
       <article className="mx-auto w-full max-w-2xl space-y-8">
         <header className="space-y-1.5">
           <h1 className="text-2xl font-bold">{privacy.title}</h1>

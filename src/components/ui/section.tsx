@@ -19,7 +19,7 @@ export function Section({ title, className, children, ...props }: SectionProps) 
     <section
       aria-labelledby={headingId}
       className={cn(
-        "flex min-h-0 flex-col gap-y-3 bg-white dark:bg-gray-900",
+        "flex min-h-0 flex-col gap-y-3 bg-background",
         className
       )}
       {...props}
