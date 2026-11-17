@@ -4,8 +4,15 @@ import { join } from "path";
 import robots from "@/app/robots";
 import sitemap from "@/app/sitemap";
 import manifest from "@/app/manifest";
-import { SITE_TITLE, SITE_URL, siteMetadata, siteViewport } from "@/app/site-config";
-import { LANGS, RESUME_DATA } from "@/data/resume-data";
+import {
+  OG_HIGHLIGHTS,
+  OG_VALUE_LINE,
+  SITE_TITLE,
+  SITE_URL,
+  siteMetadata,
+  siteViewport,
+} from "@/app/site-config";
+import { LANGS, RESUME_DATA, RESUME_DATA_BY_LANG } from "@/data/resume-data";
 
 const inPublic = (url: string) => existsSync(join(process.cwd(), "public", url));
 const origin = new URL(SITE_URL).origin;
@@ -80,5 +87,26 @@ describe("site metadata", () => {
     const schemes = colors.map((c) => c.media?.match(/prefers-color-scheme: (\w+)/)?.[1]);
     expect(schemes.sort()).toEqual(["dark", "light"]);
     expect(colors.filter((c) => !/^#[0-9a-f]{6}$/i.test(c.color))).toEqual([]);
+  });
+});
+
+describe("open graph card copy", () => {
+  it("highlights Playwright, AI and API testing in 4-5 chips", () => {
+    expect(OG_HIGHLIGHTS.length).toBeGreaterThanOrEqual(4);
+    expect(OG_HIGHLIGHTS.length).toBeLessThanOrEqual(5);
+    expect(OG_HIGHLIGHTS).toContain("Playwright");
+    expect(OG_HIGHLIGHTS.some((h) => /\bAI\b/.test(h))).toBe(true);
+    expect(OG_HIGHLIGHTS.some((h) => /\bAPI\b/.test(h))).toBe(true);
+  });
+  it("leads the value line with experience, projects and the current industry", () => {
+    expect(OG_VALUE_LINE).toBe(
+      "4+ years · 15+ projects · insurance, healthcare, e-commerce",
+    );
+  });
+  it("states the same years of experience as the summaries and description", () => {
+    expect(OG_VALUE_LINE.startsWith("4+ years")).toBe(true);
+    expect(RESUME_DATA_BY_LANG.en.summary).toContain("4+ years");
+    expect(RESUME_DATA_BY_LANG.es.summary).toContain("más de 4 años");
+    expect(siteMetadata.description).toContain("4+ years");
   });
 });
