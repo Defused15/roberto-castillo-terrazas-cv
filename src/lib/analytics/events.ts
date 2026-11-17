@@ -14,6 +14,7 @@ export type AnalyticsEvents = {
   print_cv: undefined;
   project_link: { project: string };
   project_repo: { project: string };
+  bullets_expand: { company: string };
   cert_link: { cert: string; issuer: string };
   not_found: { path: string };
 };

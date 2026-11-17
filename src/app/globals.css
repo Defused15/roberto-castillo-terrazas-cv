@@ -144,3 +144,20 @@
     transform: none;
   }
 }
+
+/* Job bullets: "Show N more" grows the list open (grid rows 0fr → 1fr) and fades it in. */
+.bullets-collapse,
+.bullets-chevron {
+  transition:
+    grid-template-rows 200ms cubic-bezier(0.23, 1, 0.32, 1),
+    opacity 200ms cubic-bezier(0.23, 1, 0.32, 1),
+    transform 200ms cubic-bezier(0.23, 1, 0.32, 1),
+    visibility 200ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bullets-collapse,
+  .bullets-chevron {
+    transition: none;
+  }
+}

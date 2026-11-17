@@ -261,6 +261,7 @@ export const RESUME_DATA_EN: ResumeData = {
       projects: "Projects",
     },
     present: "Present",
+    bullets: { showMore: "Show {n} more", showLess: "Show less" },
     githubRepo: "GitHub repo",
     theme: {
       toggle: "Toggle theme",

@@ -30,7 +30,17 @@ describe("accessibility", () => {
     expect(await axe(container)).toHaveNoViolations();
   });
 
-  it("the open theme menu has no axe violations", async () => {
+  it.each(LANGS)("[%s] the CV page with every job's bullets expanded has no axe violations", async (lang) => {
+    const d = RESUME_DATA_BY_LANG[lang];
+    const { container, user } = renderWithProviders(<ResumeContent />, { lang });
+    for (const button of screen.getAllByRole("button", { name: new RegExp(d.ui.bullets.showMore.replace("{n}", "\\d+")) })) {
+      await user.click(button);
+    }
+    expect(screen.getAllByRole("button", { name: d.ui.bullets.showLess }).length).toBeGreaterThan(0);
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+    it("the open theme menu has no axe violations", async () => {
     const { user } = renderWithProviders(<ResumeContent />);
     await user.click(screen.getByRole("button", { name: RESUME_DATA_BY_LANG.en.ui.theme.toggle }));
     const menu = await screen.findByRole("menu");

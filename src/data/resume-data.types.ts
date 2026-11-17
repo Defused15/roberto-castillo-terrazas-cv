@@ -82,6 +82,8 @@ export type ResumeData = {
       projects: string;
     };
     present: string;
+    /** Toggle under a job's bullets; `{n}` in showMore is the number of hidden bullets. */
+    bullets: { showMore: string; showLess: string };
     githubRepo: string;
     theme: { toggle: string; light: string; dark: string; system: string };
     languageToggle: string;
