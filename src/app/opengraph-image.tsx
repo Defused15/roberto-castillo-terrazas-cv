@@ -51,7 +51,7 @@ function Avatar({ src }: { src: string }) {
         position: "relative",
       }}
     >
-      {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text */}
+      {/* eslint-disable-next-line jsx-a11y/alt-text */}
       <img
         src={src}
         width={img}
