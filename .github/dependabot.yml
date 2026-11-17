@@ -7,12 +7,12 @@ updates:
     schedule:
       interval: weekly
       day: monday
-      time: "05:00"
+      time: '05:00'
       timezone: Europe/Madrid
     open-pull-requests-limit: 5
     commit-message:
-      prefix: "chore(deps)"
-      prefix-development: "chore(deps-dev)"
+      prefix: 'chore(deps)'
+      prefix-development: 'chore(deps-dev)'
     groups:
       npm-minor-patch:
         update-types: [minor, patch]
@@ -26,7 +26,7 @@ updates:
       - dependency-name: typescript
         update-types: [version-update:semver-major]
       # @types/node tracks the Node runtime (engines >=22, CI on 22).
-      - dependency-name: "@types/node"
+      - dependency-name: '@types/node'
         update-types: [version-update:semver-major]
 
   # GitHub Actions are pinned by SHA; Dependabot bumps the SHA and the version comment.
@@ -35,11 +35,11 @@ updates:
     schedule:
       interval: weekly
       day: monday
-      time: "05:00"
+      time: '05:00'
       timezone: Europe/Madrid
     open-pull-requests-limit: 3
     commit-message:
-      prefix: "ci(deps)"
+      prefix: 'ci(deps)'
     groups:
       actions-minor-patch:
         update-types: [minor, patch]
