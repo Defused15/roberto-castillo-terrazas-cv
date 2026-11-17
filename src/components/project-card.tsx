@@ -7,6 +7,7 @@ import {
 } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { GitHubIcon } from "./icons";
+import { track } from "@/lib/analytics";
 
 interface Props {
   title: string;
@@ -42,6 +43,7 @@ export function ProjectCard({
               {link ? (
                 <a
                   href={link}
+                  onClick={() => track("project_link", { project: title })}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:underline"
@@ -54,6 +56,7 @@ export function ProjectCard({
               {githubLink && (
                 <a
                   href={githubLink}
+                  onClick={() => track("project_repo", { project: title })}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1 text-xs font-normal text-muted-foreground hover:text-foreground transition-colors"

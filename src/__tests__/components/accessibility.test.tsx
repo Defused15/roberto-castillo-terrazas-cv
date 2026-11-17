@@ -1,5 +1,6 @@
 import { screen } from "@testing-library/react";
 import NotFound from "@/app/not-found";
+import PrivacyPage from "@/app/privacy/page";
 import { ResumeContent } from "@/components/resume-content";
 import { LANGS, RESUME_DATA_BY_LANG } from "@/data/resume-data";
 import { axe } from "@/test/axe";
@@ -22,6 +23,11 @@ describe("accessibility", () => {
     // The menu is a popup portalled to <body>, so it is checked on its own;
     // "region" (all content inside landmarks) does not apply to popups.
     expect(await axe(menu, { rules: { region: { enabled: false } } })).toHaveNoViolations();
+  });
+
+  it.each(LANGS)("[%s] the privacy page has no axe violations", async (lang) => {
+    const { container } = renderWithProviders(<PrivacyPage />, { lang });
+    expect(await axe(container)).toHaveNoViolations();
   });
 
   it.each(LANGS)("[%s] the 404 page has no axe violations", async (lang) => {

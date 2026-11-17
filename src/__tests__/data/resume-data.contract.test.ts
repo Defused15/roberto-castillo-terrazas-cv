@@ -3,6 +3,7 @@ import { existsSync } from "fs";
 import { join } from "path";
 import { buildPersonJsonLd } from "@/app/structured-data";
 import { RESUME_DATA_BY_LANG, isLang, type ResumeData } from "@/data/resume-data";
+import { phoneCountry } from "@/lib/format-phone";
 
 /**
  * Content contract for the published CV data. These tests encode invariants
@@ -80,6 +81,19 @@ describe.each([
 
   it("stores phone numbers in E.164 so tel: links work worldwide", () => {
     expect(d.contact.phones.filter((p) => !/^\+[1-9]\d{7,14}$/.test(p))).toEqual([]);
+  });
+
+  it("gives the privacy notice a title and paragraphs per section, with only known placeholders", () => {
+    const { sections } = d.ui.privacy;
+    expect(sections.length).toBeGreaterThan(0);
+    expect(sections.filter((s) => s.paragraphs.length === 0).map((s) => s.title)).toEqual([]);
+    const placeholders = sections.flatMap((s) => s.paragraphs.join(" ").match(/\{[^}]*\}/g) ?? []);
+    expect([...new Set(placeholders)].sort()).toEqual(["{aepd}", "{email}"]);
+    expect(duplicates(sections.map((s) => s.title))).toEqual([]);
+  });
+
+  it("only lists phones from countries the phone analytics event can report", () => {
+    expect(d.contact.phones.filter((p) => phoneCountry(p) === undefined)).toEqual([]);
   });
 
   it("lists the primary location first, matching the JSON-LD address country", () => {

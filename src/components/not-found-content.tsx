@@ -1,10 +1,13 @@
 "use client";
 
+import { useEffect } from "react";
 import Link from "next/link";
 import { ArrowLeftIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/components/language-provider";
+import { trackWhenReady } from "@/lib/analytics";
 
+// Stryker disable next-line all: entrance animation delay, verified visually
 function stagger(n: number): React.CSSProperties {
   return { "--stagger": n } as React.CSSProperties;
 }
@@ -12,6 +15,10 @@ function stagger(n: number): React.CSSProperties {
 export function NotFoundContent() {
   const { data } = useLanguage();
   const { title, description, backHome } = data.ui.notFound;
+
+  useEffect(() => {
+    trackWhenReady("not_found", { path: window.location.pathname });
+  }, []);
 
   return (
     <main className="flex min-h-[100dvh] items-center justify-center bg-white p-4 dark:bg-gray-900 md:p-16">

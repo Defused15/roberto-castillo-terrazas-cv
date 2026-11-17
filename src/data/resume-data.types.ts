@@ -91,5 +91,17 @@ export type ResumeData = {
       profiles: Record<SocialNetwork, string>;
     };
     notFound: { title: string; description: string; backHome: string };
+    /**
+     * Privacy notice and its footer link. In paragraphs, `{email}` becomes a
+     * mailto link to the contact email and `{aepd}` a link to the AEPD site.
+     */
+    privacy: {
+      link: string;
+      title: string;
+      intro: string;
+      sections: readonly { title: string; paragraphs: readonly string[] }[];
+      lastUpdatedLabel: string;
+      lastUpdated: string;
+    };
   };
 };

@@ -29,7 +29,7 @@ describe("robots.txt", () => {
 describe("sitemap.xml", () => {
   it("lists the home page and only https URLs on the canonical host", () => {
     const urls = sitemap().map((e) => new URL(e.url));
-    expect(urls.map((u) => u.href)).toContain(`${SITE_URL}/`);
+    expect(urls.map((u) => u.href)).toEqual([`${SITE_URL}/`, `${SITE_URL}/privacy`]);
     expect(urls.filter((u) => u.protocol !== "https:" || u.origin !== origin)).toEqual([]);
   });
 });
