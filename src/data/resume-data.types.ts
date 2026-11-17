@@ -89,8 +89,6 @@ export type ResumeData = {
     present: string;
     /** Label next to a certification whose link verifies it. */
     verified: string;
-    /** Toggle under a job's bullets; `{n}` in showMore is the number of hidden bullets. */
-    bullets: { showMore: string; showLess: string };
     githubRepo: string;
     theme: { toggle: string; light: string; dark: string; system: string };
     languageToggle: string;

@@ -5,7 +5,6 @@ import { ResumeContent } from "@/components/resume-content";
 import { LANGS, RESUME_DATA_BY_LANG } from "@/data/resume-data";
 import { axe } from "@/test/axe";
 import { renderWithProviders } from "@/test/render";
-import { VISIBLE_BULLETS } from "@/components/work-bullets";
 
 /**
  * axe-core WCAG checks on the rendered DOM (names, roles, landmarks, ARIA,
@@ -31,19 +30,7 @@ describe("accessibility", () => {
     expect(await axe(container)).toHaveNoViolations();
   });
 
-  it.each(LANGS)("[%s] the CV page with every job's bullets expanded has no axe violations", async (lang) => {
-    const d = RESUME_DATA_BY_LANG[lang];
-    const { container, user } = renderWithProviders(<ResumeContent />, { lang });
-    const isShowMore = (name: string) =>
-      d.work.some((w) => name === d.ui.bullets.showMore.replace("{n}", String(w.description.length - VISIBLE_BULLETS)));
-    for (const button of screen.getAllByRole("button", { name: isShowMore })) {
-      await user.click(button);
-    }
-    expect(screen.getAllByRole("button", { name: d.ui.bullets.showLess }).length).toBeGreaterThan(0);
-    expect(await axe(container)).toHaveNoViolations();
-  });
-
-    it("the open theme menu has no axe violations", async () => {
+  it("the open theme menu has no axe violations", async () => {
     const { user } = renderWithProviders(<ResumeContent />);
     await user.click(screen.getByRole("button", { name: RESUME_DATA_BY_LANG.en.ui.theme.toggle }));
     const menu = await screen.findByRole("menu");

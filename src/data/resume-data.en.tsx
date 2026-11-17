@@ -284,7 +284,6 @@ export const RESUME_DATA_EN: ResumeData = {
     },
     present: "Present",
     verified: "Verified",
-    bullets: { showMore: "Show {n} more", showLess: "Show less" },
     githubRepo: "GitHub repo",
     theme: {
       toggle: "Toggle theme",
@@ -326,7 +325,7 @@ export const RESUME_DATA_EN: ResumeData = {
           title: "What I measure",
           paragraphs: [
             "I use PostHog, hosted in its EU cloud in Frankfurt, to count page visits and how long they last, including visits to pages that don't exist. PostHog doesn't store your IP address: it's removed as soon as the visit arrives. It also collects basic page-speed measurements. Sessions are not recorded and no visitor profiles are built.",
-            "I also count which links and buttons on the CV get used (contact details, including copying the email or a phone number, revealing the phone numbers, profiles, projects, certificates, expanding job details, language, theme and printing) to see which parts are useful. When a phone number is copied or called, I only keep the country of the number. I don't record what you type, where you move the mouse, or anything you do outside this site.",
+            "I also count which links and buttons on the CV get used (contact details, including copying the email or a phone number, revealing the phone numbers, profiles, projects, certificates, language, theme and printing) to see which parts are useful. When a phone number is copied or called, I only keep the country of the number. I don't record what you type, where you move the mouse, or anything you do outside this site.",
             "Vercel Web Analytics also counts page visits, in aggregate and without cookies, and shows roughly which country they come from without storing your IP address. Vercel hosts the site, so its servers keep standard logs (IP address and browser type) to deliver the pages.",
           ],
         },

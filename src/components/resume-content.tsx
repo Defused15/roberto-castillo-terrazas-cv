@@ -13,7 +13,6 @@ import { ModeToggle } from "@/components/darkmode";
 import { LanguageToggle } from "@/components/language-toggle";
 import { useLanguage } from "@/components/language-provider";
 import { CopyText } from "@/components/copy-text";
-import { WorkBullets } from "@/components/work-bullets";
 import { IssuerIcon } from "@/components/icons/issuers";
 import { PhoneLine, usePhoneReveal } from "@/components/contact-phones";
 import { formatPhone } from "@/lib/format-phone";
@@ -191,7 +190,11 @@ export function ResumeView({ data }: { data: ResumeData }) {
                   </h4>
                 </CardHeader>
                 <CardContent className="mt-2 text-sm print:text-[10px]">
-                  <WorkBullets company={work.company} bullets={work.description} ui={data.ui.bullets} />
+                  <ul className="list-disc pl-4 space-y-1">
+                    {work.description.map((point, index) => (
+                      <li key={index}>{point}</li>
+                    ))}
+                  </ul>
                 </CardContent>
               </Card>
             );

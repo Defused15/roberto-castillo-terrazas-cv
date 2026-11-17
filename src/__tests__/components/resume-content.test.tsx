@@ -7,7 +7,6 @@ import { formatPhone, phoneCountry } from "@/lib/format-phone";
 import { capturedEvents, posthogMock, preventNavigation, startAnalytics } from "@/test/analytics";
 import { languageToggleName } from "@/test/labels";
 import { renderWithProviders } from "@/test/render";
-import { VISIBLE_BULLETS } from "@/components/work-bullets";
 import { isKnownIssuer } from "@/components/icons/issuers";
 
 /**
@@ -340,76 +339,6 @@ describe.each(LANGS)("ResumeContent › analytics events [%s]", (lang) => {
 
   it("sends nothing for links without an event, such as locations", async () => {
     expect(await click(() => screen.getByRole("link", { name: d.locations[0].name }))).toEqual([]);
-  });
-});
-
-describe.each(LANGS)("ResumeContent › job bullets [%s]", (lang) => {
-  const d = RESUME_DATA_BY_LANG[lang];
-  const long = d.work.filter((w) => w.description.length > VISIBLE_BULLETS);
-  const short = d.work.filter((w) => w.description.length <= VISIBLE_BULLETS);
-  const moreLabel = (n: number) => d.ui.bullets.showMore.replace("{n}", String(n));
-  /** The job card (h3 → card) of `company`. */
-  const card = (company: string) =>
-    within(region(d.ui.sections.work)).getByRole("link", { name: company }).closest("h3")!.parentElement!
-      .parentElement!.parentElement!;
-  const hidden = (el: HTMLElement) => el.closest(".invisible") !== null;
-
-  beforeEach(async () => {
-    await startAnalytics();
-  });
-
-  it("has jobs with more and with fewer bullets than are shown at first", () => {
-    expect(long.length).toBeGreaterThan(0);
-    expect(short.length).toBeGreaterThan(0);
-  });
-
-  it.each(RESUME_DATA_BY_LANG[lang].work.filter((w) => w.description.length > VISIBLE_BULLETS).map((w) => w.company))(
-    "%s: hides all but the first bullets behind Show N more, and expands to all",
-    async (company) => {
-      const { user } = renderWithProviders(<ResumeContent />, { lang });
-      const job = d.work.find((w) => w.company === company)!;
-      const n = job.description.length - VISIBLE_BULLETS;
-      const items = within(card(company)).getAllByRole("listitem");
-      const button = within(card(company)).getByRole("button", { name: moreLabel(n) });
-      const panel = document.getElementById(button.getAttribute("aria-controls")!)!;
-
-      expect(items.filter(hidden)).toHaveLength(n);
-      expect(button).toHaveAttribute("aria-expanded", "false");
-      expect(panel).toHaveClass("print:visible", "print:grid-rows-[1fr]");
-      expect(button).toHaveClass("print:hidden");
-
-      await user.click(button);
-
-      expect(items.filter(hidden)).toEqual([]);
-      expect(button).toHaveAttribute("aria-expanded", "true");
-      expect(button).toHaveAccessibleName(d.ui.bullets.showLess);
-      expect(button).toHaveFocus();
-      expect(capturedEvents()).toEqual([["bullets_expand", { company }]]);
-
-      await user.click(button);
-      expect(items.filter(hidden)).toHaveLength(n);
-      expect(button).toHaveAccessibleName(moreLabel(n));
-      // Collapsing is not an event.
-      expect(capturedEvents()).toHaveLength(1);
-    },
-  );
-
-  it("shows short jobs in full, without a toggle", () => {
-    renderWithProviders(<ResumeContent />, { lang });
-    short.forEach((job) => {
-      expect(within(card(job.company)).queryByRole("button")).not.toBeInTheDocument();
-      expect(within(card(job.company)).getAllByRole("listitem").filter(hidden)).toEqual([]);
-    });
-  });
-
-  it("can be operated with the keyboard", async () => {
-    const { user } = renderWithProviders(<ResumeContent />, { lang });
-    const button = within(card(long[0].company)).getByRole("button", { name: /\d/ });
-    button.focus();
-    await user.keyboard("{Enter}");
-    expect(button).toHaveAttribute("aria-expanded", "true");
-    await user.keyboard(" ");
-    expect(button).toHaveAttribute("aria-expanded", "false");
   });
 });
 
