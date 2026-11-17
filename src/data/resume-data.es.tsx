@@ -5,9 +5,10 @@ const EN = RESUME_DATA_EN;
 
 export const RESUME_DATA_ES: ResumeData = {
   ...EN,
+  location: "México",
   about: "QA Engineer | SDET potenciado con IA",
   summary:
-    "QA Engineer con más de 3 años de experiencia participando en y liderando estrategias de calidad end-to-end en más de 15 proyectos de e-commerce, salud, logística y finanzas, en entornos dinámicos de consultoría de TI. Tengo capacidad comprobada para hacerme cargo de todo el ciclo de vida de pruebas, desde el análisis de requerimientos y la validación shift-left hasta la integración en CI/CD, las pruebas de API y el triage de defectos, adaptándome rápidamente a distintas industrias, equipos y stacks tecnológicos. Combino sólidas habilidades de automatización (Playwright, Cypress, Jest) y dominio de pruebas de API (Postman, Pact) con experiencia práctica en plataformas empresariales como Salesforce, HubSpot y Stripe. Aprovecho flujos de trabajo potenciados con IA, como sistemas multiagente, agent skills personalizadas y corrección autónoma de fallas en CI/CD con Claude Code y MCP, para acelerar la entrega y reducir la intervención manual. Me desenvuelvo con soltura en equipos distribuidos e internacionales y aporto más allá de QA cuando se necesita.",
+    "QA Engineer con más de 3 años de experiencia participando en y liderando estrategias de calidad end-to-end en más de 15 proyectos de e-commerce, salud, logística y finanzas, en entornos dinámicos de consultoría de TI. Tengo capacidad comprobada para hacerme cargo de todo el ciclo de vida de pruebas, desde el análisis de requerimientos y la validación shift-left hasta la integración en CI/CD y el triage de defectos, adaptándome rápidamente a distintas industrias, equipos y stacks tecnológicos. Combino sólidas habilidades de automatización (Playwright, Cypress, Jest) y dominio de pruebas de API (Postman, Pact) con experiencia práctica en plataformas empresariales como Salesforce, HubSpot y Stripe. Aprovecho flujos de trabajo potenciados con IA, como sistemas multiagente, agent skills personalizadas y corrección autónoma de fallas en CI/CD con Claude Code y MCP, para acelerar la entrega y reducir la intervención manual. Me desenvuelvo con soltura en equipos distribuidos e internacionales y aporto más allá de QA cuando se necesita.",
   education: [
     {
       ...EN.education[0],
@@ -20,14 +21,14 @@ export const RESUME_DATA_ES: ResumeData = {
       badges: ["Remoto"],
       title: "Quality Engineer",
       description: [
-        "Lideré la estrategia de calidad end-to-end de una plataforma CMS basada en Sitecore, abarcando las fases de pruebas funcionales, SIT, UAT, regresión y accesibilidad.",
+        "Lideré la estrategia de calidad end-to-end de una plataforma CMS basada en Sitecore, abarcando pruebas funcionales, SIT, UAT, de regresión y de accesibilidad.",
         "Apliqué prácticas shift-left revisando diseños de UI/UX y analizando tickets en busca de ambigüedades antes del desarrollo, evitando retrabajo en etapas tardías al resolver a tiempo los huecos en los requerimientos.",
         "Elaboré planes y estrategias de prueba para cada ciclo de release, definiendo alcance, criterios de entrada/salida, cobertura de riesgos y requerimientos de ambientes, alineados con los objetivos del sprint y del negocio.",
-        "Diseñé y ejecuté casos de prueba mediante partición de equivalencia, análisis de valores límite y técnicas exploratorias, asegurando una cobertura integral de todos los flujos de usuario y edge cases.",
+        "Diseñé y ejecuté casos de prueba mediante partición de equivalencia, análisis de valores límite y técnicas exploratorias, asegurando la cobertura de todos los flujos de usuario y edge cases.",
         "Integré la automatización E2E y de regresión con Playwright en pipelines de Azure DevOps, reduciendo el esfuerzo de regresión manual y permitiendo una entrega continua confiable a lo largo de los ciclos de release.",
-        "Identifiqué y di seguimiento a incumplimientos de accesibilidad WCAG 2.1 con Axe y Google Lighthouse, coordinando su corrección con los desarrolladores para lograr el cumplimiento de la ADA en todas las páginas de la plataforma.",
-        "Diseñé y ejecuté escenarios de pruebas de pico y de carga con K6, identificando cuellos de botella de rendimiento en condiciones de tráfico máximo y validando los umbrales de estabilidad del sistema antes de cada release a producción.",
-        "Realicé el triage de defectos y gestioné work items en Azure Boards, priorizando por severidad e impacto en el negocio y coordinando la planeación de sprints para mantener la cadencia de releases y los quality gates.",
+        "Identifiqué y di seguimiento a incumplimientos de accesibilidad WCAG 2.1 con axe y Google Lighthouse, coordinando su corrección con los desarrolladores para lograr el cumplimiento de la ADA en todas las páginas de la plataforma.",
+        "Creé y ejecuté escenarios de pruebas de pico y de carga con k6, identificando cuellos de botella de rendimiento en condiciones de tráfico máximo y validando los umbrales de estabilidad del sistema antes de cada release a producción.",
+        "Realicé el triage de defectos y gestioné work items en Azure Boards, priorizándolos por severidad e impacto en el negocio, y coordiné la planeación de sprints para mantener la cadencia de releases y los quality gates.",
         "Redacté documentación de QA, incluyendo planes de prueba, repositorios de casos de prueba, lineamientos de taxonomía de defectos y checklists de release para estandarizar las prácticas de calidad en el equipo.",
         "Validé registros de leads en Salesforce Marketing Cloud verificando el mapeo de campos, los tipos de datos y los triggers de workflows, asegurando la integridad de los datos en los pipelines de automatización de marketing.",
       ],
@@ -40,11 +41,11 @@ export const RESUME_DATA_ES: ResumeData = {
         "Me hice cargo de la entrega de QA end-to-end en varios proyectos simultáneos de clientes de e-commerce, salud y logística, adaptando las estrategias de prueba a distintos stacks tecnológicos y ritmos de trabajo.",
         "Analicé los requerimientos en cuanto a claridad, completitud y testeabilidad, traduciéndolos en planes de prueba que definían estrategia, alcance, ambientes y criterios de entrada/salida alineados con los objetivos de cada proyecto.",
         "Cubrí con pruebas manuales y automatizadas las fases funcional, de integración, de sistema y de UAT, incluida la creación de datos de prueba y suites de regresión, y detecté de forma constante defectos críticos antes de los releases a producción.",
-        "Desarrollé y mantuve frameworks de automatización con Playwright usando Page Object Model (POM), integrados en pipelines de CI/CD para asegurar una cobertura de regresión consistente y repetible en cada release.",
+        "Desarrollé y mantuve frameworks de automatización con Playwright usando el patrón Page Object Model (POM) y los integré en pipelines de CI/CD para lograr una cobertura de regresión consistente y repetible en cada release.",
         "Realicé pruebas de API con Postman sobre integraciones REST y ejecuté escaneos con OWASP ZAP y revisiones de dependencias para identificar vulnerabilidades y validar el manejo seguro de datos en los distintos proyectos.",
-        "Validé el rendimiento, la escalabilidad y la estabilidad bajo distintas condiciones de carga con K6, detectando cuellos de botella y riesgos de estabilidad antes de los despliegues a producción.",
-        "Fui responsable del triage de defectos en JIRA, priorizando los issues por severidad e impacto en el negocio para cumplir las entregas en tiempo y forma.",
-        "Validé el renderizado de contenido, la integridad de datos y el comportamiento de los flujos en aplicaciones basadas en CMS construidas con Contentful, Sanity, Netlify y Drupal.",
+        "Ejecuté pruebas de carga con k6 bajo distintas condiciones para validar el rendimiento, la escalabilidad y la estabilidad, detectando cuellos de botella y riesgos antes de los despliegues a producción.",
+        "Lideré el triage de defectos en Jira, priorizando los issues por severidad e impacto en el negocio para cumplir las entregas en tiempo y forma.",
+        "Probé el renderizado de contenido, la integridad de datos y el comportamiento de los flujos en aplicaciones basadas en CMS construidas con Contentful, Sanity y Drupal y desplegadas en Netlify.",
         "Colaboré con desarrolladores y PMs en sprints de Agile Scrum para definir criterios de aceptación y validar que los entregables cumplieran con los requerimientos del producto.",
       ],
     },
@@ -54,7 +55,7 @@ export const RESUME_DATA_ES: ResumeData = {
       title: "Practicante de QA y Testing",
       description: [
         "Desarrollé una aplicación en C# que daba soporte a más de 200 usuarios concurrentes que gestionaban más de 800 registros diarios en SQL Server; diseñé el esquema completo de la base de datos y fui el único responsable de QA en pruebas funcionales, de regresión y de validación de datos.",
-        "Validé la exactitud de los datos directamente en SQL Server escribiendo queries para verificar la integridad de los registros, detectar anomalías y confirmar el almacenamiento correcto en todas las operaciones de base de datos.",
+        "Escribí queries en SQL Server para verificar la exactitud de los datos y la integridad de los registros, detectar anomalías y confirmar el almacenamiento correcto en todas las operaciones de base de datos.",
         "Construí dashboards en Power BI para apoyar la gestión del laboratorio, el análisis de productividad y los reportes ejecutivos, convirtiendo datos operativos sin procesar en información accionable para el negocio.",
       ],
     },
@@ -72,7 +73,7 @@ export const RESUME_DATA_ES: ResumeData = {
     { ...EN.skills[9], category: "Metodologías de testing" },
   ],
   languages: [
-    { language: "Inglés", proficiency: "C1 Avanzado" },
+    { language: "Inglés", proficiency: "C1 (Avanzado)" },
     { language: "Español", proficiency: "Nativo" },
     { language: "Italiano", proficiency: "Básico" },
   ],
@@ -85,7 +86,7 @@ export const RESUME_DATA_ES: ResumeData = {
     {
       ...EN.projects[1],
       description:
-        "La página QA Playground tiene mini aplicaciones web que uso para demostrar mis habilidades de QA. Creé un repositorio en GitHub que contiene el código de la automatización de pruebas y del pipeline de CI/CD.",
+        "Suite de automatización de pruebas con Playwright para las mini aplicaciones web de QA Playground, creada para demostrar habilidades de automatización de pruebas, con un pipeline de CI/CD en GitHub Actions y un dashboard de pruebas publicado.",
     },
     {
       ...EN.projects[2],
@@ -95,7 +96,7 @@ export const RESUME_DATA_ES: ResumeData = {
     {
       ...EN.projects[3],
       description:
-        "Aplicación web de CV personal, creada a partir de un fork de una plantilla open source y ampliada con soporte para modo oscuro y una suite de pruebas unitarias. Incluye 96 pruebas unitarias con 73.26% de cobertura de líneas y un mutation score de 75.47% validado con Stryker Mutator.",
+        "Aplicación web de CV personal, creada a partir de un fork de una plantilla open source y ampliada con soporte para modo oscuro y una suite de pruebas unitarias. Incluye más de 100 pruebas unitarias validadas con mutation testing mediante Stryker Mutator.",
     },
   ],
   ui: {

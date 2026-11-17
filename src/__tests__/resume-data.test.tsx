@@ -208,13 +208,13 @@ describe("RESUME_DATA", () => {
     });
 
     it("contains performance and security tools", () => {
-      expect(allSkills).toContain("K6");
+      expect(allSkills).toContain("k6");
       expect(allSkills).toContain("OWASP ZAP");
       expect(allSkills).toContain("Burp Suite");
     });
 
     it("contains accessibility tools", () => {
-      expect(allSkills).toContain("Axe");
+      expect(allSkills).toContain("axe");
       expect(allSkills).toContain("Google Lighthouse");
     });
 

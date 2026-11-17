@@ -1,10 +1,10 @@
 
 
-# Minimalist CV [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FBartoszJarocki%2Fcv) ![CI](https://github.com/Defused15/roberto-castillo-terrazas-cv/actions/workflows/ci.yml/badge.svg)
+# Minimalist CV [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FBartoszJarocki%2Fcv) ![CI](https://github.com/Defused15/roberto-castillo-terrazas-cv/actions/workflows/GithubActions.yml/badge.svg)
 
 > **Live site:** [rcastillo.dev](https://www.rcastillo.dev/)
 
-Simple web app that renders minimalist CV with print-friendly layout.
+A simple web app that renders a minimalist CV with a print-friendly layout.
 
 Built with Next.js and shadcn/ui, deployed on Vercel.
 
@@ -35,10 +35,10 @@ Reports are automatically deployed to GitHub Pages on every push to `main`.
 
 ## Features
 
-- Setup only takes a few minutes [single config file](./src/data/resume-data.tsx)
-- Built using Next.js 14, React, TypeScript, shadcn/ui, TailwindCSS
-- Auto generated layout
-- Responsive for different devices
+- Setup takes only a few minutes with a [single config file](./src/data/resume-data.tsx)
+- Built using Next.js 14, React, TypeScript, shadcn/ui, Tailwind CSS
+- Auto-generated layout
+- Responsive across devices
 - Optimized for Next.js and Vercel
 - Dark mode support
 - Docker support
@@ -106,10 +106,14 @@ Tests cover the main UI components and resume data logic.
 | Test Suite | Description |
 |---|---|
 | `Section.test.tsx` | Verifies section rendering and children |
-| `ProjectCard.test.tsx` | Validates project card props and rendering |
-| `CommandMenu.test.tsx` | Tests command menu behavior and navigation |
+| `Projectcard.test.tsx` | Validates project card props and rendering |
+| `Commandmenu.test.tsx` | Tests command menu behavior and navigation |
 | `Darkmode.test.tsx` | Checks theme toggle functionality |
+| `LanguageProvider.test.tsx` | Tests the language provider and stored language preference |
+| `LanguageToggle.test.tsx` | Checks the EN/ES language toggle |
+| `ResumeContent.test.tsx` | Verifies the CV renders in the selected language |
 | `resume-data.test.tsx` | Validates resume data structure and integrity |
+| `resume-data-i18n.test.tsx` | Checks parity between the English and Spanish resume data |
 
 Run tests:
 
@@ -131,14 +135,7 @@ npm run dashboard
 
 This runs Jest, generates a self-contained HTML report, and opens it at `http://localhost:4000`.
 
-Latest results:
-
-```
-Test Suites: 5 passed, 5 total
-Tests:       88 passed, 88 total
-Time:        ~3.2s
-Line Coverage: 73.63%
-```
+The suite contains 100+ unit tests. Run `npm run coverage` to see the current coverage figures.
 
 ---
 
@@ -158,22 +155,7 @@ An HTML report is generated at:
 reports/mutation/mutation.html
 ```
 
-Latest results:
-
-```
-Mutants tested:  53
-Killed:          39
-Survived:        13
-Timed out:        1
-Mutation Score:  75.47%
-```
-
-| File | Mutation Score |
-|---|---|
-| `command-menu.tsx` | 73.33% |
-| `darkmode.tsx` | 100.00% |
-| `project-card.tsx` | 66.67% |
-| `utils.ts` | 100.00% |
+The report shows the current mutation score and a per-file breakdown.
 
 ---
 
@@ -187,13 +169,13 @@ The dashboard is powered by a separate **Test Hub** repo (`Defused15/test-hub`) 
 
 ### Workflow: `GithubActions.yml`
 
-Located at [`.github/workflows/GithubActions.yml`](.github/workflows/GithubActions.yml), this workflow runs two sequential jobs:
+Located at [`.github/workflows/GithubActions.yml`](.github/workflows/GithubActions.yml), this workflow runs three jobs:
 
 | Job | Trigger | Description |
 |---|---|---|
 | `test` | push to `dev` / `main` / PR to `main` | Runs Jest, pushes the report to the QA Hub, and on `main` also generates the dashboard |
 | `deploy-dashboard` | push to `main` only | Publishes the Jest dashboard to GitHub Pages |
-| `mutation` | after `test` passes | Runs Stryker and uploads the HTML mutation report as an artifact (retained 7 days) |
+| `mutation` | after `test` passes | Runs Stryker and uploads the HTML mutation report as an artifact (retained for 7 days) |
 
 ### Reusable Action: `jest-report-hub`
 
@@ -210,9 +192,9 @@ Located at [`.github/actions/jest-report-hub/action.yml`](.github/actions/jest-r
 **Steps it runs:**
 
 1. **Export Jest JSON report** — runs `npx jest --json` and writes `jest-report/report.json`
-2. **Upload coverage artifact** — uploads the `coverage/` folder as `coverage-report` (retained 7 days)
-3. **Push report to QA Hub** — uses the GitHub Contents API to create or update `projects/<project_name>/latest.json` in the hub repo.
-4. **Trigger Hub Build** — sends a `repository_dispatch` event of type `test-hub-trigger` to the hub repo to force a dashboard rebuild.
+2. **Upload coverage artifact** — uploads the `coverage/` folder as `coverage-report` (retained for 7 days)
+3. **Push report to QA Hub** — uses the GitHub Contents API to create or update `projects/<project_name>/latest.json` in the hub repo
+4. **Trigger hub build** — sends a `repository_dispatch` event of type `test-hub-trigger` to the hub repo to force a dashboard rebuild
 5. **Check test results** — reads the JSON report and fails the job if any tests failed
 
 **Usage example in a workflow:**
