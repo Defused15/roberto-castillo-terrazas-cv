@@ -36,10 +36,19 @@ describe("ResumeContent", () => {
     expect(screen.getByText(RESUME_DATA.summary)).toBeInTheDocument();
   });
 
-  it("lists both phone numbers in human-readable form for print", () => {
+  it("lists both phone numbers in human-readable form on screen and in print", () => {
     renderPage();
-    expect(screen.getByText("+34 610 831 754")).toBeInTheDocument();
-    expect(screen.getByText("+52 871 105 3221")).toBeInTheDocument();
+    for (const [label, href] of [
+      ["+34 610 831 754", "tel:+34610831754"],
+      ["+52 871 105 3221", "tel:+528711053221"],
+    ]) {
+      const matches = screen.getAllByText(label);
+      // one in the visible line under the email (hidden in print), one in the print-only block
+      expect(matches).toHaveLength(2);
+      const onScreen = matches.find((el) => el.closest("p")?.classList.contains("print:hidden"));
+      expect(onScreen).toBeDefined();
+      expect(onScreen!.closest("a")).toHaveAttribute("href", href);
+    }
   });
 
   it("switches to Spanish when the toggle is clicked", async () => {

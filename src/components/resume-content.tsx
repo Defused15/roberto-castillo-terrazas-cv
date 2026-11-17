@@ -67,6 +67,22 @@ export function ResumeContent() {
                 {data.contact.email}
               </p>
             ) : null}
+            {data.contact.phones.length > 0 ? (
+              <p className="text-xs text-muted-foreground print:hidden">
+                {data.contact.phones.map((phone, index) => (
+                  <React.Fragment key={phone}>
+                    {index > 0 ? (
+                      <span aria-hidden="true" className="mx-1.5">
+                        ·
+                      </span>
+                    ) : null}
+                    <a className="hover:underline" href={`tel:${phone}`}>
+                      {formatPhone(phone)}
+                    </a>
+                  </React.Fragment>
+                ))}
+              </p>
+            ) : null}
             <div className="flex gap-x-1 pt-1 text-sm text-muted-foreground print:hidden">
               {data.contact.email ? (
                 <Button
