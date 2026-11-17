@@ -32,7 +32,7 @@ describe("ResumeContent", () => {
     expect(screen.getByText("2026 - Present")).toBeInTheDocument();
     expect(screen.getByText("Spain")).toBeInTheDocument();
     expect(screen.getByText("Mexico")).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: /\+34610831754/ })).toHaveAttribute("href", "tel:+34610831754");
+    expect(screen.getByRole("link", { name: "Call +34 610 831 754" })).toHaveAttribute("href", "tel:+34610831754");
     expect(screen.getByText(RESUME_DATA.summary)).toBeInTheDocument();
   });
 
@@ -86,6 +86,17 @@ describe("ResumeContent", () => {
       return within(row).getByText(/^(Cisco|Coursera)$/).textContent;
     });
     expect(issuers.sort()).toEqual(["Cisco", "Coursera"]);
+  });
+
+  it("gives every link and button an accessible name", () => {
+    renderPage();
+    [...screen.getAllByRole("link"), ...screen.getAllByRole("button")].forEach((el) =>
+      expect(el).toHaveAccessibleName(),
+    );
+    expect(screen.getByRole("link", { name: "Send an email" })).toHaveAttribute("href", `mailto:${RESUME_DATA.contact.email}`);
+    expect(screen.getByRole("link", { name: "GitHub profile" })).toHaveAttribute("href", "https://github.com/Defused15");
+    expect(screen.getByRole("link", { name: "LinkedIn profile" })).toHaveAttribute("href", "https://www.linkedin.com/in/rocastil/");
+    expect(screen.getByRole("region", { name: "Work Experience" })).toBeInTheDocument();
   });
 
   it("renders without duplicate key warnings", () => {

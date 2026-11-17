@@ -267,6 +267,14 @@ export const RESUME_DATA_EN: ResumeData = {
       system: "System",
     },
     languageToggle: "Switch language",
+    contact: {
+      email: "Send an email",
+      call: "Call",
+      profiles: {
+        GitHub: "GitHub profile",
+        LinkedIn: "LinkedIn profile",
+      },
+    },
     notFound: {
       title: "Page not found",
       description: "The page you're looking for doesn't exist.",

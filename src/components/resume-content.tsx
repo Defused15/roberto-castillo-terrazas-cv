@@ -75,8 +75,11 @@ export function ResumeContent() {
                   size="icon"
                   asChild
                 >
-                  <a href={`mailto:${data.contact.email}`}>
-                    <MailIcon className="size-4" />
+                  <a
+                    href={`mailto:${data.contact.email}`}
+                    aria-label={data.ui.contact.email}
+                  >
+                    <MailIcon className="size-4" aria-hidden="true" />
                   </a>
                 </Button>
               ) : null}
@@ -89,9 +92,9 @@ export function ResumeContent() {
                 >
                   <a
                     href={`tel:${data.contact.phones[0]}`}
-                    aria-label={data.contact.phones[0]}
+                    aria-label={`${data.ui.contact.call} ${formatPhone(data.contact.phones[0])}`}
                   >
-                    <PhoneIcon className="size-4" />
+                    <PhoneIcon className="size-4" aria-hidden="true" />
                   </a>
                 </Button>
               ) : null}
@@ -103,8 +106,13 @@ export function ResumeContent() {
                   size="icon"
                   asChild
                 >
-                  <a href={social.url} target="_blank" rel="noopener noreferrer">
-                    <social.icon className="size-4" />
+                  <a
+                    href={social.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={data.ui.contact.profiles[social.name]}
+                  >
+                    <social.icon className="size-4" aria-hidden="true" />
                   </a>
                 </Button>
               ))}
@@ -135,14 +143,12 @@ export function ResumeContent() {
             fallback={data.initials}
           />
         </div>
-        <Section>
-          <h2 className="text-xl font-bold">{data.ui.sections.about}</h2>
+        <Section title={data.ui.sections.about}>
           <p className="text-pretty text-sm text-muted-foreground print:text-[12px]">
             {data.summary}
           </p>
         </Section>
-        <Section>
-          <h2 className="text-xl font-bold">{data.ui.sections.work}</h2>
+        <Section title={data.ui.sections.work}>
           {data.work.map((work) => {
             return (
               <Card key={work.company}>
@@ -192,8 +198,7 @@ export function ResumeContent() {
             );
           })}
         </Section>
-        <Section>
-          <h2 className="text-xl font-bold">{data.ui.sections.education}</h2>
+        <Section title={data.ui.sections.education}>
           {data.education.map((education) => {
             return (
               <Card key={education.school}>
@@ -214,8 +219,7 @@ export function ResumeContent() {
             );
           })}
         </Section>
-        <Section>
-          <h2 className="text-xl font-bold">{data.ui.sections.skills}</h2>
+        <Section title={data.ui.sections.skills}>
           <div className="flex flex-col gap-3">
             {data.skills.map((group, index) => (
               <div key={index}>
@@ -234,8 +238,7 @@ export function ResumeContent() {
           </div>
         </Section>
 
-        <Section>
-          <h2 className="text-xl font-bold">{data.ui.sections.certifications}</h2>
+        <Section title={data.ui.sections.certifications}>
           <div className="flex flex-col gap-2">
             {data.certifications.map((cert) => (
               <div key={`${cert.title}-${cert.issuer}`} className="flex items-center justify-between">
@@ -256,8 +259,7 @@ export function ResumeContent() {
           </div>
         </Section>
 
-        <Section>
-          <h2 className="text-xl font-bold">{data.ui.sections.languages}</h2>
+        <Section title={data.ui.sections.languages}>
           <div className="flex gap-6">
             {data.languages.map((lang, index) => (
               <div key={index} className="flex flex-col">
@@ -268,8 +270,7 @@ export function ResumeContent() {
           </div>
         </Section>
 
-        <Section className="print-force-new-page scroll-mb-16">
-          <h2 className="text-xl font-bold">{data.ui.sections.projects}</h2>
+        <Section className="print-force-new-page scroll-mb-16" title={data.ui.sections.projects}>
           <div className={`-mx-3 grid gap-3 print:grid-cols-3 print:gap-2 ${
             projectCount === 1
               ? "grid-cols-1"

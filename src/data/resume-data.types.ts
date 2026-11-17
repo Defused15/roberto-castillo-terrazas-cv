@@ -3,6 +3,8 @@ import type { StaticImageData } from "next/image";
 
 export type Lang = "en" | "es";
 
+export type SocialNetwork = "GitHub" | "LinkedIn";
+
 export const LANGS: readonly Lang[] = ["en", "es"];
 
 export function isLang(value: unknown): value is Lang {
@@ -31,7 +33,7 @@ export type ResumeData = {
     email: string;
     phones: readonly string[];
     social: readonly {
-      name: string;
+      name: SocialNetwork;
       url: string;
       icon: ComponentType<SVGProps<SVGSVGElement>>;
     }[];
@@ -81,6 +83,13 @@ export type ResumeData = {
     githubRepo: string;
     theme: { toggle: string; light: string; dark: string; system: string };
     languageToggle: string;
+    /** Accessible names for the icon-only contact links. */
+    contact: {
+      email: string;
+      /** Prefix for the phone number, e.g. "Call" → "Call +34 610 831 754". */
+      call: string;
+      profiles: Record<SocialNetwork, string>;
+    };
     notFound: { title: string; description: string; backHome: string };
   };
 };
