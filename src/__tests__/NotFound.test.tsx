@@ -33,6 +33,14 @@ describe("NotFound", () => {
     expect(screen.getByRole("link", { name: "Volver al CV" })).toHaveAttribute("href", "/");
   });
 
+  it("ships reduced-motion CSS for the entrance", () => {
+    const css = require("fs").readFileSync(
+      require("path").join(process.cwd(), "src/app/globals.css"),
+      "utf8",
+    );
+    expect(css).toMatch(/prefers-reduced-motion: reduce\)\s*{\s*\.nf-enter/);
+  });
+
   it("exports a page title", () => {
     expect(metadata.title).toBe("Page not found");
   });
