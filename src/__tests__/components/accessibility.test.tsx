@@ -16,6 +16,12 @@ describe("accessibility", () => {
     expect(await axe(container)).toHaveNoViolations();
   });
 
+  it.each(LANGS)("[%s] the CV page with the phone numbers revealed has no axe violations", async (lang) => {
+    const { container, user } = renderWithProviders(<ResumeContent />, { lang });
+    await user.click(screen.getByRole("button", { name: RESUME_DATA_BY_LANG[lang].ui.contact.showPhones }));
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
   it("the open theme menu has no axe violations", async () => {
     const { user } = renderWithProviders(<ResumeContent />);
     await user.click(screen.getByRole("button", { name: RESUME_DATA_BY_LANG.en.ui.theme.toggle }));
