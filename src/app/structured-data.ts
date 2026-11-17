@@ -34,7 +34,7 @@ export function buildPersonJsonLd(data: ResumeData) {
       "@type": "Person",
       "@id": `${SITE_URL}/#person`,
       name: data.name,
-      jobTitle: currentJob?.title ?? "QA Engineer",
+      jobTitle: data.about,
       description: SITE_DESCRIPTION,
       url: SITE_URL,
       image: `${SITE_URL}${data.avatarUrl}`,
@@ -55,4 +55,9 @@ export function buildPersonJsonLd(data: ResumeData) {
       knowsAbout: KNOWS_ABOUT,
     },
   };
+}
+
+/** Serialises JSON-LD for an inline script tag; escapes `<` so `</script>` cannot break out. */
+export function serializeJsonLd(value: unknown): string {
+  return JSON.stringify(value).replace(/</g, "\\u003c");
 }

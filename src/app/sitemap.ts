@@ -4,8 +4,7 @@ import { SITE_URL } from "./site-config";
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
-      url: `${SITE_URL}/`,
-      lastModified: new Date(),
+      url: SITE_URL,
       changeFrequency: "monthly",
       priority: 1,
     },

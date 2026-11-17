@@ -1,4 +1,4 @@
-import { buildPersonJsonLd } from "@/app/structured-data";
+import { buildPersonJsonLd, serializeJsonLd } from "@/app/structured-data";
 import { RESUME_DATA_EN } from "@/data/resume-data.en";
 
 describe("buildPersonJsonLd", () => {
@@ -24,6 +24,10 @@ describe("buildPersonJsonLd", () => {
     ]);
   });
 
+  it("uses the headline as jobTitle", () => {
+    expect(ld.mainEntity.jobTitle).toBe("QA Engineer | AI-Augmented SDET");
+  });
+
   it("sets worksFor to the current employer", () => {
     expect(ld.mainEntity.worksFor).toMatchObject({ name: "Inetum" });
   });
@@ -39,5 +43,23 @@ describe("buildPersonJsonLd", () => {
   it("includes a self-hosted absolute image and knowsAbout", () => {
     expect(ld.mainEntity.image).toBe("https://www.rcastillo.dev/avatar.jpg");
     expect(ld.mainEntity.knowsAbout.length).toBeGreaterThan(3);
+  });
+});
+
+describe("serializeJsonLd", () => {
+  it("escapes < so </script> cannot terminate the tag", () => {
+    const out = serializeJsonLd({ name: "</script><script>alert(1)</script>" });
+    expect(out).not.toContain("<");
+    expect(out).toContain("\\u003c/script>");
+    expect(JSON.parse(out).name).toBe("</script><script>alert(1)</script>");
+  });
+
+  it("is used by the page", () => {
+    const src = require("fs").readFileSync(
+      require("path").join(process.cwd(), "src/app/page.tsx"),
+      "utf8",
+    );
+    expect(src).toContain("serializeJsonLd(");
+    expect(src).not.toMatch(/replace\(/);
   });
 });

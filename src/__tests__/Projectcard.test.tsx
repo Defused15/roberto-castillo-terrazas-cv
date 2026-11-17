@@ -89,6 +89,11 @@ describe("ProjectCard", () => {
       expect(el).toHaveClass("print:block");
     });
 
+    it("renders no print URL block without link or label", () => {
+      const { container } = render(<ProjectCard {...defaultProps} />);
+      expect(container.querySelector(".print\\:block")).toBeNull();
+    });
+
     it("renders title as plain text when no link is provided", () => {
       render(<ProjectCard {...defaultProps} />);
       expect(screen.queryByRole("link", { name: defaultProps.title })).not.toBeInTheDocument();

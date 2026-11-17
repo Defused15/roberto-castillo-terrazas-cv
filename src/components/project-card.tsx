@@ -64,9 +64,11 @@ export function ProjectCard({
             </div>
           </CardTitle>
 
-          <div className="hidden text-xs underline print:block">
-            {linkLabel || getCleanLink(link)}
-          </div>
+          {linkLabel || link ? (
+            <div className="hidden text-xs underline print:block">
+              {linkLabel || getCleanLink(link)}
+            </div>
+          ) : null}
 
           <CardDescription className="text-xs print:text-[10px]">
             {description}

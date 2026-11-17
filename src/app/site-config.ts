@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { RESUME_DATA } from "@/data/resume-data";
 
 export const SITE_URL = "https://www.rcastillo.dev";
-export const SITE_TITLE = `${RESUME_DATA.name} — QA Engineer & SDET`;
+export const SITE_TITLE = `${RESUME_DATA.name} — ${RESUME_DATA.about}`;
 export const SITE_DESCRIPTION =
   "QA Engineer & SDET in Spain and Mexico with 3+ years across 15+ projects. Playwright, Cypress, API testing (Postman, Pact), CI/CD and AI-augmented QA.";
 

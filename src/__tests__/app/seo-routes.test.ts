@@ -15,7 +15,7 @@ describe("robots", () => {
 
 describe("sitemap", () => {
   it("contains the home URL", () => {
-    expect(sitemap().map((e) => e.url)).toEqual(["https://www.rcastillo.dev/"]);
+    expect(sitemap().map((e) => e.url)).toEqual(["https://www.rcastillo.dev"]);
   });
 });
 
@@ -35,6 +35,11 @@ describe("site metadata", () => {
     expect(siteMetadata.metadataBase?.href).toBe("https://www.rcastillo.dev/");
     expect(siteMetadata.alternates?.canonical).toBe("/");
     expect(siteMetadata.title).toMatchObject({ template: "%s | Roberto Castillo" });
+  });
+  it("uses the visible headline as default title", () => {
+    expect(siteMetadata.title).toMatchObject({
+      default: "Roberto Castillo — QA Engineer | AI-Augmented SDET",
+    });
   });
   it("has a concise description", () => {
     expect((siteMetadata.description ?? "").length).toBeLessThanOrEqual(165);
