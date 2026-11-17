@@ -35,19 +35,21 @@ function sameShape(a: unknown, b: unknown, path = "root"): string[] {
   return [];
 }
 
-// Fields that are intentionally empty in the source data (not text content).
-const ALLOWED_EMPTY_KEYS = new Set(["personalWebsiteUrl", "logo"]);
-
-function emptyStrings(value: unknown, path = "root", key = ""): string[] {
-  if (typeof value === "string") {
-    return value.trim() === "" && !ALLOWED_EMPTY_KEYS.has(key) ? [path] : [];
+// Walks ES and EN together: an ES string may only be empty where EN is empty too.
+function emptyStrings(es: unknown, en: unknown, path = "root"): string[] {
+  if (typeof es === "string") {
+    return es.trim() === "" && !(typeof en === "string" && en.trim() === "")
+      ? [path]
+      : [];
   }
-  if (Array.isArray(value)) {
-    return value.flatMap((item, i) => emptyStrings(item, `${path}[${i}]`, key));
+  if (Array.isArray(es)) {
+    const enArr = Array.isArray(en) ? en : [];
+    return es.flatMap((item, i) => emptyStrings(item, enArr[i], `${path}[${i}]`));
   }
-  if (value && typeof value === "object") {
-    return Object.entries(value as Record<string, unknown>).flatMap(([k, v]) =>
-      emptyStrings(v, `${path}.${k}`, k),
+  if (es && typeof es === "object") {
+    const enObj = (en && typeof en === "object" ? en : {}) as Record<string, unknown>;
+    return Object.entries(es as Record<string, unknown>).flatMap(([k, v]) =>
+      emptyStrings(v, enObj[k], `${path}.${k}`),
     );
   }
   return [];
@@ -84,6 +86,9 @@ describe("resume data i18n", () => {
       expect(ES.name).toBe(EN.name);
       expect(ES.initials).toBe(EN.initials);
       expect(ES.avatarUrl).toBe(EN.avatarUrl);
+      expect(ES.location).toBe(EN.location);
+      expect(ES.locationLink).toBe(EN.locationLink);
+      expect(ES.personalWebsiteUrl).toBe(EN.personalWebsiteUrl);
       expect(ES.contact).toEqual(EN.contact);
       expect(ES.certifications).toEqual(EN.certifications);
 
@@ -126,12 +131,28 @@ describe("resume data i18n", () => {
         });
       });
 
+      ES.work.forEach((w, i) => {
+        w.badges.forEach((b, j) => {
+          expect(b).not.toBe(EN.work[i].badges[j]);
+        });
+      });
+
+      ES.skills.forEach((s, i) => {
+        expect(s.category).not.toBe(EN.skills[i].category);
+      });
+
+      ES.education.forEach((e, i) => {
+        expect(e.degree).not.toBe(EN.education[i].degree);
+      });
+
+      ES.languages.forEach((l, i) => {
+        expect(l.language).not.toBe(EN.languages[i].language);
+        expect(l.proficiency).not.toBe(EN.languages[i].proficiency);
+      });
+
       ES.projects.forEach((p, i) => {
         expect(p.description).not.toBe(EN.projects[i].description);
       });
-
-      expect(ES.ui.sections.about).toBe("Acerca de");
-      expect(ES.ui.present).toBe("Actual");
     });
 
     it("uses the fixed ES UI strings", () => {
@@ -158,7 +179,7 @@ describe("resume data i18n", () => {
     });
 
     it("has no empty strings", () => {
-      expect(emptyStrings(ES)).toEqual([]);
+      expect(emptyStrings(ES, EN)).toEqual([]);
     });
   });
 });
