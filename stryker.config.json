@@ -13,7 +13,6 @@
 
   "mutate": [
     "src/lib/**/*.ts",
-    "src/components/command-menu.tsx",
     "src/components/project-card.tsx",
     "src/components/darkmode.tsx"
   ],

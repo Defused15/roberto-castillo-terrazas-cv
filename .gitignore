@@ -39,3 +39,9 @@ next-env.d.ts
 .idea
 # stryker temp files
 .stryker-tmp
+
+# generated test reports
+/jest-report.json
+/jest-report/
+/reports/*
+!/reports/.gitkeep

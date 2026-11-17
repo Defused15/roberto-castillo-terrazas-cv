@@ -43,6 +43,5 @@ module.exports = {
     "src/**/*.{ts,tsx}",
     "!src/**/*.test.{ts,tsx}",
     "!src/**/__tests__/**",
-    "!src/apollo/**",
   ],
 };
