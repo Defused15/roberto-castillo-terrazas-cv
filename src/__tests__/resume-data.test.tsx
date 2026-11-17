@@ -13,7 +13,7 @@ describe("RESUME_DATA", () => {
     });
 
     it("has a valid avatar URL", () => {
-      expect(RESUME_DATA.avatarUrl).toMatch(/^https?:\/\/.+/);
+      expect(RESUME_DATA.avatarUrl).toMatch(/^(\/|https?:\/\/).+/);
     });
 
     it("all URLs are non-empty strings", () => {

@@ -16,7 +16,7 @@ export const RESUME_DATA_EN: ResumeData = {
   about: "QA Engineer | AI-Augmented SDET",
   summary:
     "QA Engineer with 3+ years of experience contributing to and leading end-to-end quality strategies across 15+ projects in e-commerce, healthcare, logistics and finance within fast-paced IT consulting environments. Proven ability to own the full testing lifecycle, from requirements analysis and shift-left validation to CI/CD integration and defect triage, adapting quickly across industries, teams and tech stacks. Combines strong automation skills (Playwright, Cypress, Jest) and API testing expertise (Postman, Pact) with hands-on experience in enterprise platforms such as Salesforce, HubSpot and Stripe. Uses AI-augmented workflows, including multi-agent systems, custom agent skills and autonomous CI/CD remediation built with Claude Code and MCP, to accelerate delivery and reduce manual intervention. Comfortable working with distributed, international teams and contributing beyond QA when needed.",
-  avatarUrl: "https://github.com/Defused15.png",
+  avatarUrl: "/avatar.jpg",
   personalWebsiteUrl: "",
   contact: {
     email: "rct18130984@gmail.com",
@@ -272,5 +272,10 @@ export const RESUME_DATA_EN: ResumeData = {
       system: "System",
     },
     languageToggle: "Switch language",
+    notFound: {
+      title: "Page not found",
+      description: "The page you're looking for doesn't exist.",
+      backHome: "Back to the CV",
+    },
   },
 };
