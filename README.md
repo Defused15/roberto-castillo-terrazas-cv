@@ -36,7 +36,7 @@ Reports are automatically deployed to GitHub Pages on every push to `main`.
 ## Features
 
 - Setup takes only a few minutes with a [single config file](./src/data/resume-data.tsx)
-- Built using Next.js 14, React, TypeScript, shadcn/ui, Tailwind CSS
+- Built using Next.js 16, React 19, TypeScript, shadcn/ui, Tailwind CSS 3
 - Auto-generated layout
 - Responsive across devices
 - Optimized for Next.js and Vercel
@@ -58,7 +58,7 @@ Reports are automatically deployed to GitHub Pages on every push to `main`.
    cd roberto-castillo-terrazas-cv
    ```
 
-3. Install dependencies:
+3. Install dependencies (Node.js 22 or newer). This also installs the Git hooks: Prettier and ESLint on staged files, and commitlint for [Conventional Commits](https://www.conventionalcommits.org/):
 
    ```bash
    npm install
@@ -70,7 +70,9 @@ Reports are automatically deployed to GitHub Pages on every push to `main`.
    npm run dev
    ```
 
-5. Open the [config file](./src/data/resume-data.tsx) and make changes.
+5. Lint and format with `npm run lint`, `npm run format` and `npm run format:check`.
+
+6. Open the [config file](./src/data/resume-data.tsx) and make changes.
 
 ---
 
