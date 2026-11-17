@@ -11,15 +11,35 @@
 
   "coverageAnalysis": "off",
 
+  "incremental": true,
+  "incrementalFile": "reports/stryker-incremental.json",
+
+  "thresholds": {
+    "high": 80,
+    "low": 60,
+    "break": 50
+  },
+
   "mutate": [
-    "src/lib/**/*.ts",
+    "src/components/resume-content.tsx",
+    "src/components/language-provider.tsx",
+    "src/components/language-toggle.tsx",
     "src/components/project-card.tsx",
-    "src/components/darkmode.tsx"
+    "src/components/darkmode.tsx",
+    "src/app/structured-data.ts",
+    "src/lib/**/*.ts",
+    "!src/**/__tests__/**",
+    "!src/**/*.test.ts",
+    "!src/**/*.test.tsx"
   ],
 
   "ignorePatterns": [
     "reports",
+    "coverage",
+    "jest-report",
+    ".next",
     ".stryker-tmp",
-    "jest.config.ts"
+    ".superpowers",
+    ".playwright-mcp"
   ]
 }
