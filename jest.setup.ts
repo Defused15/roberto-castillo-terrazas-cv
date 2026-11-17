@@ -1,4 +1,5 @@
 import "@testing-library/jest-dom"
+import { format } from "util"
 
 class ResizeObserver {
   observe() {}
@@ -6,26 +7,33 @@ class ResizeObserver {
   disconnect() {}
 }
 
-global.ResizeObserver = ResizeObserver as any
+global.ResizeObserver = ResizeObserver as unknown as typeof global.ResizeObserver
 
 window.HTMLElement.prototype.scrollIntoView = jest.fn()
 window.scrollTo = jest.fn()
 
-// Silence React act() warnings from Radix UI components
-const originalError = console.error
+/**
+ * Any console.error / console.warn fails the test that produced it: React key,
+ * act() and hydration warnings are bugs, not noise. A test that expects a
+ * warning must spy on the console itself and assert on it.
+ */
+let consoleOutput: string[] = []
 
-beforeAll(() => {
-  jest.spyOn(console, "error").mockImplementation((...args) => {
-    if (
-      typeof args[0] === "string" &&
-      (
-        args[0].includes("not wrapped in act") ||
-        args[0].includes("inside a test was not wrapped in act")
-      )
-    ) {
-      return
-    }
+beforeEach(() => {
+  consoleOutput = []
+  localStorage.clear()
+  document.documentElement.lang = "en"
+  for (const method of ["error", "warn"] as const) {
+    jest.spyOn(console, method).mockImplementation((...args: unknown[]) => {
+      consoleOutput.push(`console.${method}: ${format(...args)}`)
+    })
+  }
+})
 
-    originalError(...args)
-  })
+afterEach(() => {
+  const output = consoleOutput
+  consoleOutput = []
+  if (output.length > 0) {
+    throw new Error(`Unexpected console output:\n${output.join("\n")}`)
+  }
 })

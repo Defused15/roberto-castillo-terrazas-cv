@@ -4,6 +4,9 @@ module.exports = {
 
   setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
 
+  // Spies and mocks never leak between tests.
+  restoreMocks: true,
+
   testMatch: [
     "**/__tests__/**/*.ts",
     "**/__tests__/**/*.tsx",
