@@ -12,6 +12,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { ModeToggle } from "@/components/darkmode";
 import { LanguageToggle } from "@/components/language-toggle";
 import { useLanguage } from "@/components/language-provider";
+import { CopyText } from "@/components/copy-text";
 import { PhoneIconButton, PhoneLine, usePhoneReveal } from "@/components/contact-phones";
 import { formatPhone } from "@/lib/format-phone";
 import { track } from "@/lib/analytics";
@@ -71,8 +72,13 @@ export function ResumeView({ data }: { data: ResumeData }) {
               ))}
             </p>
             {data.contact.email ? (
-              <p className="text-xs text-muted-foreground">
-                {data.contact.email}
+              <p aria-live="polite" className="flex text-xs leading-4 text-muted-foreground">
+                <CopyText
+                  text={data.contact.email}
+                  label={`${data.ui.contact.copyEmail} ${data.contact.email}`}
+                  copiedLabel={data.ui.contact.copied}
+                  onCopy={() => track("contact_email_copy")}
+                />
               </p>
             ) : null}
             {data.contact.phones.length > 0 ? <PhoneLine state={phones} ui={data.ui.contact} /> : null}

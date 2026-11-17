@@ -132,6 +132,7 @@ export const RESUME_DATA_ES: ResumeData = {
       showPhones: "Ver teléfonos",
       phoneButton: "Mostrar teléfonos",
       copy: "Copiar",
+      copyEmail: "Copiar correo",
       copied: "Copiado ✓",
       profiles: {
         GitHub: "Perfil de GitHub",

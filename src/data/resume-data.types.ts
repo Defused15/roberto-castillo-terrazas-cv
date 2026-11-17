@@ -96,7 +96,9 @@ export type ResumeData = {
       phoneButton: string;
       /** Prefix for a revealed number's copy button, e.g. "Copy" → "Copy +34 610 831 754". */
       copy: string;
-      /** Feedback shown after a number is copied. */
+      /** Prefix for the email line's copy button, e.g. "Copy email address" → "Copy email address me@x.dev". */
+      copyEmail: string;
+      /** Feedback shown after a number or the email is copied. */
       copied: string;
       profiles: Record<SocialNetwork, string>;
     };

@@ -4,17 +4,15 @@ import React from "react";
 import { flushSync } from "react-dom";
 import { PhoneIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { CopyText } from "@/components/copy-text";
 import { decodePhone, type EncodedPhone } from "@/lib/decode-phone";
 import { formatPhone, phoneCountry } from "@/lib/format-phone";
 import { track } from "@/lib/analytics";
-import { cn } from "@/lib/utils";
 import type { ResumeData } from "@/data/resume-data";
 
 type ContactUi = ResumeData["ui"]["contact"];
 
 const PHONE_LINE_ID = "contact-phones";
-/** How long "Copied ✓" stays up after a copy. */
-const COPIED_MS = 1600;
 
 /** Reports a phone copy or call by country only; the number itself is never sent. */
 export function trackPhone(e164: string) {
@@ -131,48 +129,18 @@ function PhoneNumber({
   index: number;
   buttonRef?: React.Ref<HTMLButtonElement>;
 }) {
-  const [copiedAt, setCopiedAt] = React.useState<number | null>(null);
   const formatted = formatPhone(e164);
-
-  React.useEffect(() => {
-    if (copiedAt === null) return;
-    const timer = setTimeout(() => setCopiedAt(null), COPIED_MS);
-    return () => clearTimeout(timer);
-  }, [copiedAt]);
-
-  async function copy() {
-    trackPhone(e164);
-    try {
-      await navigator.clipboard.writeText(e164);
-      setCopiedAt(Date.now());
-    } catch {
-      // Clipboard unavailable (insecure context or denied): the number stays selectable.
-    }
-  }
-
-  const copied = copiedAt !== null;
   return (
     <span className="phone-reveal inline-flex items-center gap-1 whitespace-nowrap" style={stagger(index)}>
-      <button
-        ref={buttonRef}
-        type="button"
-        onClick={copy}
-        aria-label={`${ui.copy} ${formatted}`}
-        className="grid justify-items-start rounded-sm tabular-nums underline-offset-2 transition-colors hover:text-foreground hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-      >
-        {/* Both labels share one grid cell, so the button keeps the wider width. */}
-        <span className={cn("phone-swap [grid-area:1/1]", copied && "opacity-0")}>{formatted}</span>
-        <span
-          aria-hidden="true"
-          className={cn(
-            "phone-swap select-none [grid-area:1/1] text-foreground",
-            !copied && "invisible translate-y-0.5 opacity-0",
-          )}
-        >
-          {ui.copied}
-        </span>
-      </button>
-      <span className="sr-only">{copied ? ui.copied : ""}</span>
+      <CopyText
+        text={formatted}
+        value={e164}
+        label={`${ui.copy} ${formatted}`}
+        copiedLabel={ui.copied}
+        onCopy={() => trackPhone(e164)}
+        buttonRef={buttonRef}
+        className="tabular-nums"
+      />
       <a
         href={`tel:${e164}`}
         onClick={() => trackPhone(e164)}

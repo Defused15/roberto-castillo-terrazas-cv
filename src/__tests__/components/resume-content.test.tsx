@@ -74,7 +74,7 @@ describe.each(LANGS)("ResumeContent [%s]", (lang) => {
   });
 
   it("shows the email, and hides the phone numbers behind a labelled button", () => {
-    expect(screen.getByText(d.contact.email, { selector: "p" })).toBeInTheDocument();
+    expect(screen.getByText(d.contact.email, { selector: "p span" })).toBeInTheDocument();
     phonesOf(d).forEach((p) => expect(screen.queryByText(formatPhone(p))).not.toBeInTheDocument());
     expect(document.body.innerHTML).not.toContain("tel:");
     expect(screen.getByRole("button", { name: d.ui.contact.showPhones })).toHaveAttribute(
@@ -122,6 +122,21 @@ describe.each(LANGS)("ResumeContent [%s]", (lang) => {
 
     expect(await navigator.clipboard.readText()).toBe(second);
     expect(within(copyButton(d, second).parentElement!).getByText(d.ui.contact.copied, { selector: ".sr-only" })).toBeInTheDocument();
+  });
+
+  it("copies the email from its text line and confirms it in place", async () => {
+    const user = userEvent.setup();
+    const button = screen.getByRole("button", { name: `${d.ui.contact.copyEmail} ${d.contact.email}` });
+    const line = button.closest("p")!;
+    expect(line).toHaveAttribute("aria-live", "polite");
+    expect(within(line).queryByText(d.ui.contact.copied, { selector: ".sr-only" })).not.toBeInTheDocument();
+
+    await user.click(button);
+
+    expect(await navigator.clipboard.readText()).toBe(d.contact.email);
+    expect(within(line).getByText(d.ui.contact.copied, { selector: ".sr-only" })).toBeInTheDocument();
+    // The address stays in the button, under the confirmation, so the width does not change.
+    expect(within(button).getByText(d.contact.email)).toBeInTheDocument();
   });
 
   it("offers labelled quick-contact links for email, phone and social profiles", () => {
@@ -228,6 +243,13 @@ describe.each(LANGS)("ResumeContent › analytics events [%s]", (lang) => {
     expect(await click(() => screen.getByRole("link", { name: d.ui.contact.email }))).toEqual([
       ["contact_email", undefined],
     ]);
+  });
+
+  it("sends contact_email_copy from the email text line", async () => {
+    const events = await click(() =>
+      screen.getByRole("button", { name: `${d.ui.contact.copyEmail} ${d.contact.email}` }),
+    );
+    expect(events).toEqual([["contact_email_copy", undefined]]);
   });
 
   it("sends contact_phone_reveal once, whichever button reveals the numbers", async () => {
