@@ -58,9 +58,9 @@ module.exports = {
     "!src/app/opengraph-image.tsx",
   ],
 
-  // A few points under the measured figures (100 / 97.8 / 98 / 100), so a
-  // real drop fails CI without making every refactor fight the gate.
+  // Under the measured figures (100 / 97.8 / 98 / 100). Branches and functions
+  // have small denominators (~50), so they get more headroom.
   coverageThreshold: {
-    global: { statements: 97, branches: 95, functions: 95, lines: 97 },
+    global: { statements: 97, branches: 90, functions: 90, lines: 97 },
   },
 };

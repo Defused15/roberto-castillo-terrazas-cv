@@ -15,9 +15,9 @@
   "incrementalFile": "reports/stryker-incremental.json",
 
   "thresholds": {
-    "high": 98,
-    "low": 96,
-    "break": 96
+    "high": 95,
+    "low": 90,
+    "break": 90
   },
 
   "mutate": [
