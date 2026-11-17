@@ -237,6 +237,20 @@ describe.each(LANGS)("ResumeContent › analytics events [%s]", (lang) => {
   });
 });
 
+describe.each(LANGS)("ResumeContent › footer [%s]", (lang) => {
+  it("ends the page with a footer linking to the privacy notice", () => {
+    const d = RESUME_DATA_BY_LANG[lang];
+    renderWithProviders(<ResumeContent />, { lang });
+    const footer = screen.getByRole("contentinfo");
+    expect(within(footer).getByRole("link", { name: d.ui.privacy.link })).toHaveAttribute(
+      "href",
+      "/privacy",
+    );
+    // A sibling of <main>, so it is the page's contentinfo landmark.
+    expect(screen.getByRole("main").nextElementSibling).toBe(footer);
+  });
+});
+
 describe("ResumeContent › language switch", () => {
   it("switches the whole page to Spanish and back", async () => {
     const ES = RESUME_DATA_BY_LANG.es;
