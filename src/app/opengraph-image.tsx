@@ -5,7 +5,6 @@ import { RESUME_DATA } from "@/data/resume-data";
 import { OG_HIGHLIGHTS, OG_VALUE_LINE, SITE_DOMAIN } from "@/app/site-config";
 
 const LOCATIONS = RESUME_DATA.locations.map((l) => l.name).join(" · ");
-
 const SKILLS = OG_HIGHLIGHTS.join(", ");
 const PLACES = RESUME_DATA.locations.map((l) => l.name).join(" and ");
 
@@ -33,6 +32,62 @@ function loadAvatar(): string {
   return `data:image/jpeg;base64,${file.toString("base64")}`;
 }
 
+const AV = 184; // avatar diameter
+const ZOOM = 1.12; // crop in so the face fills the circle
+const FACE = { x: 235 / 460, y: 200 / 460 }; // face centre in the source photo
+
+function Avatar({ src }: { src: string }) {
+  const img = Math.round(AV * ZOOM);
+  const left = Math.round(AV / 2 - FACE.x * img);
+  const top = Math.round(AV / 2 - FACE.y * img);
+  const photo = (
+    <div
+      style={{
+        display: "flex",
+        width: AV,
+        height: AV,
+        borderRadius: 999,
+        overflow: "hidden",
+        position: "relative",
+      }}
+    >
+      {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text */}
+      <img
+        src={src}
+        width={img}
+        height={img}
+        style={{ position: "absolute", left, top }}
+      />
+      {/* hairline inner border */}
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: AV,
+          height: AV,
+          display: "flex",
+          borderRadius: 999,
+          border: "1px solid rgba(255,255,255,0.14)",
+        }}
+      />
+    </div>
+  );
+
+  // No hard ring: a hairline edge plus a soft emerald halo give depth without weight.
+  return (
+    <div
+      style={{
+        display: "flex",
+        borderRadius: 999,
+        boxShadow: "0 0 70px 6px rgba(52,211,153,0.22)",
+      }}
+    >
+      {photo}
+    </div>
+  );
+}
+
 export default function OpengraphImage() {
   const avatar = loadAvatar();
   return new ImageResponse(
@@ -47,7 +102,6 @@ export default function OpengraphImage() {
           color: C.fg,
         }}
       >
-        {/* fine grid */}
         <div
           style={{
             position: "absolute",
@@ -74,17 +128,17 @@ export default function OpengraphImage() {
             backgroundSize: "40px 40px",
           }}
         />
-        {/* glow behind avatar */}
+        {/* soft glow centred on the avatar */}
         <div
           style={{
             position: "absolute",
-            top: -120,
-            right: -160,
+            top: -10,
+            left: 650,
             width: 760,
-            height: 760,
+            height: 560,
             display: "flex",
             backgroundImage:
-              "radial-gradient(circle, rgba(52,211,153,0.20) 0%, rgba(52,211,153,0.06) 40%, transparent 68%)",
+              "radial-gradient(closest-side, rgba(52,211,153,0.13), transparent)",
           }}
         />
         <div
@@ -96,42 +150,43 @@ export default function OpengraphImage() {
             height: "100%",
             display: "flex",
             flexDirection: "column",
-            justifyContent: "space-between",
-            padding: "56px 72px 60px",
+            justifyContent: "center",
+            padding: "0 80px",
           }}
         >
           <div
             style={{
               display: "flex",
               alignItems: "center",
+              fontSize: 26,
+              color: C.muted,
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                width: 10,
+                height: 10,
+                borderRadius: 999,
+                background: C.accent,
+                marginRight: 14,
+              }}
+            />
+            {SITE_DOMAIN}
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
               justifyContent: "space-between",
+              marginTop: 26,
             }}
           >
             <div style={{ display: "flex", flexDirection: "column" }}>
               <div
                 style={{
                   display: "flex",
-                  alignItems: "center",
-                  fontSize: 26,
-                  color: C.muted,
-                }}
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    width: 12,
-                    height: 12,
-                    borderRadius: 999,
-                    background: C.accent,
-                    marginRight: 14,
-                  }}
-                />
-                {SITE_DOMAIN}
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  marginTop: 30,
                   fontSize: 96,
                   lineHeight: 1,
                   letterSpacing: "-0.03em",
@@ -142,7 +197,7 @@ export default function OpengraphImage() {
               <div
                 style={{
                   display: "flex",
-                  marginTop: 24,
+                  marginTop: 22,
                   fontSize: 42,
                   color: C.accent,
                 }}
@@ -152,7 +207,7 @@ export default function OpengraphImage() {
               <div
                 style={{
                   display: "flex",
-                  marginTop: 18,
+                  marginTop: 16,
                   fontSize: 26,
                   color: C.soft,
                 }}
@@ -160,25 +215,7 @@ export default function OpengraphImage() {
                 {OG_VALUE_LINE}
               </div>
             </div>
-            <div
-              style={{
-                display: "flex",
-                width: 272,
-                height: 272,
-                flexShrink: 0,
-                borderRadius: 999,
-                padding: 5,
-                backgroundImage: `linear-gradient(140deg, ${C.accent}, rgba(52,211,153,0.12))`,
-              }}
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text */}
-              <img
-                src={avatar}
-                width={262}
-                height={262}
-                style={{ borderRadius: 999, border: `6px solid ${C.bg}` }}
-              />
-            </div>
+            <Avatar src={avatar} />
           </div>
 
           <div
@@ -186,8 +223,9 @@ export default function OpengraphImage() {
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
-              paddingTop: 30,
-              borderTop: "1px solid rgba(255,255,255,0.10)",
+              marginTop: 52,
+              paddingTop: 32,
+              borderTop: "1px solid rgba(255,255,255,0.09)",
             }}
           >
             <div style={{ display: "flex" }}>
@@ -201,8 +239,8 @@ export default function OpengraphImage() {
                     padding: "10px 24px",
                     marginRight: 14,
                     borderRadius: 999,
-                    background: "rgba(255,255,255,0.06)",
-                    border: "1.5px solid rgba(255,255,255,0.18)",
+                    background: "rgba(255,255,255,0.05)",
+                    border: "1px solid rgba(255,255,255,0.16)",
                   }}
                 >
                   {h}

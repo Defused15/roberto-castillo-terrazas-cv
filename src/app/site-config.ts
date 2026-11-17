@@ -4,14 +4,14 @@ import { RESUME_DATA } from "@/data/resume-data";
 export const SITE_URL = "https://www.rcastillo.dev";
 export const SITE_TITLE = `${RESUME_DATA.name} — ${RESUME_DATA.about}`;
 export const SITE_DESCRIPTION =
-  "QA Engineer & SDET in Spain and Mexico with 3+ years across 15+ projects. Playwright, Cypress, API testing (Postman, Pact), CI/CD and AI-augmented QA.";
+  "QA Engineer & SDET in Spain and Mexico with 4+ years across 15+ projects. Playwright, Cypress, API testing (Postman, Pact), CI/CD and AI-augmented QA.";
 
 /** Short domain shown on the social share card. */
 export const SITE_DOMAIN = "rcastillo.dev";
 
-/** One factual value line for the social share card, taken from the summary. */
+/** One factual value line for the social share card (current industry first). */
 export const OG_VALUE_LINE =
-  "3+ years · 15+ projects · e-commerce, healthcare, finance";
+  "4+ years · 15+ projects · insurance, healthcare, e-commerce";
 
 /** Curated skill chips for the social share card (4 fit on one row). */
 export const OG_HIGHLIGHTS = [

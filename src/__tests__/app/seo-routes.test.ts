@@ -7,7 +7,7 @@ import {
   siteMetadata,
   siteViewport,
 } from "@/app/site-config";
-import { RESUME_DATA } from "@/data/resume-data";
+import { RESUME_DATA_BY_LANG } from "@/data/resume-data";
 
 describe("robots", () => {
   it("allows all, disallows /graphql and points to the sitemap", () => {
@@ -75,16 +75,15 @@ describe("open graph card copy", () => {
     expect(OG_HIGHLIGHTS.some((h) => /\bAI\b/.test(h))).toBe(true);
     expect(OG_HIGHLIGHTS.some((h) => /\bAPI\b/.test(h))).toBe(true);
   });
-  it("only states facts backed by the resume summary", () => {
-    for (const fact of [
-      "3+ years",
-      "15+ projects",
-      "e-commerce",
-      "healthcare",
-      "finance",
-    ]) {
-      expect(OG_VALUE_LINE).toContain(fact);
-      expect(RESUME_DATA.summary).toContain(fact);
-    }
+  it("leads the value line with experience, projects and the current industry", () => {
+    expect(OG_VALUE_LINE).toBe(
+      "4+ years · 15+ projects · insurance, healthcare, e-commerce",
+    );
+  });
+  it("states the same years of experience as the summaries and description", () => {
+    expect(OG_VALUE_LINE.startsWith("4+ years")).toBe(true);
+    expect(RESUME_DATA_BY_LANG.en.summary).toContain("4+ years");
+    expect(RESUME_DATA_BY_LANG.es.summary).toContain("más de 4 años");
+    expect(siteMetadata.description).toContain("4+ years");
   });
 });
