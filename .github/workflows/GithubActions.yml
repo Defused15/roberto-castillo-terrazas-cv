@@ -147,9 +147,9 @@ jobs:
             nextjs-v1-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-
 
       # Lint is enforced by the required "Unit Tests" job, so it is not repeated here.
-      # next build still type-checks and compiles every route.
+      # next build (Next 16 no longer lints) still type-checks and compiles every route.
       - name: Next.js build
-        run: npx next build --no-lint
+        run: npx next build
 
   mutation:
     name: Mutation Testing # informative, not a required check

@@ -44,8 +44,10 @@ describe("web manifest", () => {
 
 describe("site metadata", () => {
   it("resolves relative URLs against the canonical https host", () => {
-    expect(siteMetadata.metadataBase?.origin).toBe(origin);
-    expect(siteMetadata.metadataBase?.protocol).toBe("https:");
+    // Next 16 types metadataBase as string | URL; normalise before checking.
+    const base = new URL(String(siteMetadata.metadataBase));
+    expect(base.origin).toBe(origin);
+    expect(base.protocol).toBe("https:");
     expect(siteMetadata.alternates?.canonical).toBe("/");
   });
 
