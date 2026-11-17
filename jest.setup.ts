@@ -1,5 +1,8 @@
 import "@testing-library/jest-dom"
 import { format } from "util"
+import { toHaveNoViolations } from "jest-axe"
+
+expect.extend(toHaveNoViolations)
 
 const hasDom = typeof window !== "undefined"
 
