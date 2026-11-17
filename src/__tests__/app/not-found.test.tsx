@@ -4,6 +4,7 @@ import { screen } from "@testing-library/react";
 import NotFound, { metadata } from "@/app/not-found";
 import { LanguageToggle } from "@/components/language-toggle";
 import { RESUME_DATA_BY_LANG, LANGS } from "@/data/resume-data";
+import { languageToggleName } from "@/test/labels";
 import { renderWithProviders } from "@/test/render";
 
 describe("NotFound page", () => {
@@ -22,15 +23,15 @@ describe("NotFound page", () => {
         <NotFound />
       </>,
     );
-    await user.click(screen.getByRole("button", { name: "Switch language: ES" }));
+    await user.click(screen.getByRole("button", { name: languageToggleName("en") }));
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
       RESUME_DATA_BY_LANG.es.ui.notFound.title,
     );
   });
 
-  it("is titled and kept out of search indexes", () => {
+  it("is titled like its heading and kept out of search indexes", () => {
     expect(metadata).toMatchObject({
-      title: "Page not found",
+      title: RESUME_DATA_BY_LANG.en.ui.notFound.title,
       robots: { index: false, follow: false },
     });
   });

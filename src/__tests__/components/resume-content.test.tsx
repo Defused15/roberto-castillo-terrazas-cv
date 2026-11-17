@@ -2,6 +2,7 @@ import { render, screen, within } from "@testing-library/react";
 import { ResumeContent, ResumeView } from "@/components/resume-content";
 import { LANGS, RESUME_DATA_BY_LANG, type ResumeData } from "@/data/resume-data";
 import { formatPhone } from "@/lib/format-phone";
+import { languageToggleName } from "@/test/labels";
 import { renderWithProviders } from "@/test/render";
 
 /**
@@ -156,7 +157,7 @@ describe("ResumeContent › language switch", () => {
     const ES = RESUME_DATA_BY_LANG.es;
     const { user } = renderWithProviders(<ResumeContent />);
 
-    await user.click(screen.getByRole("button", { name: "Switch language: ES" }));
+    await user.click(screen.getByRole("button", { name: languageToggleName("en") }));
 
     expect(regionNames()).toEqual(Object.values(ES.ui.sections));
     expect(screen.getByText(ES.summary)).toBeInTheDocument();
@@ -165,7 +166,7 @@ describe("ResumeContent › language switch", () => {
     expect(document.documentElement).toHaveAttribute("lang", "es");
     expect(localStorage.getItem("cv-lang")).toBe("es");
 
-    await user.click(screen.getByRole("button", { name: "Cambiar idioma: EN" }));
+    await user.click(screen.getByRole("button", { name: languageToggleName("es") }));
 
     expect(regionNames()).toEqual(Object.values(EN.ui.sections));
     expect(document.documentElement).toHaveAttribute("lang", "en");
@@ -184,14 +185,15 @@ describe("ResumeContent › print", () => {
     renderWithProviders(<ResumeContent />);
   });
 
-  it.each([
-    ["theme toggle", "button", EN.ui.theme.toggle],
-    ["language toggle", "button", "Switch language: ES"],
-    ["email link", "link", EN.ui.contact.email],
-    ["call link", "link", `${EN.ui.contact.call} ${formatPhone(EN.contact.phones[0])}`],
-    ...EN.contact.social.map((s) => [`${s.name} link`, "link", EN.ui.contact.profiles[s.name]]),
-  ])("hides the %s on paper", (_control, role, name) => {
-    expect(screenOnly(screen.getByRole(role, { name }))).toBe(true);
+  it("hides every interactive control on paper", () => {
+    const controls = [
+      screen.getByRole("button", { name: EN.ui.theme.toggle }),
+      screen.getByRole("button", { name: languageToggleName("en") }),
+      screen.getByRole("link", { name: EN.ui.contact.email }),
+      screen.getByRole("link", { name: `${EN.ui.contact.call} ${formatPhone(EN.contact.phones[0])}` }),
+      ...EN.contact.social.map((s) => screen.getByRole("link", { name: EN.ui.contact.profiles[s.name] })),
+    ];
+    expect(controls.filter((el) => !screenOnly(el))).toEqual([]);
   });
 
   it("prints the email address as text", () => {

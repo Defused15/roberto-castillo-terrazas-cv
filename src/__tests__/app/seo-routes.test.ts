@@ -5,7 +5,7 @@ import robots from "@/app/robots";
 import sitemap from "@/app/sitemap";
 import manifest from "@/app/manifest";
 import { SITE_TITLE, SITE_URL, siteMetadata, siteViewport } from "@/app/site-config";
-import { RESUME_DATA } from "@/data/resume-data";
+import { LANGS, RESUME_DATA } from "@/data/resume-data";
 
 const inPublic = (url: string) => existsSync(join(process.cwd(), "public", url));
 const origin = new URL(SITE_URL).origin;
@@ -59,14 +59,14 @@ describe("site metadata", () => {
     expect(siteMetadata.robots).toMatchObject({ index: true, follow: true });
   });
 
-  it("shares as a profile with a large card in EN and the Spanish locales", () => {
-    expect(siteMetadata.openGraph).toMatchObject({
-      type: "profile",
-      title: SITE_TITLE,
-      locale: "en_US",
-      alternateLocale: ["es_MX", "es_ES"],
-    });
+  it("shares as a profile card with an Open Graph locale for every site language", () => {
+    expect(siteMetadata.openGraph).toMatchObject({ type: "profile", title: SITE_TITLE });
     expect(siteMetadata.twitter).toMatchObject({ card: "summary_large_image", title: SITE_TITLE });
+    const og = siteMetadata.openGraph as { locale?: string; alternateLocale?: string[] };
+    const locales = [og.locale, ...(og.alternateLocale ?? [])];
+    expect(locales.filter((l) => !/^[a-z]{2}_[A-Z]{2}$/.test(l ?? ""))).toEqual([]);
+    expect(og.locale?.slice(0, 2)).toBe(LANGS[0]);
+    expect(LANGS.filter((lang) => !locales.some((l) => l?.startsWith(`${lang}_`)))).toEqual([]);
   });
 
   it("only references icons that exist in /public", () => {
@@ -75,8 +75,10 @@ describe("site metadata", () => {
     expect(icons.map((i) => i.url).filter((url) => !inPublic(url))).toEqual([]);
   });
 
-  it("sets a theme colour for both light and dark schemes", () => {
-    const media = [siteViewport.themeColor].flat().map((c) => (typeof c === "object" ? c?.media : c));
-    expect(media).toEqual(["(prefers-color-scheme: light)", "(prefers-color-scheme: dark)"]);
+  it("sets a valid theme colour for both light and dark schemes", () => {
+    const colors = [siteViewport.themeColor].flat() as { media?: string; color: string }[];
+    const schemes = colors.map((c) => c.media?.match(/prefers-color-scheme: (\w+)/)?.[1]);
+    expect(schemes.sort()).toEqual(["dark", "light"]);
+    expect(colors.filter((c) => !/^#[0-9a-f]{6}$/i.test(c.color))).toEqual([]);
   });
 });

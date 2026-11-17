@@ -1,13 +1,16 @@
-import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { screen } from "@testing-library/react";
 import { useTheme } from "next-themes";
 import { ModeToggle } from "@/components/darkmode";
 import { LanguageToggle } from "@/components/language-toggle";
+import { RESUME_DATA_BY_LANG } from "@/data/resume-data";
+import { languageToggleName } from "@/test/labels";
 import { renderWithProviders } from "@/test/render";
 
 // next-themes is a third-party boundary: what is verified here is our wiring to it.
 jest.mock("next-themes", () => ({ useTheme: jest.fn() }));
 
+const EN = RESUME_DATA_BY_LANG.en.ui.theme;
+const ES = RESUME_DATA_BY_LANG.es.ui.theme;
 const setTheme = jest.fn();
 
 beforeEach(() => {
@@ -16,17 +19,17 @@ beforeEach(() => {
 });
 
 async function openMenu() {
-  const user = userEvent.setup();
-  render(<ModeToggle />);
-  await user.click(screen.getByRole("button", { name: "Toggle theme" }));
+  const { user } = renderWithProviders(<ModeToggle />);
+  await user.click(screen.getByRole("button", { name: EN.toggle }));
   return user;
 }
 
+const optionLabels = async () => (await screen.findAllByRole("menuitem")).map((o) => o.textContent);
+
 describe("ModeToggle", () => {
-  it("lists the three theme options in order", async () => {
+  it("lists the light, dark and system options in order", async () => {
     await openMenu();
-    const options = await screen.findAllByRole("menuitem");
-    expect(options.map((o) => o.textContent)).toEqual(["Light", "Dark", "System"]);
+    expect(await optionLabels()).toEqual([EN.light, EN.dark, EN.system]);
   });
 
   it("does not change the theme just by opening the menu", async () => {
@@ -36,9 +39,9 @@ describe("ModeToggle", () => {
   });
 
   it.each([
-    ["Light", "light"],
-    ["Dark", "dark"],
-    ["System", "system"],
+    [EN.light, "light"],
+    [EN.dark, "dark"],
+    [EN.system, "system"],
   ])("selecting %s applies the %p theme", async (label, theme) => {
     const user = await openMenu();
     await user.click(await screen.findByRole("menuitem", { name: label }));
@@ -46,17 +49,15 @@ describe("ModeToggle", () => {
     expect(setTheme).toHaveBeenCalledWith(theme);
   });
 
-  it("shows Spanish labels after switching language", async () => {
+  it("follows a language switch", async () => {
     const { user } = renderWithProviders(
       <>
         <ModeToggle />
         <LanguageToggle />
       </>,
     );
-    await user.click(screen.getByRole("button", { name: "Switch language: ES" }));
-    await user.click(screen.getByRole("button", { name: "Cambiar tema" }));
-
-    const options = await screen.findAllByRole("menuitem");
-    expect(options.map((o) => o.textContent)).toEqual(["Claro", "Oscuro", "Sistema"]);
+    await user.click(screen.getByRole("button", { name: languageToggleName("en") }));
+    await user.click(screen.getByRole("button", { name: ES.toggle }));
+    expect(await optionLabels()).toEqual([ES.light, ES.dark, ES.system]);
   });
 });
