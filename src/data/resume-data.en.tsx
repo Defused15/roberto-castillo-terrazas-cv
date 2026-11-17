@@ -280,5 +280,59 @@ export const RESUME_DATA_EN: ResumeData = {
       description: "The page you're looking for doesn't exist.",
       backHome: "Back to the CV",
     },
+    privacy: {
+      link: "Privacy",
+      title: "Privacy",
+      intro:
+        "This is my personal CV site. Here is what I measure when you visit it, and what I don't.",
+      sections: [
+        {
+          title: "Who I am",
+          paragraphs: [
+            "I'm Roberto Castillo and this site is mine. If you have a question about your data, write to me at {email}.",
+          ],
+        },
+        {
+          title: "What I measure",
+          paragraphs: [
+            "I use PostHog, hosted in its EU cloud in Frankfurt, to count page visits and how long they last, including visits to pages that don't exist. PostHog also records your IP address, which I use to see roughly which country and city a visit comes from. I don't use it to identify you, and it's kept only as long as PostHog keeps the analytics data. Sessions are not recorded and no visitor profiles are built.",
+            "I also count which links and buttons on the CV get used (contact details, profiles, projects, certificates, language, theme and printing) to see which parts are useful. For phone clicks I only keep the country of the number. I don't record what you type, where you move the mouse, or anything you do outside this site.",
+            "Vercel Web Analytics also counts page visits, in aggregate and without cookies. Vercel hosts the site, so its servers keep standard logs (IP address and browser type) to deliver the pages.",
+          ],
+        },
+        {
+          title: "No cookies",
+          paragraphs: [
+            "This site sets no cookies. Your browser only keeps the language and theme you pick (in localStorage), so they stay the same next time. You can clear them in your browser settings.",
+          ],
+        },
+        {
+          title: "Why",
+          paragraphs: [
+            "I want to know how many people look at my CV and which parts they use. The legal basis is my legitimate interest (GDPR art. 6(1)(f)).",
+          ],
+        },
+        {
+          title: "Where the data lives",
+          paragraphs: [
+            "PostHog keeps the data in the EU. Vercel is a US company, so its part relies on the EU–US Data Privacy Framework and standard contractual clauses.",
+          ],
+        },
+        {
+          title: "How long",
+          paragraphs: [
+            "Apart from the IP address, the data has no names, cookies or contact details. It is kept no longer than each provider's standard retention period, and I don't sell it or pass it to anyone else.",
+          ],
+        },
+        {
+          title: "Your rights",
+          paragraphs: [
+            "You can ask me to show, correct or delete your data, or to stop or limit its use. Just write to {email}. You can also complain to the Spanish Data Protection Agency (AEPD) at {aepd}.",
+          ],
+        },
+      ],
+      lastUpdatedLabel: "Last updated",
+      lastUpdated: "November 17, 2026",
+    },
   },
 };

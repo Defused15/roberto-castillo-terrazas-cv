@@ -2,7 +2,7 @@ import { RESUME_DATA_EN } from "./resume-data.en";
 import { RESUME_DATA_ES } from "./resume-data.es";
 import type { Lang, ResumeData } from "./resume-data.types";
 
-export type { Lang, ResumeData, Project } from "./resume-data.types";
+export type { Lang, ResumeData, Project, SocialNetwork } from "./resume-data.types";
 export { LANGS, isLang } from "./resume-data.types";
 
 export const RESUME_DATA = RESUME_DATA_EN;

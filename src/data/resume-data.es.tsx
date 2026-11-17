@@ -139,5 +139,59 @@ export const RESUME_DATA_ES: ResumeData = {
       description: "La página que buscas no existe.",
       backHome: "Volver al CV",
     },
+    privacy: {
+      link: "Privacidad",
+      title: "Privacidad",
+      intro:
+        "Esta es la web de mi CV. Aquí te cuento qué mido cuando la visitas y qué no.",
+      sections: [
+        {
+          title: "Quién soy",
+          paragraphs: [
+            "Soy Roberto Castillo y esta web es mía. Si tienes cualquier duda sobre tus datos, escríbeme a {email}.",
+          ],
+        },
+        {
+          title: "Qué mido",
+          paragraphs: [
+            "Uso PostHog, en su nube europea de Frankfurt, para contar las visitas y cuánto duran, también las que llegan a páginas que no existen. PostHog también registra tu dirección IP, que uso para saber aproximadamente desde qué país y ciudad llega una visita. No la uso para identificarte y solo se conserva mientras PostHog guarda los datos de analítica. No se graban sesiones ni se crean perfiles de visitantes.",
+            "También cuento qué enlaces y botones del CV se usan (contacto, perfiles, proyectos, certificados, idioma, tema e impresión) para saber qué partes resultan útiles. En los clics al teléfono solo guardo el país del número. No registro lo que escribes, por dónde mueves el ratón ni lo que haces fuera de este sitio.",
+            "Vercel Web Analytics también cuenta visitas, de forma agregada y sin cookies. Vercel aloja la web, así que sus servidores guardan los registros habituales (IP y tipo de navegador) para poder servir las páginas.",
+          ],
+        },
+        {
+          title: "Sin cookies",
+          paragraphs: [
+            "Esta web no usa cookies. Tu navegador solo recuerda el idioma y el tema que eliges (en localStorage), para que sigan igual la próxima vez. Puedes borrarlos desde los ajustes del navegador.",
+          ],
+        },
+        {
+          title: "Para qué",
+          paragraphs: [
+            "Quiero saber cuánta gente ve mi CV y qué partes usa. La base legal es mi interés legítimo (art. 6.1.f del RGPD).",
+          ],
+        },
+        {
+          title: "Dónde están los datos",
+          paragraphs: [
+            "PostHog guarda los datos en la UE. Vercel es una empresa de EE. UU., así que su parte se apoya en el Marco de Privacidad de Datos UE-EE. UU. y en cláusulas contractuales tipo.",
+          ],
+        },
+        {
+          title: "Cuánto tiempo",
+          paragraphs: [
+            "Aparte de la dirección IP, los datos no incluyen nombres, cookies ni datos de contacto. Se guardan como mucho el plazo estándar de cada proveedor, y no los vendo ni se los paso a nadie.",
+          ],
+        },
+        {
+          title: "Tus derechos",
+          paragraphs: [
+            "Puedes pedirme que te enseñe, corrija o borre tus datos, o que deje de usarlos o limite su uso. Solo tienes que escribirme a {email}. También puedes reclamar ante la Agencia Española de Protección de Datos (AEPD) en {aepd}.",
+          ],
+        },
+      ],
+      lastUpdatedLabel: "Última actualización",
+      lastUpdated: "17 de noviembre de 2026",
+    },
   },
 };

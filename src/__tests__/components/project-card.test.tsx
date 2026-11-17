@@ -1,5 +1,7 @@
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { ProjectCard } from "@/components/project-card";
+import { capturedEvents, preventNavigation, startAnalytics } from "@/test/analytics";
 
 const props = {
   title: "QA Playground Test Automation",
@@ -80,5 +82,28 @@ describe("ProjectCard", () => {
         new RegExp(`^${props.title}${props.description}$`),
       );
     });
+  });
+});
+
+describe("ProjectCard › analytics", () => {
+  let allowNavigation: () => void;
+  beforeEach(async () => {
+    await startAnalytics();
+    allowNavigation = preventNavigation();
+  });
+  afterEach(() => allowNavigation());
+
+  it("sends project_link with the title when the website is opened", async () => {
+    const user = userEvent.setup();
+    render(<ProjectCard {...props} link={site} githubLink={repo} />);
+    await user.click(screen.getByRole("link", { name: props.title }));
+    expect(capturedEvents()).toEqual([["project_link", { project: props.title }]]);
+  });
+
+  it("sends project_repo with the title when the repository is opened", async () => {
+    const user = userEvent.setup();
+    render(<ProjectCard {...props} link={site} githubLink={repo} githubLabel="Repo" />);
+    await user.click(screen.getByRole("link", { name: "Repo" }));
+    expect(capturedEvents()).toEqual([["project_repo", { project: props.title }]]);
   });
 });
