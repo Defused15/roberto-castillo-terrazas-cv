@@ -1,0 +1,33 @@
+name: "Setup Node and dependencies"
+description: "Installs Node.js and restores node_modules from cache; runs npm ci only on a cache miss."
+
+inputs:
+  node-version:
+    description: "Node.js version spec"
+    required: false
+    default: "22"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Node.js
+      id: node
+      uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+      with:
+        node-version: ${{ inputs.node-version }}
+        # node_modules is cached below; restoring ~/.npm as well would only add time on a hit
+        package-manager-cache: false
+
+    # Key on OS, arch, exact Node version (native addons such as @swc/core) and the lockfile hash.
+    # npm ci deletes node_modules first, so a miss always produces a clean install.
+    - name: Restore node_modules
+      id: nm-cache
+      uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+      with:
+        path: node_modules
+        key: node-modules-v1-${{ runner.os }}-${{ runner.arch }}-node${{ steps.node.outputs.node-version }}-${{ hashFiles('package-lock.json') }}
+
+    - name: Install dependencies (cache miss only)
+      if: steps.nm-cache.outputs.cache-hit != 'true'
+      shell: bash
+      run: npm ci --no-audit --no-fund

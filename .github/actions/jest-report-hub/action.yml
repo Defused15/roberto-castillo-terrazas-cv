@@ -1,9 +1,9 @@
-name: "Jest Report"
-description: "Generates Jest JSON + coverage report, uploads coverage artifact, and pushes report to QA Hub. Does not assert test results — check separately."
+name: "Push Jest report to QA Hub"
+description: "Pushes an existing Jest JSON report to the QA Test Hub (retrying on sha conflicts) and dispatches a hub rebuild. Does not run Jest."
 
 inputs:
   hub_token:
-    description: "GitHub token with write access to the hub repo"
+    description: "Token with Contents read/write on the hub repo"
     required: true
   hub_repo:
     description: "Hub repo in format owner/repo"
@@ -11,56 +11,19 @@ inputs:
   project_name:
     description: "Project name used as folder key in the hub"
     required: true
+  report_path:
+    description: "Path to the Jest JSON report"
+    required: false
+    default: "jest-report/report.json"
 
 runs:
   using: "composite"
   steps:
-    - name: Export Jest JSON report
-      shell: bash
-      run: mkdir -p jest-report && npx jest --coverage --json --outputFile=jest-report/report.json
-      continue-on-error: true
-
-    - name: Upload coverage report
-      uses: actions/upload-artifact@v4
-      with:
-        name: coverage-report
-        path: coverage/
-        retention-days: 7
-
     - name: Push report to QA Hub
-      if: always()
       shell: bash
       env:
-        HUB_TOKEN: ${{ inputs.hub_token }}
+        GH_TOKEN: ${{ inputs.hub_token }}
         HUB_REPO: ${{ inputs.hub_repo }}
         PROJECT_NAME: ${{ inputs.project_name }}
-      run: |
-        if [ ! -f ./jest-report/report.json ]; then
-          echo "❌ report.json not found, cannot upload to hub"
-          exit 1
-        fi
-
-        SHA=$(GH_TOKEN=$HUB_TOKEN gh api "repos/$HUB_REPO/contents/projects/$PROJECT_NAME/latest.json" \
-          --jq '.sha' 2>/dev/null || echo "")
-
-        # Build the request body in a file: the base64 report is too large to pass as a CLI argument
-        base64 -w0 ./jest-report/report.json > "$RUNNER_TEMP/report.b64"
-        jq -n \
-          --arg message "chore: update $PROJECT_NAME report" \
-          --rawfile content "$RUNNER_TEMP/report.b64" \
-          --arg sha "$SHA" \
-          '{message: $message, content: $content} + (if $sha == "" then {} else {sha: $sha} end)' \
-          > "$RUNNER_TEMP/hub-payload.json"
-
-        GH_TOKEN=$HUB_TOKEN gh api "repos/$HUB_REPO/contents/projects/$PROJECT_NAME/latest.json" \
-          --method PUT \
-          --input "$RUNNER_TEMP/hub-payload.json"
-
-        echo "✅ Report pushed to hub"
-
-        # Trigger the Test Hub explicitly to refresh the dashboard
-        echo "🚀 Triggering build in $HUB_REPO..."
-        GH_TOKEN=$HUB_TOKEN gh api repos/$HUB_REPO/dispatches \
-          --method POST \
-          -f event_type="test-hub-trigger" \
-          -f client_payload[project]=$PROJECT_NAME
+        REPORT_PATH: ${{ inputs.report_path }}
+      run: bash "$GITHUB_ACTION_PATH/push-report.sh"
