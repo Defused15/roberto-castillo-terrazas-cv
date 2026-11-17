@@ -22,7 +22,7 @@ describe("RESUME_DATA", () => {
         ...RESUME_DATA.contact.social.map(s => s.url),
         ...RESUME_DATA.work.map(w => w.link),
         ...RESUME_DATA.certifications.map(c => c.url),
-        ...RESUME_DATA.projects.map(p => p.link?.href).filter(Boolean)
+        ...RESUME_DATA.projects.map(p => p.link?.href).filter((u): u is string => Boolean(u))
       ];
       urls.forEach(url => {
         expect(typeof url).toBe("string");
@@ -208,13 +208,13 @@ describe("RESUME_DATA", () => {
     });
 
     it("contains performance and security tools", () => {
-      expect(allSkills).toContain("K6");
+      expect(allSkills).toContain("k6");
       expect(allSkills).toContain("OWASP ZAP");
       expect(allSkills).toContain("Burp Suite");
     });
 
     it("contains accessibility tools", () => {
-      expect(allSkills).toContain("Axe");
+      expect(allSkills).toContain("axe");
       expect(allSkills).toContain("Google Lighthouse");
     });
 
