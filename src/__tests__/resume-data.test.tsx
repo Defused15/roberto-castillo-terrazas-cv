@@ -22,7 +22,7 @@ describe("RESUME_DATA", () => {
         ...RESUME_DATA.contact.social.map(s => s.url),
         ...RESUME_DATA.work.map(w => w.link),
         ...RESUME_DATA.certifications.map(c => c.url),
-        ...RESUME_DATA.projects.map(p => p.link?.href).filter(Boolean)
+        ...RESUME_DATA.projects.map(p => p.link?.href).filter((u): u is string => Boolean(u))
       ];
       urls.forEach(url => {
         expect(typeof url).toBe("string");
