@@ -14,6 +14,10 @@ import { useLanguage } from "@/components/language-provider";
 import { formatPhone } from "@/lib/format-phone";
 import type { ResumeData } from "@/data/resume-data";
 
+/** Responsive columns for the project grid: never more columns than projects. */
+// Stryker disable next-line all: layout-only classes, verified visually
+const projectGridCols = (n: number) => (n === 1 ? "grid-cols-1" : n === 2 ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3");
+
 /** The CV in the language currently selected in LanguageProvider. */
 export function ResumeContent() {
   const { data } = useLanguage();
@@ -22,7 +26,6 @@ export function ResumeContent() {
 
 /** Pure rendering of one language's resume data. */
 export function ResumeView({ data }: { data: ResumeData }) {
-  const projectCount = data.projects.length;
 
   return (
     <main className="container bg-white dark:bg-gray-900 relative mx-auto scroll-my-12 overflow-auto p-4 print:p-12 md:p-16">
@@ -281,15 +284,8 @@ export function ResumeView({ data }: { data: ResumeData }) {
 
         <Section className="print-force-new-page scroll-mb-16" title={data.ui.sections.projects}>
           <div
-            // Stryker disable all: responsive grid columns are layout, verified visually
-            className={`-mx-3 grid gap-3 print:grid-cols-3 print:gap-2 ${
-            projectCount === 1
-              ? "grid-cols-1"
-              : projectCount === 2
-              ? "grid-cols-1 md:grid-cols-2"
-              : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
-            }`}
-            // Stryker restore all
+            // Stryker disable next-line StringLiteral: layout-only classes
+            className={`-mx-3 grid gap-3 print:grid-cols-3 print:gap-2 ${projectGridCols(data.projects.length)}`}
           >
             {data.projects.map((project) => {
               return (
