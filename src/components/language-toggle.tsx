@@ -14,10 +14,10 @@ export function LanguageToggle() {
       variant="outline"
       size="icon"
       className="size-8 print:hidden"
-      aria-label={data.ui.languageToggle}
+      aria-label={`${data.ui.languageToggle}: ${next.toUpperCase()}`}
       onClick={() => setLang(next)}
     >
-      {next.toUpperCase()}
+      <span lang={next}>{next.toUpperCase()}</span>
     </Button>
   )
 }

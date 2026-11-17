@@ -20,19 +20,19 @@ function setup() {
 describe("LanguageToggle", () => {
   it("shows the target language with an accessible name", () => {
     setup();
-    const button = screen.getByRole("button", { name: "Switch language" });
+    const button = screen.getByRole("button", { name: "Switch language: ES" });
     expect(button).toHaveTextContent("ES");
   });
 
   it("toggles between languages", async () => {
     setup();
     await userEvent.click(screen.getByRole("button"));
-    const button = screen.getByRole("button", { name: "Cambiar idioma" });
+    const button = screen.getByRole("button", { name: "Cambiar idioma: EN" });
     expect(button).toHaveTextContent("EN");
     expect(document.documentElement.lang).toBe("es");
 
     await userEvent.click(button);
-    expect(screen.getByRole("button", { name: "Switch language" })).toHaveTextContent("ES");
+    expect(screen.getByRole("button", { name: "Switch language: ES" })).toHaveTextContent("ES");
   });
 
   it("is hidden when printing", () => {

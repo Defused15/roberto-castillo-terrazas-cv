@@ -16,7 +16,7 @@ export function ResumeContent() {
   const projectCount = data.projects.length as number;
 
   return (
-    <main className={`container bg-white dark:bg-gray-900 relative mx-auto scroll-my-12 overflow-auto p-4 print:p-12 md:p-16`}>
+    <main className="container bg-white dark:bg-gray-900 relative mx-auto scroll-my-12 overflow-auto p-4 print:p-12 md:p-16">
       <section className="mx-auto bg-white dark:bg-gray-900 w-full max-w-2xl space-y-8 bg-white print:space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex-1 space-y-1.5">
@@ -185,8 +185,8 @@ export function ResumeContent() {
         <Section>
           <h2 className="text-xl font-bold">{data.ui.sections.skills}</h2>
           <div className="flex flex-col gap-3">
-            {data.skills.map((group) => (
-              <div key={group.category}>
+            {data.skills.map((group, index) => (
+              <div key={index}>
                 <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1">
                   {group.category}
                 </p>
@@ -206,7 +206,7 @@ export function ResumeContent() {
           <h2 className="text-xl font-bold">{data.ui.sections.certifications}</h2>
           <div className="flex flex-col gap-2">
             {data.certifications.map((cert) => (
-              <div key={cert.title} className="flex items-center justify-between">
+              <div key={`${cert.title}-${cert.issuer}`} className="flex items-center justify-between">
                 <div className="flex flex-col">
                   <a
                     href={cert.url}
@@ -227,8 +227,8 @@ export function ResumeContent() {
         <Section>
           <h2 className="text-xl font-bold">{data.ui.sections.languages}</h2>
           <div className="flex gap-6">
-            {data.languages.map((lang) => (
-              <div key={lang.language} className="flex flex-col">
+            {data.languages.map((lang, index) => (
+              <div key={index} className="flex flex-col">
                 <span className="text-sm font-medium">{lang.language}</span>
                 <span className="text-xs text-muted-foreground">{lang.proficiency}</span>
               </div>

@@ -3,6 +3,8 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ModeToggle } from "@/components/darkmode";
 import { useTheme } from "next-themes";
+import { LanguageProvider } from "@/components/language-provider";
+import { LanguageToggle } from "@/components/language-toggle";
 
 // Mock next-themes
 jest.mock("next-themes", () => ({
@@ -122,5 +124,32 @@ describe("ModeToggle", () => {
       expect(await screen.findAllByText(/dark/i)).toHaveLength(1);
       expect(await screen.findAllByText(/system/i)).toHaveLength(1);
     });
+  });
+});
+
+describe("ModeToggle in Spanish", () => {
+  beforeEach(() => {
+    window.localStorage.clear();
+    mockUseTheme.mockReturnValue({ theme: "light", setTheme: jest.fn() });
+  });
+
+  it("shows Spanish labels after switching language", async () => {
+    render(
+      <LanguageProvider>
+        <ModeToggle />
+        <LanguageToggle />
+      </LanguageProvider>
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: "Switch language: ES" })
+    );
+
+    const themeButton = screen.getByRole("button", { name: "Cambiar tema" });
+    await userEvent.click(themeButton);
+
+    expect(await screen.findByText("Claro")).toBeInTheDocument();
+    expect(screen.getByText("Oscuro")).toBeInTheDocument();
+    expect(screen.getByText("Sistema")).toBeInTheDocument();
   });
 });

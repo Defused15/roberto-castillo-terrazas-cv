@@ -19,6 +19,7 @@ interface LanguageContextValue {
 
 const LanguageContext = React.createContext<LanguageContextValue>({
   lang: "en",
+  // Intentional no-op so components also work without a provider.
   setLang: () => {},
   data: RESUME_DATA_BY_LANG.en,
 })
@@ -26,6 +27,8 @@ const LanguageContext = React.createContext<LanguageContextValue>({
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [lang, setLangState] = React.useState<Lang>("en")
 
+  // Applied in an effect on purpose: server render and first client render stay English
+  // (hydration safety), so do not use a lazy useState initializer to read storage.
   React.useEffect(() => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY)
