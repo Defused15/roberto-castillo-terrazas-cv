@@ -104,7 +104,7 @@ export const RESUME_DATA_ES: ResumeData = {
     {
       ...EN.projects[3],
       description:
-        "Aplicación web de CV personal, creada a partir de un fork de una plantilla open source y ampliada con soporte para modo oscuro y una suite de pruebas unitarias. Incluye más de 100 pruebas unitarias validadas con mutation testing mediante Stryker Mutator.",
+        "Aplicación web de CV personal, creada a partir de un fork de una plantilla open source y ampliada con soporte para modo oscuro y una suite de pruebas unitarias. Incluye más de 140 pruebas unitarias en las versiones EN y ES, validadas con mutation testing mediante Stryker Mutator.",
     },
   ],
   ui: {
@@ -126,6 +126,14 @@ export const RESUME_DATA_ES: ResumeData = {
       system: "Sistema",
     },
     languageToggle: "Cambiar idioma",
+    contact: {
+      email: "Enviar un correo",
+      call: "Llamar al",
+      profiles: {
+        GitHub: "Perfil de GitHub",
+        LinkedIn: "Perfil de LinkedIn",
+      },
+    },
     notFound: {
       title: "Página no encontrada",
       description: "La página que buscas no existe.",

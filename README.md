@@ -78,18 +78,25 @@ Reports are automatically deployed to GitHub Pages on every push to `main`.
 
 ### Unit Tests — Jest + React Testing Library
 
-Tests cover the main UI components and resume data logic.
+Tests assert behavior and content invariants. Expected text comes from the resume data and UI strings instead of hard-coded copy, so adding a job or a project never needs a test change, while dropping one from the page fails a test. The only markup checked is the print contract (which content is screen-only or print-only), because jsdom cannot render print media.
 
 | Test Suite | Description |
 |---|---|
-| `Section.test.tsx` | Verifies section rendering and children |
-| `Projectcard.test.tsx` | Validates project card props and rendering |
-| `Darkmode.test.tsx` | Checks theme toggle functionality |
-| `LanguageProvider.test.tsx` | Tests the language provider and stored language preference |
-| `LanguageToggle.test.tsx` | Checks the EN/ES language toggle |
-| `ResumeContent.test.tsx` | Verifies the CV renders in the selected language |
-| `resume-data.test.tsx` | Validates resume data structure and integrity |
-| `resume-data-i18n.test.tsx` | Checks parity between the English and Spanish resume data |
+| `data/resume-data.contract.test.ts` | Content contract for EN and ES: https-only URLs, no empty strings, E.164 phones, unique React keys, valid newest-first dates, EN/ES parity (same shape, text translated, everything else identical) |
+| `components/resume-content.test.tsx` | Every section and item rendered from the data in both languages, header contact details, end-to-end language switch, print-only vs screen-only content, edge cases |
+| `components/accessibility.test.tsx` | `jest-axe` checks on the CV (EN and ES), the theme menu and the 404 page |
+| `components/language-provider.test.tsx` | Stored language, StrictMode, blocked storage and the SSR/hydration guard |
+| `components/language-toggle.test.tsx` | EN/ES toggle and its accessible name |
+| `components/darkmode.test.tsx` | Theme menu options and wiring to `next-themes` |
+| `components/project-card.test.tsx` | Project links, repository label and the printed address |
+| `components/ui/section.test.tsx` | Sections are region landmarks named by their heading |
+| `components/profile-avatar.test.tsx` | Avatar image and initials fallback |
+| `app/not-found.test.tsx` | 404 page in both languages, noindex, reduced motion |
+| `lib/format-phone.test.ts` | Phone number formatting per country |
+| `app/seo-routes.test.ts` | robots.txt, sitemap, web manifest and site metadata |
+| `app/structured-data.test.ts`, `app/page.test.tsx` | JSON-LD Person schema, privacy and safe serialization |
+
+All suites live in `src/__tests__/`, mirroring `src/`. Shared helpers are in `src/test/` (`renderWithProviders`, a preconfigured `axe`). Any `console.error` or `console.warn` during a test fails it.
 
 Run tests:
 
@@ -111,7 +118,7 @@ npm run dashboard
 
 This runs Jest, generates a self-contained HTML report, and opens it at `http://localhost:4000`.
 
-The suite contains 100+ unit tests. Run `npm run coverage` to see the current coverage figures.
+The suite contains 140+ unit tests across the EN and ES versions: data-driven cases run once per language. Coverage is measured on the app's own components, resume data, SEO route modules and helpers; CI fails if it drops below the thresholds in `jest.config.js`. Run `npm run coverage` to see the current figures.
 
 ---
 
@@ -131,7 +138,7 @@ An HTML report is generated at:
 reports/mutation/mutation.html
 ```
 
-The report shows the current mutation score and a per-file breakdown.
+The report shows the current mutation score and a per-file breakdown. Stryker mutates the logic-bearing modules: the resume page, the language provider and toggle, the theme toggle, the project card, the section and avatar components, the JSON-LD builder, the language helpers and `src/lib`. The current score is 98.7%, and the run fails below the `break` threshold in `stryker.config.json`.
 
 ---
 

@@ -18,8 +18,7 @@ interface Props {
   githubLabel?: string;
 }
 
-function getCleanLink(link?: string) {
-  if (!link) return "";
+function getCleanLink(link: string) {
   return link.replace(/^https?:\/\//i, "").replace(/^www\./i, "");
 }
 
@@ -32,6 +31,8 @@ export function ProjectCard({
   githubLink,
   githubLabel = "GitHub repo",
 }: Props) {
+  const printedLink = linkLabel || (link && getCleanLink(link));
+
   return (
     <Card className="flex flex-col overflow-hidden border border-muted p-3">
       <CardHeader>
@@ -64,9 +65,9 @@ export function ProjectCard({
             </div>
           </CardTitle>
 
-          {linkLabel || link ? (
+          {printedLink ? (
             <div className="hidden text-xs underline print:block">
-              {linkLabel || getCleanLink(link)}
+              {printedLink}
             </div>
           ) : null}
 

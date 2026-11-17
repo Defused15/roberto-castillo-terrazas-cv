@@ -17,7 +17,6 @@ export const RESUME_DATA_EN: ResumeData = {
   summary:
     "QA Engineer with 3+ years of experience contributing to and leading end-to-end quality strategies across 15+ projects in e-commerce, healthcare, logistics and finance within fast-paced IT consulting environments. Proven ability to own the full testing lifecycle, from requirements analysis and shift-left validation to CI/CD integration and defect triage, adapting quickly across industries, teams and tech stacks. Combines strong automation skills (Playwright, Cypress, Jest) and API testing expertise (Postman, Pact) with hands-on experience in enterprise platforms such as Salesforce, HubSpot and Stripe. Uses AI-augmented workflows, including multi-agent systems, custom agent skills and autonomous CI/CD remediation built with Claude Code and MCP, to accelerate delivery and reduce manual intervention. Comfortable working with distributed, international teams and contributing beyond QA when needed.",
   avatarUrl: "/avatar.jpg",
-  personalWebsiteUrl: "",
   contact: {
     email: "rct18130984@gmail.com",
     phones: ["+34610831754", "+528711053221"],
@@ -209,7 +208,6 @@ export const RESUME_DATA_EN: ResumeData = {
       techStack: ["JavaScript", "GitHub Actions", "GitHub Pages"],
       description:
         "Unified test dashboard that collects JSON reports from multiple QA repos via the GitHub API and rebuilds live on every push. Supports Playwright and Jest reporters.",
-      logo: "",
       link: {
         label: "qa.rcastillo.dev",
         href: "https://qa.rcastillo.dev",
@@ -221,7 +219,6 @@ export const RESUME_DATA_EN: ResumeData = {
       techStack: ["Playwright", "GitHub Actions"],
       description:
         "Playwright test automation suite for the QA Playground mini web apps, built to showcase test automation skills, with a GitHub Actions CI/CD pipeline and a published test dashboard.",
-      logo: "",
       link: {
         label: "defused15.github.io",
         href: "https://defused15.github.io/QA-Playground-Tests/dashboard.html",
@@ -233,7 +230,6 @@ export const RESUME_DATA_EN: ResumeData = {
       techStack: ["Postman", "Newman", "GitHub Actions"],
       description:
         "Postman collection for the Restful Booker API covering happy-path, negative, edge-case, security and performance scenarios. Automated via Newman and GitHub Actions with HTML reports published to GitHub Pages.",
-      logo: "",
       link: {
         label: "defused15.github.io",
         href: "https://defused15.github.io/restful-booker-api-testing/",
@@ -244,8 +240,7 @@ export const RESUME_DATA_EN: ResumeData = {
       title: "Minimalist CV",
       techStack: ["Next.js", "TypeScript", "Tailwind CSS", "Jest", "Stryker", "GitHub Actions"],
       description:
-        "Personal CV web app forked from an open-source template and extended with dark mode support and a unit testing suite. Features 100+ unit tests validated with Stryker Mutator mutation testing.",
-      logo: "",
+        "Personal CV web app forked from an open-source template and extended with dark mode support and a unit testing suite. Features 140+ unit tests across the EN and ES versions, validated with Stryker Mutator mutation testing.",
       link: {
         label: "rcastillo.dev",
         href: "https://rcastillo.dev",
@@ -272,6 +267,14 @@ export const RESUME_DATA_EN: ResumeData = {
       system: "System",
     },
     languageToggle: "Switch language",
+    contact: {
+      email: "Send an email",
+      call: "Call",
+      profiles: {
+        GitHub: "GitHub profile",
+        LinkedIn: "LinkedIn profile",
+      },
+    },
     notFound: {
       title: "Page not found",
       description: "The page you're looking for doesn't exist.",

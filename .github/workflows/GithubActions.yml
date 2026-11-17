@@ -170,14 +170,21 @@ jobs:
       - name: Prepare report directory
         run: mkdir -p reports
 
-      # Unique key per run, restored by prefix: the newest state in reach (own ref, then main) wins.
+      # Incremental mode detects changed source files but not changed tests or config, which can
+      # reuse stale "no coverage" results. Scope the cache to a hash of the tests and the test/mutation
+      # config: any change there misses the cache and forces a full run.
+      - name: Compute Stryker cache scope
+        id: stryker-scope
+        run: echo "hash=${{ hashFiles('src/**/*.test.ts', 'src/**/*.test.tsx', 'src/test/**', 'src/__tests__/**', 'stryker.config.json', 'jest.config.js', 'jest.setup.ts') }}" >> "$GITHUB_OUTPUT"
+
+      # Unique key per run, restored by prefix within the same test scope: the newest state in reach wins.
       - name: Restore Stryker incremental state
         uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: reports/stryker-incremental.json
-          key: stryker-incremental-v1-${{ github.run_id }}-${{ github.run_attempt }}
+          key: stryker-incremental-v2-${{ steps.stryker-scope.outputs.hash }}-${{ github.run_id }}-${{ github.run_attempt }}
           restore-keys: |
-            stryker-incremental-v1-
+            stryker-incremental-v2-${{ steps.stryker-scope.outputs.hash }}-
 
       # incremental is on in stryker.config.json. Incremental mode does not notice dependency
       # changes, so the weekly schedule (or a manual full_mutation run) re-tests every mutant.
@@ -196,7 +203,7 @@ jobs:
         uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: reports/stryker-incremental.json
-          key: stryker-incremental-v1-${{ github.run_id }}-${{ github.run_attempt }}
+          key: stryker-incremental-v2-${{ steps.stryker-scope.outputs.hash }}-${{ github.run_id }}-${{ github.run_attempt }}
 
       - name: Upload mutation report
         if: ${{ !cancelled() }}
