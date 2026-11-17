@@ -14,6 +14,7 @@ import { LanguageToggle } from "@/components/language-toggle";
 import { useLanguage } from "@/components/language-provider";
 import { CopyText } from "@/components/copy-text";
 import { WorkBullets } from "@/components/work-bullets";
+import { IssuerIcon } from "@/components/icons/issuers";
 import { PhoneLine, usePhoneReveal } from "@/components/contact-phones";
 import { formatPhone } from "@/lib/format-phone";
 import { track } from "@/lib/analytics";
@@ -258,7 +259,10 @@ export function ResumeView({ data }: { data: ResumeData }) {
                       </span>
                     ) : null}
                   </div>
-                  <span className="text-xs text-muted-foreground">{cert.issuer}</span>
+                  <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
+                    <IssuerIcon issuer={cert.issuer} className="size-3.5 shrink-0" />
+                    {cert.issuer}
+                  </span>
                 </div>
                 <span className="text-sm tabular-nums text-gray-500 shrink-0 ml-4">{cert.year}</span>
               </div>

@@ -4,6 +4,7 @@ import { join } from "path";
 import { buildPersonJsonLd } from "@/app/structured-data";
 import { RESUME_DATA_BY_LANG, isLang, type ResumeData } from "@/data/resume-data";
 import { decodePhone } from "@/lib/decode-phone";
+import { isKnownIssuer } from "@/components/icons/issuers";
 import { phoneCountry } from "@/lib/format-phone";
 
 /**
@@ -79,6 +80,10 @@ describe.each([
   it("states for every certification whether its link verifies it, with at least one verified", () => {
     expect(d.certifications.some((c) => c.verified)).toBe(true);
     expect(d.certifications.filter((c) => typeof c.verified !== "boolean")).toEqual([]);
+  });
+
+  it("has a logo for every certification issuer", () => {
+    expect(d.certifications.map((c) => c.issuer).filter((i) => !isKnownIssuer(i))).toEqual([]);
   });
 
   it("has a usable email address for mailto: links", () => {

@@ -8,6 +8,7 @@ import { capturedEvents, posthogMock, preventNavigation, startAnalytics } from "
 import { languageToggleName } from "@/test/labels";
 import { renderWithProviders } from "@/test/render";
 import { VISIBLE_BULLETS } from "@/components/work-bullets";
+import { isKnownIssuer } from "@/components/icons/issuers";
 
 /**
  * Behavior tests for the CV page. Expectations are derived from the data, so
@@ -192,6 +193,27 @@ describe.each(LANGS)("ResumeContent [%s]", (lang) => {
     });
     expect(labelled).toEqual(d.certifications.filter((c) => c.verified));
     expect(within(certs).getAllByText(d.ui.verified)).toHaveLength(labelled.length);
+  });
+
+  it("shows each mapped issuer's logo, decorative, next to the issuer name", () => {
+    const certs = region(d.ui.sections.certifications);
+    const issuerLines = within(certs).getAllByText((_, el) =>
+      el?.tagName === "SPAN" && d.certifications.some((c) => el.textContent === c.issuer),
+    );
+    expect(issuerLines.map((el) => el.textContent)).toEqual(d.certifications.map((c) => c.issuer));
+    issuerLines.forEach((el) => {
+      const icons = el.querySelectorAll("svg");
+      expect(icons).toHaveLength(isKnownIssuer(el.textContent!) ? 1 : 0);
+      icons.forEach((svg) => expect(svg).toHaveAttribute("aria-hidden", "true"));
+    });
+  });
+
+  it("shows no logo for an issuer it does not know", () => {
+    const unknown = { ...d, certifications: [{ ...d.certifications[0], issuer: "Unknown Academy" }] };
+    render(<ResumeView data={unknown} />);
+    const regions = screen.getAllByRole("region", { name: d.ui.sections.certifications });
+    const line = within(regions.at(-1)!).getByText("Unknown Academy");
+    expect(line.querySelector("svg")).toBeNull();
   });
 
   it("shows no Verified label when no certification is verified", () => {
