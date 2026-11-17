@@ -9,8 +9,10 @@ import type { ResumeData } from "./resume-data.types";
 export const RESUME_DATA_EN: ResumeData = {
   name: "Roberto Castillo",
   initials: "RC",
-  location: "Mexico",
-  locationLink: "https://www.google.com/maps/place/mexico",
+  locations: [
+    { name: "Spain", link: "https://www.google.com/maps/place/Spain" },
+    { name: "Mexico", link: "https://www.google.com/maps/place/Mexico" },
+  ],
   about: "QA Engineer | AI-Augmented SDET",
   summary:
     "QA Engineer with 3+ years of experience contributing to and leading end-to-end quality strategies across 15+ projects in e-commerce, healthcare, logistics and finance within fast-paced IT consulting environments. Proven ability to own the full testing lifecycle, from requirements analysis and shift-left validation to CI/CD integration and defect triage, adapting quickly across industries, teams and tech stacks. Combines strong automation skills (Playwright, Cypress, Jest) and API testing expertise (Postman, Pact) with hands-on experience in enterprise platforms such as Salesforce, HubSpot and Stripe. Uses AI-augmented workflows, including multi-agent systems, custom agent skills and autonomous CI/CD remediation built with Claude Code and MCP, to accelerate delivery and reduce manual intervention. Comfortable working with distributed, international teams and contributing beyond QA when needed.",
@@ -18,7 +20,7 @@ export const RESUME_DATA_EN: ResumeData = {
   personalWebsiteUrl: "",
   contact: {
     email: "rct18130984@gmail.com",
-    tel: "+528711053221",
+    phones: ["+34610831754", "+528711053221"],
     social: [
       {
         name: "GitHub",
@@ -33,6 +35,13 @@ export const RESUME_DATA_EN: ResumeData = {
     ],
   },
   education: [
+    {
+      school: "Universidad de Almería",
+      degree:
+        "Master's Degree in Computer Engineering (Big Data specialization)",
+      start: "2026",
+      end: null,
+    },
     {
       school: "Instituto Tecnológico de La Laguna",
       degree: "Bachelor of Engineering in Mechatronics",

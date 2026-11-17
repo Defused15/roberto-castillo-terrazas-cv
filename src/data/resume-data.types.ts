@@ -24,15 +24,14 @@ export type Project = {
 export type ResumeData = {
   name: string;
   initials: string;
-  location: string;
-  locationLink: string;
+  locations: readonly { name: string; link: string }[];
   about: string;
   summary: string;
   avatarUrl: string;
   personalWebsiteUrl: string;
   contact: {
     email: string;
-    tel: string;
+    phones: readonly string[];
     social: readonly {
       name: string;
       url: string;
@@ -43,7 +42,7 @@ export type ResumeData = {
     school: string;
     degree: string;
     start: string;
-    end: string;
+    end: string | null;
   }[];
   work: readonly {
     company: string;

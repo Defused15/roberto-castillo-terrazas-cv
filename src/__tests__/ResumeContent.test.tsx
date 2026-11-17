@@ -29,7 +29,17 @@ describe("ResumeContent", () => {
     expect(screen.getByRole("heading", { name: "Work Experience" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Projects" })).toBeInTheDocument();
     expect(screen.getByText("2025 - Present")).toBeInTheDocument();
+    expect(screen.getByText("2026 - Present")).toBeInTheDocument();
+    expect(screen.getByText("Spain")).toBeInTheDocument();
+    expect(screen.getByText("Mexico")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /\+34610831754/ })).toHaveAttribute("href", "tel:+34610831754");
     expect(screen.getByText(RESUME_DATA.summary)).toBeInTheDocument();
+  });
+
+  it("lists both phone numbers in human-readable form for print", () => {
+    renderPage();
+    expect(screen.getByText("+34 610 831 754")).toBeInTheDocument();
+    expect(screen.getByText("+52 871 105 3221")).toBeInTheDocument();
   });
 
   it("switches to Spanish when the toggle is clicked", async () => {
@@ -39,6 +49,9 @@ describe("ResumeContent", () => {
     expect(screen.getByRole("heading", { name: "Experiencia laboral" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Proyectos" })).toBeInTheDocument();
     expect(screen.getByText("2025 - Actual")).toBeInTheDocument();
+    expect(screen.getByText("2026 - Actual")).toBeInTheDocument();
+    expect(screen.getByText("España")).toBeInTheDocument();
+    expect(screen.getByText("México")).toBeInTheDocument();
     expect(screen.getByText(RESUME_DATA_BY_LANG.es.summary)).toBeInTheDocument();
     expect(screen.queryByText(RESUME_DATA.summary)).not.toBeInTheDocument();
     expect(screen.getAllByText("Repo en GitHub").length).toBeGreaterThan(0);

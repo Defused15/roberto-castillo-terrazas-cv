@@ -34,8 +34,19 @@ describe("RESUME_DATA", () => {
       expect(RESUME_DATA.contact.email).toMatch(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
     });
 
-    it("has a valid phone number", () => {
-      expect(RESUME_DATA.contact.tel).toMatch(/^\+?[\d\s\-()]{7,}/);
+    it("has valid phone numbers with the Spanish number first", () => {
+      expect(RESUME_DATA.contact.phones).toHaveLength(2);
+      RESUME_DATA.contact.phones.forEach((phone) => {
+        expect(phone).toMatch(/^\+?[\d\s\-()]{7,}/);
+      });
+      expect(RESUME_DATA.contact.phones[0].startsWith("+34")).toBe(true);
+    });
+
+    it("lists Spain as primary location and Mexico as secondary", () => {
+      expect(RESUME_DATA.locations).toHaveLength(2);
+      expect(RESUME_DATA.locations[0].name).toBe("Spain");
+      expect(RESUME_DATA.locations[1].name).toBe("Mexico");
+      RESUME_DATA.locations.forEach((l) => expect(l.link).toMatch(/^https:\/\//));
     });
 
     it("has initials matching the name", () => {
@@ -165,8 +176,16 @@ describe("RESUME_DATA", () => {
         expect(edu.school).toBeTruthy();
         expect(edu.degree).toBeTruthy();
         expect(edu.start).toMatch(/^\d{4}$/);
-        expect(edu.end).toMatch(/^\d{4}$/);
+        if (edu.end !== null) {
+          expect(edu.end).toMatch(/^\d{4}$/);
+        }
       });
+    });
+
+    it("lists the Universidad de Almeria master's first, still ongoing", () => {
+      expect(RESUME_DATA.education[0].school).toBe("Universidad de Almería");
+      expect(RESUME_DATA.education[0].start).toBe("2026");
+      expect(RESUME_DATA.education[0].end).toBeNull();
     });
   });
 

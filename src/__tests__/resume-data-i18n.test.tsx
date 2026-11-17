@@ -86,7 +86,7 @@ describe("resume data i18n", () => {
       expect(ES.name).toBe(EN.name);
       expect(ES.initials).toBe(EN.initials);
       expect(ES.avatarUrl).toBe(EN.avatarUrl);
-      expect(ES.locationLink).toBe(EN.locationLink);
+      expect(ES.locations.map((l) => l.link)).toEqual(EN.locations.map((l) => l.link));
       expect(ES.personalWebsiteUrl).toBe(EN.personalWebsiteUrl);
       expect(ES.contact).toEqual(EN.contact);
       expect(ES.certifications).toEqual(EN.certifications);
@@ -123,8 +123,8 @@ describe("resume data i18n", () => {
     it("translates text fields", () => {
       expect(ES.summary).not.toBe(EN.summary);
       expect(ES.about).not.toBe(EN.about);
-      expect(EN.location).toBe("Mexico");
-      expect(ES.location).toBe("México");
+      expect(EN.locations.map((l) => l.name)).toEqual(["Spain", "Mexico"]);
+      expect(ES.locations.map((l) => l.name)).toEqual(["España", "México"]);
 
       ES.work.forEach((w, i) => {
         w.description.forEach((d, j) => {
