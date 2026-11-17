@@ -11,8 +11,20 @@ import { ProjectCard } from "@/components/project-card";
 import { ModeToggle } from "@/components/darkmode";
 import { LanguageToggle } from "@/components/language-toggle";
 import { useLanguage } from "@/components/language-provider";
-import { formatPhone } from "@/lib/format-phone";
-import type { ResumeData } from "@/data/resume-data";
+import { formatPhone, phoneCountry } from "@/lib/format-phone";
+import { track } from "@/lib/analytics";
+import type { ResumeData, SocialNetwork } from "@/data/resume-data";
+
+const SOCIAL_EVENTS = {
+  GitHub: "social_github",
+  LinkedIn: "social_linkedin",
+} as const satisfies Record<SocialNetwork, string>;
+
+/** Reports a phone click by country only; the number itself is never sent. */
+function trackPhone(e164: string) {
+  const country = phoneCountry(e164);
+  if (country) track("contact_phone", { number_country: country });
+}
 
 /** Responsive columns for the project grid: never more columns than projects. */
 // Stryker disable next-line all: layout-only classes, verified visually
@@ -74,7 +86,11 @@ export function ResumeView({ data }: { data: ResumeData }) {
                         ·
                       </span>
                     ) : null}
-                    <a className="hover:underline" href={`tel:${phone}`}>
+                    <a
+                      className="hover:underline"
+                      href={`tel:${phone}`}
+                      onClick={() => trackPhone(phone)}
+                    >
                       {formatPhone(phone)}
                     </a>
                   </React.Fragment>
@@ -92,6 +108,7 @@ export function ResumeView({ data }: { data: ResumeData }) {
                   <a
                     href={`mailto:${data.contact.email}`}
                     aria-label={data.ui.contact.email}
+                    onClick={() => track("contact_email")}
                   >
                     <MailIcon className="size-4" aria-hidden="true" />
                   </a>
@@ -106,6 +123,7 @@ export function ResumeView({ data }: { data: ResumeData }) {
                 >
                   <a
                     href={`tel:${data.contact.phones[0]}`}
+                    onClick={() => trackPhone(data.contact.phones[0])}
                     aria-label={`${data.ui.contact.call} ${formatPhone(data.contact.phones[0])}`}
                   >
                     <PhoneIcon className="size-4" aria-hidden="true" />
@@ -125,6 +143,7 @@ export function ResumeView({ data }: { data: ResumeData }) {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={data.ui.contact.profiles[social.name]}
+                    onClick={() => track(SOCIAL_EVENTS[social.name])}
                   >
                     <social.icon className="size-4" aria-hidden="true" />
                   </a>
@@ -257,6 +276,7 @@ export function ResumeView({ data }: { data: ResumeData }) {
                 <div className="flex flex-col">
                   <a
                     href={cert.url}
+                    onClick={() => track("cert_link", { cert: cert.title, issuer: cert.issuer })}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="font-medium hover:underline text-sm"
