@@ -1,7 +1,13 @@
 import robots from "@/app/robots";
 import sitemap from "@/app/sitemap";
 import manifest from "@/app/manifest";
-import { siteMetadata, siteViewport } from "@/app/site-config";
+import {
+  OG_HIGHLIGHTS,
+  OG_VALUE_LINE,
+  siteMetadata,
+  siteViewport,
+} from "@/app/site-config";
+import { RESUME_DATA } from "@/data/resume-data";
 
 describe("robots", () => {
   it("allows all, disallows /graphql and points to the sitemap", () => {
@@ -34,7 +40,9 @@ describe("site metadata", () => {
   it("sets base, canonical and title template", () => {
     expect(siteMetadata.metadataBase?.href).toBe("https://www.rcastillo.dev/");
     expect(siteMetadata.alternates?.canonical).toBe("/");
-    expect(siteMetadata.title).toMatchObject({ template: "%s | Roberto Castillo" });
+    expect(siteMetadata.title).toMatchObject({
+      template: "%s | Roberto Castillo",
+    });
   });
   it("uses the visible headline as default title", () => {
     expect(siteMetadata.title).toMatchObject({
@@ -56,5 +64,27 @@ describe("site metadata", () => {
   });
   it("defines theme colors", () => {
     expect(siteViewport.themeColor).toHaveLength(2);
+  });
+});
+
+describe("open graph card copy", () => {
+  it("highlights Playwright, AI and API testing in 4-5 chips", () => {
+    expect(OG_HIGHLIGHTS.length).toBeGreaterThanOrEqual(4);
+    expect(OG_HIGHLIGHTS.length).toBeLessThanOrEqual(5);
+    expect(OG_HIGHLIGHTS).toContain("Playwright");
+    expect(OG_HIGHLIGHTS.some((h) => /\bAI\b/.test(h))).toBe(true);
+    expect(OG_HIGHLIGHTS.some((h) => /\bAPI\b/.test(h))).toBe(true);
+  });
+  it("only states facts backed by the resume summary", () => {
+    for (const fact of [
+      "3+ years",
+      "15+ projects",
+      "e-commerce",
+      "healthcare",
+      "finance",
+    ]) {
+      expect(OG_VALUE_LINE).toContain(fact);
+      expect(RESUME_DATA.summary).toContain(fact);
+    }
   });
 });

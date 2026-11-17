@@ -6,6 +6,21 @@ export const SITE_TITLE = `${RESUME_DATA.name} — ${RESUME_DATA.about}`;
 export const SITE_DESCRIPTION =
   "QA Engineer & SDET in Spain and Mexico with 3+ years across 15+ projects. Playwright, Cypress, API testing (Postman, Pact), CI/CD and AI-augmented QA.";
 
+/** Short domain shown on the social share card. */
+export const SITE_DOMAIN = "rcastillo.dev";
+
+/** One factual value line for the social share card, taken from the summary. */
+export const OG_VALUE_LINE =
+  "3+ years · 15+ projects · e-commerce, healthcare, finance";
+
+/** Curated skill chips for the social share card (4 fit on one row). */
+export const OG_HIGHLIGHTS = [
+  "Playwright",
+  "AI-augmented QA",
+  "API testing",
+  "CI/CD",
+] as const;
+
 export const siteMetadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
