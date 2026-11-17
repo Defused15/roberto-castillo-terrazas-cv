@@ -87,7 +87,6 @@ describe("resume data i18n", () => {
       expect(ES.initials).toBe(EN.initials);
       expect(ES.avatarUrl).toBe(EN.avatarUrl);
       expect(ES.locations.map((l) => l.link)).toEqual(EN.locations.map((l) => l.link));
-      expect(ES.personalWebsiteUrl).toBe(EN.personalWebsiteUrl);
       expect(ES.contact).toEqual(EN.contact);
       expect(ES.certifications).toEqual(EN.certifications);
 

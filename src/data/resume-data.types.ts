@@ -13,7 +13,6 @@ export type Project = {
   title: string;
   techStack: readonly string[];
   description: string;
-  logo: string;
   link?: {
     label: string;
     href: string;
@@ -28,7 +27,6 @@ export type ResumeData = {
   about: string;
   summary: string;
   avatarUrl: string;
-  personalWebsiteUrl: string;
   contact: {
     email: string;
     phones: readonly string[];
