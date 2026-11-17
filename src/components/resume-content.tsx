@@ -8,6 +8,7 @@ import { Section } from "@/components/ui/section";
 import { GlobeIcon, MailIcon, PhoneIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ProjectCard } from "@/components/project-card";
+import { SiteFooter } from "@/components/site-footer";
 import { ModeToggle } from "@/components/darkmode";
 import { LanguageToggle } from "@/components/language-toggle";
 import { useLanguage } from "@/components/language-provider";
@@ -40,6 +41,7 @@ export function ResumeContent() {
 export function ResumeView({ data }: { data: ResumeData }) {
 
   return (
+    <>
     <main className="container bg-white dark:bg-gray-900 relative mx-auto scroll-my-12 overflow-auto p-4 print:p-12 md:p-16">
       <section className="mx-auto bg-white dark:bg-gray-900 w-full max-w-2xl space-y-8 bg-white print:space-y-4">
         <div className="flex items-center justify-between">
@@ -324,7 +326,8 @@ export function ResumeView({ data }: { data: ResumeData }) {
           </div>
         </Section>
       </section>
-
     </main>
+    <SiteFooter data={data} />
+    </>
   );
 }
