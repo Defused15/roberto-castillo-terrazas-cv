@@ -8,8 +8,7 @@ export type SocialNetwork = "GitHub" | "LinkedIn";
 export const LANGS: readonly Lang[] = ["en", "es"];
 
 export function isLang(value: unknown): value is Lang {
-  // Stryker disable next-line ConditionalExpression: equivalent, includes() of a non-string is always false
-  return typeof value === "string" && (LANGS as readonly string[]).includes(value);
+  return (LANGS as readonly unknown[]).includes(value);
 }
 
 export type Project = {

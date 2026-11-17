@@ -202,7 +202,6 @@ describe("EN/ES parity", () => {
 });
 
 describe("isLang", () => {
-  // typeof check → `true` is an equivalent mutant: includes() of a non-string is always false.
   it.each([
     ["en", true],
     ["es", true],
