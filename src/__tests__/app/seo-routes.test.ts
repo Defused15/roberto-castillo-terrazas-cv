@@ -40,6 +40,16 @@ describe("web manifest", () => {
     expect(name).toBe(SITE_TITLE);
     expect(icons.map((i) => i.src).filter((src) => !inPublic(src))).toEqual([]);
   });
+
+  it("uses white app icons that launchers may mask, on a white background", () => {
+    const { icons = [], background_color, theme_color } = manifest();
+    const purposes = (src: string) => icons.filter((i) => i.src === src).map((i) => i.purpose).sort();
+    expect([...new Set(icons.map((i) => i.src))].map(purposes)).toEqual([
+      ["any", "maskable"],
+      ["any", "maskable"],
+    ]);
+    expect([background_color, theme_color]).toEqual(["#ffffff", "#ffffff"]);
+  });
 });
 
 describe("site metadata", () => {
@@ -80,6 +90,12 @@ describe("site metadata", () => {
     const icons = [siteMetadata.icons].flat() as { url: string }[];
     expect(icons.length).toBeGreaterThan(0);
     expect(icons.map((i) => i.url).filter((url) => !inPublic(url))).toEqual([]);
+  });
+
+  it("offers the SVG icon first, keeping the .ico and PNGs as fallbacks", () => {
+    const icons = [siteMetadata.icons].flat() as { url: string; type?: string }[];
+    expect(icons[0]).toMatchObject({ url: "/icon.svg", type: "image/svg+xml" });
+    expect(icons.map((i) => i.url)).toEqual(expect.arrayContaining(["/favicon.ico", "/favicon-32x32.png"]));
   });
 
   it("sets a valid theme colour for both light and dark schemes", () => {
