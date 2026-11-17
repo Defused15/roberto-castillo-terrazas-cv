@@ -43,4 +43,5 @@ next-env.d.ts
 # generated test reports
 /jest-report.json
 /jest-report/
-/reports/
+/reports/*
+!/reports/.gitkeep
