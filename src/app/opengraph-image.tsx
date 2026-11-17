@@ -32,6 +32,17 @@ function loadAvatar(): string {
   return `data:image/jpeg;base64,${file.toString("base64")}`;
 }
 
+// The R logo's path, read from the favicon so there is one source of truth.
+// Drawn as an inline <svg> (the file's dark-mode <style> means nothing to next/og).
+function loadLogoPath(): string {
+  const svg = readFileSync(join(process.cwd(), "public", "icon.svg"), "utf8");
+  const d = svg.match(/<path[^>]*\sd="([^"]+)"/)?.[1];
+  if (!d) throw new Error("public/icon.svg has no <path d>");
+  return d;
+}
+
+const LOGO = 30; // logo size in px, next to the domain
+
 const AV = 184; // avatar diameter
 const ZOOM = 1.12; // crop in so the face fills the circle
 const FACE = { x: 235 / 460, y: 200 / 460 }; // face centre in the source photo
@@ -90,6 +101,7 @@ function Avatar({ src }: { src: string }) {
 
 export default function OpengraphImage() {
   const avatar = loadAvatar();
+  const logo = loadLogoPath();
   return new ImageResponse(
     (
       <div
@@ -162,16 +174,14 @@ export default function OpengraphImage() {
               color: C.muted,
             }}
           >
-            <div
-              style={{
-                display: "flex",
-                width: 10,
-                height: 10,
-                borderRadius: 999,
-                background: C.accent,
-                marginRight: 14,
-              }}
-            />
+            <svg
+              width={LOGO}
+              height={LOGO}
+              viewBox="0 0 1024 1024"
+              style={{ marginRight: 12 }}
+            >
+              <path fill={C.fg} fillRule="evenodd" d={logo} />
+            </svg>
             {SITE_DOMAIN}
           </div>
 
