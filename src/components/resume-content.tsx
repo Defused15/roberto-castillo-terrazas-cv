@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -10,6 +11,23 @@ import { ProjectCard } from "@/components/project-card";
 import { ModeToggle } from "@/components/darkmode";
 import { LanguageToggle } from "@/components/language-toggle";
 import { useLanguage } from "@/components/language-provider";
+
+const PHONE_GROUPS: Record<string, readonly number[]> = {
+  "+34": [3, 3, 3],
+  "+52": [3, 3, 4],
+};
+
+function formatPhone(e164: string): string {
+  const code = Object.keys(PHONE_GROUPS).find((c) => e164.startsWith(c));
+  if (!code) return e164;
+  let rest = e164.slice(code.length);
+  const parts = PHONE_GROUPS[code].map((n) => {
+    const part = rest.slice(0, n);
+    rest = rest.slice(n);
+    return part;
+  });
+  return [code, ...parts, rest].filter(Boolean).join(" ");
+}
 
 export function ResumeContent() {
   const { data } = useLanguage();
@@ -25,18 +43,44 @@ export function ResumeContent() {
               {data.about}
             </p>
             <p className="max-w-md items-center text-pretty text-xs text-muted-foreground">
-              <a
-                className="inline-flex gap-x-1.5 align-baseline leading-none hover:underline"
-                href={data.locationLink}
-                target="_blank"
-              >
-                <GlobeIcon className="size-3" />
-                {data.location}
-              </a>
+              {data.locations.map((location, index) => (
+                <React.Fragment key={location.link}>
+                  {index > 0 ? (
+                    <span aria-hidden="true" className="mx-1.5">
+                      ·
+                    </span>
+                  ) : null}
+                  <a
+                    className={`inline-flex gap-x-1.5 align-baseline leading-none hover:underline${index > 0 ? " opacity-80" : ""}`}
+                    href={location.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {index === 0 ? <GlobeIcon className="size-3" /> : null}
+                    {location.name}
+                  </a>
+                </React.Fragment>
+              ))}
             </p>
             {data.contact.email ? (
               <p className="text-xs text-muted-foreground">
                 {data.contact.email}
+              </p>
+            ) : null}
+            {data.contact.phones.length > 0 ? (
+              <p className="text-xs text-muted-foreground print:hidden">
+                {data.contact.phones.map((phone, index) => (
+                  <React.Fragment key={phone}>
+                    {index > 0 ? (
+                      <span aria-hidden="true" className="mx-1.5">
+                        ·
+                      </span>
+                    ) : null}
+                    <a className="hover:underline" href={`tel:${phone}`}>
+                      {formatPhone(phone)}
+                    </a>
+                  </React.Fragment>
+                ))}
               </p>
             ) : null}
             <div className="flex gap-x-1 pt-1 text-sm text-muted-foreground print:hidden">
@@ -52,14 +96,17 @@ export function ResumeContent() {
                   </a>
                 </Button>
               ) : null}
-              {data.contact.tel ? (
+              {data.contact.phones[0] ? (
                 <Button
                   className="size-8"
                   variant="outline"
                   size="icon"
                   asChild
                 >
-                  <a href={`tel:${data.contact.tel}`}>
+                  <a
+                    href={`tel:${data.contact.phones[0]}`}
+                    aria-label={data.contact.phones[0]}
+                  >
                     <PhoneIcon className="size-4" />
                   </a>
                 </Button>
@@ -90,11 +137,11 @@ export function ResumeContent() {
                   <span className="underline">{data.contact.email}</span>
                 </a>
               ) : null}
-              {data.contact.tel ? (
-                <a href={`tel:${data.contact.tel}`}>
-                  <span className="underline">{data.contact.tel}</span>
+              {data.contact.phones.map((phone) => (
+                <a key={phone} href={`tel:${phone}`}>
+                  <span className="underline">{formatPhone(phone)}</span>
                 </a>
-              ) : null}
+              ))}
             </div>
           </div>
 
@@ -171,7 +218,7 @@ export function ResumeContent() {
                       {education.school}
                     </h3>
                     <div className="text-sm tabular-nums text-gray-500">
-                      {education.start} - {education.end}
+                      {education.start} - {education.end ?? data.ui.present}
                     </div>
                   </div>
                 </CardHeader>

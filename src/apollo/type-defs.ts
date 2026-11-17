@@ -14,8 +14,8 @@ export class Contact {
   @Field(() => String)
   email: string;
 
-  @Field(() => String)
-  tel: string;
+  @Field(() => [String])
+  phones: string[];
 
   @Field(() => [Social])
   social: Social[];
@@ -32,8 +32,8 @@ export class Education {
   @Field(() => String)
   start: string;
 
-  @Field(() => String)
-  end: string;
+  @Field(() => String, { nullable: true })
+  end: string | null;
 }
 
 @ObjectType()
@@ -92,11 +92,8 @@ export class Me {
   @Field(() => String)
   initials: string;
 
-  @Field(() => String)
-  location: string;
-
-  @Field(() => String)
-  locationLink: string;
+  @Field(() => [String])
+  locations: string[];
 
   @Field(() => String)
   about: string;
