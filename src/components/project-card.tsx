@@ -13,6 +13,7 @@ interface Props {
   description: string;
   tags: readonly string[];
   link?: string;
+  linkLabel?: string;
   githubLink?: string;
   githubLabel?: string;
 }
@@ -27,6 +28,7 @@ export function ProjectCard({
   description,
   tags,
   link,
+  linkLabel,
   githubLink,
   githubLabel = "GitHub repo",
 }: Props) {
@@ -62,8 +64,8 @@ export function ProjectCard({
             </div>
           </CardTitle>
 
-          <div className="hidden text-xs underline print:visible">
-            {getCleanLink(link)}
+          <div className="hidden text-xs underline print:block">
+            {linkLabel || getCleanLink(link)}
           </div>
 
           <CardDescription className="text-xs print:text-[10px]">
