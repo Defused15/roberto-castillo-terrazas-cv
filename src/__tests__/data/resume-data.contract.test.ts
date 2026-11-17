@@ -3,6 +3,7 @@ import { existsSync } from "fs";
 import { join } from "path";
 import { buildPersonJsonLd } from "@/app/structured-data";
 import { RESUME_DATA_BY_LANG, isLang, type ResumeData } from "@/data/resume-data";
+import { decodePhone } from "@/lib/decode-phone";
 import { phoneCountry } from "@/lib/format-phone";
 
 /**
@@ -79,8 +80,10 @@ describe.each([
     expect(d.contact.email).toMatch(/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i);
   });
 
-  it("stores phone numbers in E.164 so tel: links work worldwide", () => {
-    expect(d.contact.phones.filter((p) => !/^\+[1-9]\d{7,14}$/.test(p))).toEqual([]);
+  it("stores phone numbers encoded, decoding to E.164 so tel: links work worldwide", () => {
+    expect(d.contact.phones.filter((p) => !/^\+[1-9]\d{7,14}$/.test(decodePhone(p)))).toEqual([]);
+    // Encoded means no run of digits a scraper could pick up from the HTML or bundle.
+    expect(d.contact.phones.filter((p) => /\d{4}/.test(p))).toEqual([]);
   });
 
   it("gives the privacy notice a title and paragraphs per section, with only known placeholders", () => {
@@ -93,7 +96,7 @@ describe.each([
   });
 
   it("only lists phones from countries the phone analytics event can report", () => {
-    expect(d.contact.phones.filter((p) => phoneCountry(p) === undefined)).toEqual([]);
+    expect(d.contact.phones.map(decodePhone).filter((p) => phoneCountry(p) === undefined)).toEqual([]);
   });
 
   it("lists the primary location first, matching the JSON-LD address country", () => {

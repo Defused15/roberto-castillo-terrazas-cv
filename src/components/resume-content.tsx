@@ -5,14 +5,15 @@ import { ProfileAvatar } from "@/components/profile-avatar";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Section } from "@/components/ui/section";
-import { GlobeIcon, MailIcon, PhoneIcon } from "lucide-react";
+import { GlobeIcon, MailIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ProjectCard } from "@/components/project-card";
 import { SiteFooter } from "@/components/site-footer";
 import { ModeToggle } from "@/components/darkmode";
 import { LanguageToggle } from "@/components/language-toggle";
 import { useLanguage } from "@/components/language-provider";
-import { formatPhone, phoneCountry } from "@/lib/format-phone";
+import { PhoneIconButton, PhoneLine, usePhoneReveal } from "@/components/contact-phones";
+import { formatPhone } from "@/lib/format-phone";
 import { track } from "@/lib/analytics";
 import type { ResumeData, SocialNetwork } from "@/data/resume-data";
 
@@ -20,12 +21,6 @@ const SOCIAL_EVENTS = {
   GitHub: "social_github",
   LinkedIn: "social_linkedin",
 } as const satisfies Record<SocialNetwork, string>;
-
-/** Reports a phone click by country only; the number itself is never sent. */
-function trackPhone(e164: string) {
-  const country = phoneCountry(e164);
-  if (country) track("contact_phone", { number_country: country });
-}
 
 /** Responsive columns for the project grid: never more columns than projects. */
 // Stryker disable next-line all: layout-only classes, verified visually
@@ -37,8 +32,9 @@ export function ResumeContent() {
   return <ResumeView data={data} />;
 }
 
-/** Pure rendering of one language's resume data. */
+/** One language's resume data. Its only state is whether the phone numbers are revealed. */
 export function ResumeView({ data }: { data: ResumeData }) {
+  const phones = usePhoneReveal(data.contact.phones);
 
   return (
     <>
@@ -79,26 +75,7 @@ export function ResumeView({ data }: { data: ResumeData }) {
                 {data.contact.email}
               </p>
             ) : null}
-            {data.contact.phones.length > 0 ? (
-              <p className="text-xs text-muted-foreground print:hidden">
-                {data.contact.phones.map((phone, index) => (
-                  <React.Fragment key={phone}>
-                    {index > 0 ? (
-                      <span aria-hidden="true" className="mx-1.5">
-                        ·
-                      </span>
-                    ) : null}
-                    <a
-                      className="hover:underline"
-                      href={`tel:${phone}`}
-                      onClick={() => trackPhone(phone)}
-                    >
-                      {formatPhone(phone)}
-                    </a>
-                  </React.Fragment>
-                ))}
-              </p>
-            ) : null}
+            {data.contact.phones.length > 0 ? <PhoneLine state={phones} ui={data.ui.contact} /> : null}
             <div className="flex gap-x-1 pt-1 text-sm text-muted-foreground print:hidden">
               {data.contact.email ? (
                 <Button
@@ -116,21 +93,8 @@ export function ResumeView({ data }: { data: ResumeData }) {
                   </a>
                 </Button>
               ) : null}
-              {data.contact.phones[0] ? (
-                <Button
-                  className="size-8"
-                  variant="outline"
-                  size="icon"
-                  asChild
-                >
-                  <a
-                    href={`tel:${data.contact.phones[0]}`}
-                    onClick={() => trackPhone(data.contact.phones[0])}
-                    aria-label={`${data.ui.contact.call} ${formatPhone(data.contact.phones[0])}`}
-                  >
-                    <PhoneIcon className="size-4" aria-hidden="true" />
-                  </a>
-                </Button>
+              {data.contact.phones.length > 0 ? (
+                <PhoneIconButton state={phones} ui={data.ui.contact} />
               ) : null}
               {data.contact.social.map((social) => (
                 <Button
@@ -164,7 +128,8 @@ export function ResumeView({ data }: { data: ResumeData }) {
                   <span className="underline">{data.contact.email}</span>
                 </a>
               ) : null}
-              {data.contact.phones.map((phone) => (
+              {/* Decoded on reveal or on beforeprint, so paper always has both numbers. */}
+              {phones.printPhones.map((phone) => (
                 <a key={phone} href={`tel:${phone}`}>
                   <span className="underline">{formatPhone(phone)}</span>
                 </a>

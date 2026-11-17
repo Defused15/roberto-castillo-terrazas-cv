@@ -1,5 +1,6 @@
 import type { ComponentType, SVGProps } from "react";
 import type { StaticImageData } from "next/image";
+import type { EncodedPhone } from "@/lib/decode-phone";
 
 export type Lang = "en" | "es";
 
@@ -31,7 +32,8 @@ export type ResumeData = {
   avatarUrl: string;
   contact: {
     email: string;
-    phones: readonly string[];
+    /** E.164 numbers, encoded with encodePhone(); decode with decodePhone() in the browser only. */
+    phones: readonly EncodedPhone[];
     social: readonly {
       name: SocialNetwork;
       url: string;
@@ -88,6 +90,14 @@ export type ResumeData = {
       email: string;
       /** Prefix for the phone number, e.g. "Call" → "Call +34 610 831 754". */
       call: string;
+      /** Text button in the header that reveals the phone numbers. */
+      showPhones: string;
+      /** Accessible name of the phone icon button, which reveals the numbers too. */
+      phoneButton: string;
+      /** Prefix for a revealed number's copy button, e.g. "Copy" → "Copy +34 610 831 754". */
+      copy: string;
+      /** Feedback shown after a number is copied. */
+      copied: string;
       profiles: Record<SocialNetwork, string>;
     };
     notFound: { title: string; description: string; backHome: string };

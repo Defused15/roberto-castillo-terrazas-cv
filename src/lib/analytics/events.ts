@@ -4,6 +4,7 @@ import type { PhoneCountry } from "@/lib/format-phone";
 /** Every custom event and its properties. Nothing here may identify a visitor. */
 export type AnalyticsEvents = {
   contact_email: undefined;
+  contact_phone_reveal: undefined;
   contact_phone: { number_country: PhoneCountry };
   social_github: undefined;
   social_linkedin: undefined;

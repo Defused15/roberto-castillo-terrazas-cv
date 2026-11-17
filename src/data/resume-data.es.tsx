@@ -129,6 +129,10 @@ export const RESUME_DATA_ES: ResumeData = {
     contact: {
       email: "Enviar un correo",
       call: "Llamar al",
+      showPhones: "Ver teléfonos",
+      phoneButton: "Mostrar teléfonos",
+      copy: "Copiar",
+      copied: "Copiado ✓",
       profiles: {
         GitHub: "Perfil de GitHub",
         LinkedIn: "Perfil de LinkedIn",

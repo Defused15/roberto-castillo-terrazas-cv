@@ -5,6 +5,7 @@ import {
 } from "@/images/logos";
 import { GitHubIcon, LinkedInIcon } from "@/components/icons";
 import type { ResumeData } from "./resume-data.types";
+import type { EncodedPhone } from "@/lib/decode-phone";
 
 export const RESUME_DATA_EN: ResumeData = {
   name: "Roberto Castillo",
@@ -19,7 +20,8 @@ export const RESUME_DATA_EN: ResumeData = {
   avatarUrl: "/avatar.jpg",
   contact: {
     email: "rct18130984@gmail.com",
-    phones: ["+34610831754", "+528711053221"],
+    // +34 610 831 754 and +52 871 105 3221, encoded (see src/lib/decode-phone.ts).
+    phones: ["NDU3MTM4MDE2NDMr", "MTIyMzUwMTE3ODI1Kw=="] as EncodedPhone[],
     social: [
       {
         name: "GitHub",
@@ -270,6 +272,10 @@ export const RESUME_DATA_EN: ResumeData = {
     contact: {
       email: "Send an email",
       call: "Call",
+      showPhones: "Show phone numbers",
+      phoneButton: "Reveal phone numbers",
+      copy: "Copy",
+      copied: "Copied ✓",
       profiles: {
         GitHub: "GitHub profile",
         LinkedIn: "LinkedIn profile",

@@ -2,6 +2,7 @@
 import { buildPersonJsonLd, serializeJsonLd } from "@/app/structured-data";
 import { SITE_URL } from "@/app/site-config";
 import { LANGS, RESUME_DATA, type ResumeData } from "@/data/resume-data";
+import { decodePhone } from "@/lib/decode-phone";
 
 const EN = RESUME_DATA;
 const currentJob = EN.work.find((w) => w.end === null)!;
@@ -35,7 +36,7 @@ describe("buildPersonJsonLd", () => {
   it("never exposes the email address or phone numbers", () => {
     const json = JSON.stringify(ld);
     expect(json).not.toMatch(/telephone|email|mailto:|tel:/i);
-    [EN.contact.email, ...EN.contact.phones].forEach((secret) => expect(json).not.toContain(secret));
+    [EN.contact.email, ...EN.contact.phones.map(decodePhone)].forEach((secret) => expect(json).not.toContain(secret));
   });
 
   it("lists distinct, non-empty knowsAbout topics", () => {
