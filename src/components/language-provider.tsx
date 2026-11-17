@@ -27,6 +27,10 @@ const LanguageContext = React.createContext<LanguageContextValue>({
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [lang, setLangState] = React.useState<Lang>("en")
 
+  // The two hooks with an empty dependency list are wrapped in Stryker
+  // disable/restore: mutating [] into a constant array is an equivalent mutant.
+
+  // Stryker disable ArrayDeclaration
   // Applied in an effect on purpose: server render and first client render stay English
   // (hydration safety), so do not use a lazy useState initializer to read storage.
   React.useEffect(() => {
@@ -37,11 +41,13 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
       // storage unavailable; keep default
     }
   }, [])
+  // Stryker restore ArrayDeclaration
 
   React.useEffect(() => {
     document.documentElement.lang = lang
   }, [lang])
 
+  // Stryker disable ArrayDeclaration
   const setLang = React.useCallback((next: Lang) => {
     setLangState(next)
     try {
@@ -50,6 +56,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
       // storage unavailable; ignore
     }
   }, [])
+  // Stryker restore ArrayDeclaration
 
   const value = React.useMemo(
     () => ({ lang, setLang, data: RESUME_DATA_BY_LANG[lang] }),

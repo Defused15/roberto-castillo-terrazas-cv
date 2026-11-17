@@ -214,7 +214,11 @@ describe("ResumeView › optional content", () => {
   const build = (overrides: Partial<ResumeData>): ResumeData => ({ ...EN, ...overrides });
 
   it("omits every email and phone link when the contact has none", () => {
-    render(<ResumeView data={build({ contact: { ...EN.contact, email: "", phones: [] } })} />);
+    const { container } = render(
+      <ResumeView data={build({ contact: { ...EN.contact, email: "", phones: [] } })} />,
+    );
+    // An empty contact line would still take up vertical space in the header.
+    expect(container.querySelector("p:empty")).toBeNull();
     const contactHrefs = hrefs(screen.getAllByRole("link")).filter((h) => /^(mailto|tel):/.test(h ?? ""));
     expect(contactHrefs).toEqual([]);
     // Social profiles do not depend on email or phone.
