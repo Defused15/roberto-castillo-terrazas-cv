@@ -154,9 +154,9 @@ export const RESUME_DATA_ES: ResumeData = {
         {
           title: "Qué mido",
           paragraphs: [
-            "Uso PostHog, en su nube europea de Frankfurt, para contar las visitas y cuánto duran, también las que llegan a páginas que no existen. PostHog también registra tu dirección IP, que uso para saber aproximadamente desde qué país y ciudad llega una visita. No la uso para identificarte y solo se conserva mientras PostHog guarda los datos de analítica. No se graban sesiones ni se crean perfiles de visitantes.",
+            "Uso PostHog, en su nube europea de Frankfurt, para contar las visitas y cuánto duran, también las que llegan a páginas que no existen. PostHog no guarda tu dirección IP: la elimina en cuanto llega la visita. También recoge mediciones básicas de la velocidad de carga. No se graban sesiones ni se crean perfiles de visitantes.",
             "También cuento qué enlaces y botones del CV se usan (contacto, perfiles, proyectos, certificados, idioma, tema e impresión) para saber qué partes resultan útiles. En los clics al teléfono solo guardo el país del número. No registro lo que escribes, por dónde mueves el ratón ni lo que haces fuera de este sitio.",
-            "Vercel Web Analytics también cuenta visitas, de forma agregada y sin cookies. Vercel aloja la web, así que sus servidores guardan los registros habituales (IP y tipo de navegador) para poder servir las páginas.",
+            "Vercel Web Analytics también cuenta visitas, de forma agregada y sin cookies, y muestra aproximadamente desde qué país llegan sin guardar tu dirección IP. Vercel aloja la web, así que sus servidores guardan los registros habituales (IP y tipo de navegador) para poder servir las páginas.",
           ],
         },
         {
@@ -180,7 +180,7 @@ export const RESUME_DATA_ES: ResumeData = {
         {
           title: "Cuánto tiempo",
           paragraphs: [
-            "Aparte de la dirección IP, los datos no incluyen nombres, cookies ni datos de contacto. Se guardan como mucho el plazo estándar de cada proveedor, y no los vendo ni se los paso a nadie.",
+            "Los datos de analítica no incluyen direcciones IP, nombres, cookies ni datos de contacto. Se guardan como mucho el plazo estándar de cada proveedor, y no los vendo ni se los paso a nadie.",
           ],
         },
         {
