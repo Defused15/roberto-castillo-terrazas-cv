@@ -12,10 +12,17 @@ import { ModeToggle } from "@/components/darkmode";
 import { LanguageToggle } from "@/components/language-toggle";
 import { useLanguage } from "@/components/language-provider";
 import { formatPhone } from "@/lib/format-phone";
+import type { ResumeData } from "@/data/resume-data";
 
+/** The CV in the language currently selected in LanguageProvider. */
 export function ResumeContent() {
   const { data } = useLanguage();
-  const projectCount = data.projects.length as number;
+  return <ResumeView data={data} />;
+}
+
+/** Pure rendering of one language's resume data. */
+export function ResumeView({ data }: { data: ResumeData }) {
+  const projectCount = data.projects.length;
 
   return (
     <main className="container bg-white dark:bg-gray-900 relative mx-auto scroll-my-12 overflow-auto p-4 print:p-12 md:p-16">
@@ -35,12 +42,16 @@ export function ResumeContent() {
                     </span>
                   ) : null}
                   <a
+                    // Stryker disable next-line all: presentational only (secondary locations are dimmed)
                     className={`inline-flex gap-x-1.5 align-baseline leading-none hover:underline${index > 0 ? " opacity-80" : ""}`}
                     href={location.link}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    {index === 0 ? <GlobeIcon className="size-3" /> : null}
+                    {
+                      // Stryker disable next-line all: decorative icon on the primary location
+                      index === 0 ? <GlobeIcon className="size-3" aria-hidden="true" /> : null
+                    }
                     {location.name}
                   </a>
                 </React.Fragment>
@@ -155,13 +166,11 @@ export function ResumeContent() {
                 <CardHeader>
                   <div className="flex items-center justify-between gap-x-2 text-base">
                     <h3 className="inline-flex items-center justify-center gap-x-2 font-semibold leading-none">
-                      {work.logo && (
-                        <img
-                          src={work.logo.src}
-                          alt={`${work.company} logo`}
-                          className="size-5 rounded-sm object-contain"
-                        />
-                      )}
+                      <img
+                        src={work.logo.src}
+                        alt={`${work.company} logo`}
+                        className="size-5 rounded-sm object-contain"
+                      />
                       <a className="hover:underline" href={work.link}>
                         {work.company}
                       </a>
@@ -271,13 +280,17 @@ export function ResumeContent() {
         </Section>
 
         <Section className="print-force-new-page scroll-mb-16" title={data.ui.sections.projects}>
-          <div className={`-mx-3 grid gap-3 print:grid-cols-3 print:gap-2 ${
+          <div
+            // Stryker disable all: responsive grid columns are layout, verified visually
+            className={`-mx-3 grid gap-3 print:grid-cols-3 print:gap-2 ${
             projectCount === 1
               ? "grid-cols-1"
               : projectCount === 2
               ? "grid-cols-1 md:grid-cols-2"
               : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
-          }`}>
+            }`}
+            // Stryker restore all
+          >
             {data.projects.map((project) => {
               return (
                 <ProjectCard
