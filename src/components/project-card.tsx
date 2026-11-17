@@ -14,6 +14,7 @@ interface Props {
   tags: readonly string[];
   link?: string;
   githubLink?: string;
+  githubLabel?: string;
 }
 
 function getCleanLink(link?: string) {
@@ -21,7 +22,14 @@ function getCleanLink(link?: string) {
   return link.replace(/^https?:\/\//i, "").replace(/^www\./i, "");
 }
 
-export function ProjectCard({ title, description, tags, link, githubLink }: Props) {
+export function ProjectCard({
+  title,
+  description,
+  tags,
+  link,
+  githubLink,
+  githubLabel = "GitHub repo",
+}: Props) {
   return (
     <Card className="flex flex-col overflow-hidden border border-muted p-3">
       <CardHeader>
@@ -48,7 +56,7 @@ export function ProjectCard({ title, description, tags, link, githubLink }: Prop
                   className="inline-flex items-center gap-1 text-xs font-normal text-muted-foreground hover:text-foreground transition-colors"
                 >
                   <GitHubIcon className="size-3" />
-                  <span>GitHub repo</span>
+                  <span>{githubLabel}</span>
                 </a>
               )}
             </div>
