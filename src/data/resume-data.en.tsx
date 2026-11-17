@@ -295,7 +295,7 @@ export const RESUME_DATA_EN: ResumeData = {
         {
           title: "What I measure",
           paragraphs: [
-            "I use PostHog, hosted in its EU cloud in Frankfurt, to count page visits and how long they last, including visits to pages that don't exist. IP addresses are anonymized, sessions are not recorded and no visitor profiles are built.",
+            "I use PostHog, hosted in its EU cloud in Frankfurt, to count page visits and how long they last, including visits to pages that don't exist. PostHog also records your IP address, which I use to see roughly which country and city a visit comes from. I don't use it to identify you, and it's kept only as long as PostHog keeps the analytics data. Sessions are not recorded and no visitor profiles are built.",
             "I also count which links and buttons on the CV get used (contact details, profiles, projects, certificates, language, theme and printing) to see which parts are useful. For phone clicks I only keep the country of the number. I don't record what you type, where you move the mouse, or anything you do outside this site.",
             "Vercel Web Analytics also counts page visits, in aggregate and without cookies. Vercel hosts the site, so its servers keep standard logs (IP address and browser type) to deliver the pages.",
           ],
@@ -321,7 +321,7 @@ export const RESUME_DATA_EN: ResumeData = {
         {
           title: "How long",
           paragraphs: [
-            "The data has no names, cookies or contact details. It is kept no longer than each provider's standard retention period, and I don't sell it or pass it to anyone else.",
+            "Apart from the IP address, the data has no names, cookies or contact details. It is kept no longer than each provider's standard retention period, and I don't sell it or pass it to anyone else.",
           ],
         },
         {
