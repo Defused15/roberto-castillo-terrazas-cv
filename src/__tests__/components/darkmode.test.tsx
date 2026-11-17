@@ -5,6 +5,7 @@ import { LanguageToggle } from "@/components/language-toggle";
 import { RESUME_DATA_BY_LANG } from "@/data/resume-data";
 import { languageToggleName } from "@/test/labels";
 import { renderWithProviders } from "@/test/render";
+import { capturedEvents, startAnalytics } from "@/test/analytics";
 
 // next-themes is a third-party boundary: what is verified here is our wiring to it.
 jest.mock("next-themes", () => ({ useTheme: jest.fn() }));
@@ -59,5 +60,32 @@ describe("ModeToggle", () => {
     await user.click(screen.getByRole("button", { name: languageToggleName("en") }));
     await user.click(screen.getByRole("button", { name: ES.toggle }));
     expect(await optionLabels()).toEqual([ES.light, ES.dark, ES.system]);
+  });
+});
+
+describe("ModeToggle › analytics", () => {
+  beforeEach(startAnalytics);
+
+  it("does not send anything just by opening the menu", async () => {
+    await openMenu();
+    await screen.findAllByRole("menuitem");
+    expect(capturedEvents()).toEqual([]);
+  });
+
+  it.each([
+    [EN.light, "light"],
+    [EN.dark, "dark"],
+    [EN.system, "system"],
+  ])("selecting %s sends theme_change with %p", async (label, theme) => {
+    const user = await openMenu();
+    await user.click(await screen.findByRole("menuitem", { name: label }));
+    expect(capturedEvents()).toEqual([["theme_change", { theme }]]);
+  });
+
+  it("sends the same theme values from the Spanish menu", async () => {
+    const { user } = renderWithProviders(<ModeToggle />, { lang: "es" });
+    await user.click(screen.getByRole("button", { name: ES.toggle }));
+    await user.click(await screen.findByRole("menuitem", { name: ES.dark }));
+    expect(capturedEvents()).toEqual([["theme_change", { theme: "dark" }]]);
   });
 });

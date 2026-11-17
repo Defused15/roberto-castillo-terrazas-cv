@@ -1,7 +1,9 @@
 import { render, screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { ResumeContent, ResumeView } from "@/components/resume-content";
 import { LANGS, RESUME_DATA_BY_LANG, type ResumeData } from "@/data/resume-data";
-import { formatPhone } from "@/lib/format-phone";
+import { formatPhone, phoneCountry } from "@/lib/format-phone";
+import { capturedEvents, preventNavigation, startAnalytics } from "@/test/analytics";
 import { languageToggleName } from "@/test/labels";
 import { renderWithProviders } from "@/test/render";
 
@@ -152,6 +154,89 @@ describe.each(LANGS)("ResumeContent [%s]", (lang) => {
   });
 });
 
+describe.each(LANGS)("ResumeContent › analytics events [%s]", (lang) => {
+  const d = RESUME_DATA_BY_LANG[lang];
+  let allowNavigation: () => void;
+
+  beforeEach(async () => {
+    await startAnalytics();
+    allowNavigation = preventNavigation();
+  });
+  afterEach(() => allowNavigation());
+
+  /** Renders the page, clicks `link` and returns the events it sent. */
+  async function click(find: () => HTMLElement) {
+    const { user } = renderWithProviders(<ResumeContent />, { lang });
+    await user.click(find());
+    return capturedEvents();
+  }
+
+  it("sends contact_email from the email button", async () => {
+    expect(await click(() => screen.getByRole("link", { name: d.ui.contact.email }))).toEqual([
+      ["contact_email", undefined],
+    ]);
+  });
+
+  it("sends contact_phone with the country only from the call button", async () => {
+    const [first] = d.contact.phones;
+    const events = await click(() =>
+      screen.getByRole("link", { name: `${d.ui.contact.call} ${formatPhone(first)}` }),
+    );
+    expect(events).toEqual([["contact_phone", { number_country: phoneCountry(first) }]]);
+    expect(JSON.stringify(events)).not.toContain(first.slice(3));
+  });
+
+  it.each(RESUME_DATA_BY_LANG[lang].contact.phones)(
+    "sends contact_phone with the country only from the phone line (%s)",
+    async (phone) => {
+      const events = await click(() => screen.getAllByRole("link", { name: formatPhone(phone) })[0]);
+      expect(events).toEqual([["contact_phone", { number_country: phoneCountry(phone) }]]);
+    },
+  );
+
+  it.each([
+    ["GitHub", "social_github"],
+    ["LinkedIn", "social_linkedin"],
+  ] as const)("sends %s profile clicks as %s", async (network, event) => {
+    expect(
+      await click(() => screen.getByRole("link", { name: d.ui.contact.profiles[network] })),
+    ).toEqual([[event, undefined]]);
+  });
+
+  it("sends cert_link with the certification and issuer", async () => {
+    const [cert] = d.certifications;
+    const events = await click(() =>
+      within(region(d.ui.sections.certifications)).getByRole("link", { name: cert.title }),
+    );
+    expect(events).toEqual([["cert_link", { cert: cert.title, issuer: cert.issuer }]]);
+  });
+
+  it("sends project_link and project_repo with the project title", async () => {
+    const withSite = d.projects.find((p) => p.link)!;
+    const withRepo = d.projects.find((p) => p.githubLink)!;
+    const { user } = renderWithProviders(<ResumeContent />, { lang });
+    const projects = region(d.ui.sections.projects);
+
+    await user.click(within(projects).getByRole("link", { name: withSite.title }));
+    const repoLinks = within(projects).getAllByRole("link", { name: d.ui.githubRepo });
+    await user.click(repoLinks[d.projects.filter((p) => p.githubLink).indexOf(withRepo)]);
+
+    expect(capturedEvents()).toEqual([
+      ["project_link", { project: withSite.title }],
+      ["project_repo", { project: withRepo.title }],
+    ]);
+  });
+
+  it("sends language_switch with the target language", async () => {
+    const events = await click(() => screen.getByRole("button", { name: languageToggleName(lang) }));
+    expect(events).toEqual([["language_switch", { to: lang === "en" ? "es" : "en" }]]);
+  });
+
+  it("sends nothing for links without an event, such as locations", async () => {
+    expect(await click(() => screen.getByRole("link", { name: d.locations[0].name }))).toEqual([]);
+  });
+});
+
 describe("ResumeContent › language switch", () => {
   it("switches the whole page to Spanish and back", async () => {
     const ES = RESUME_DATA_BY_LANG.es;
@@ -232,6 +317,17 @@ describe("ResumeView › optional content", () => {
     render(<ResumeView data={build({ contact: { ...EN.contact, phones: [phone] } })} />);
     const [onScreen] = screen.getAllByRole("link", { name: formatPhone(phone) });
     expect(onScreen.closest("p")?.textContent).toBe(formatPhone(phone));
+  });
+
+  it("sends no phone event for a country the event cannot report", async () => {
+    await startAnalytics();
+    const allowNavigation = preventNavigation();
+    const phone = "+15551234567";
+    const user = userEvent.setup();
+    render(<ResumeView data={build({ contact: { ...EN.contact, phones: [phone] } })} />);
+    await user.click(screen.getAllByRole("link", { name: formatPhone(phone) })[0]);
+    allowNavigation();
+    expect(capturedEvents()).toEqual([]);
   });
 
   it("renders a project without a website as a plain title", () => {

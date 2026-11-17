@@ -1,4 +1,4 @@
-import { formatPhone } from "@/lib/format-phone";
+import { formatPhone, phoneCountry } from "@/lib/format-phone";
 
 describe("formatPhone", () => {
   it.each([
@@ -9,5 +9,15 @@ describe("formatPhone", () => {
     ["an unknown country code falls back to the raw number", "+15551234567", "+15551234567"],
   ])("formats %s", (_case, input, expected) => {
     expect(formatPhone(input)).toBe(expected);
+  });
+});
+
+describe("phoneCountry", () => {
+  it.each([
+    ["+34610831754", "ES"],
+    ["+528711053221", "MX"],
+    ["+15551234567", undefined],
+  ])("maps %s to %p", (input, expected) => {
+    expect(phoneCountry(input)).toBe(expected);
   });
 });
