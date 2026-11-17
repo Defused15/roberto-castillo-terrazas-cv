@@ -118,6 +118,7 @@ export const RESUME_DATA_ES: ResumeData = {
       projects: "Proyectos",
     },
     present: "Actual",
+    verified: "Verificado",
     bullets: { showMore: "Ver {n} más", showLess: "Ver menos" },
     githubRepo: "Repo en GitHub",
     theme: {

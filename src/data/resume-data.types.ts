@@ -65,6 +65,11 @@ export type ResumeData = {
     issuer: string;
     year: string;
     url: string;
+    /**
+     * The link opens a page that verifies this credential for this person
+     * (checked by hand, not inferred from the URL), so the CV can say "Verified".
+     */
+    verified: boolean;
   }[];
   languages: readonly {
     language: string;
@@ -82,6 +87,8 @@ export type ResumeData = {
       projects: string;
     };
     present: string;
+    /** Label next to a certification whose link verifies it. */
+    verified: string;
     /** Toggle under a job's bullets; `{n}` in showMore is the number of hidden bullets. */
     bullets: { showMore: string; showLess: string };
     githubRepo: string;

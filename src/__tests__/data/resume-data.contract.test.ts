@@ -76,6 +76,11 @@ describe.each([
     expect(d.initials).toBe(initials);
   });
 
+  it("states for every certification whether its link verifies it, with at least one verified", () => {
+    expect(d.certifications.some((c) => c.verified)).toBe(true);
+    expect(d.certifications.filter((c) => typeof c.verified !== "boolean")).toEqual([]);
+  });
+
   it("has a usable email address for mailto: links", () => {
     expect(d.contact.email).toMatch(/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i);
   });

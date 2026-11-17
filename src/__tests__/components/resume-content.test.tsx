@@ -184,6 +184,22 @@ describe.each(LANGS)("ResumeContent [%s]", (lang) => {
     ]);
   });
 
+  it("marks only the certifications whose link verifies them as Verified", () => {
+    const certs = region(d.ui.sections.certifications);
+    const labelled = d.certifications.filter((c) => {
+      const link = within(certs).getAllByRole("link", { name: c.title }).find((a) => a.getAttribute("href") === c.url)!;
+      return within(link.parentElement!).queryByText(d.ui.verified) !== null;
+    });
+    expect(labelled).toEqual(d.certifications.filter((c) => c.verified));
+    expect(within(certs).getAllByText(d.ui.verified)).toHaveLength(labelled.length);
+  });
+
+  it("shows no Verified label when no certification is verified", () => {
+    const unverified = { ...d, certifications: d.certifications.map((c) => ({ ...c, verified: false })) };
+    render(<ResumeView data={unverified} />);
+    expect(within(screen.getAllByRole("region", { name: d.ui.sections.certifications }).at(-1)!).queryByText(d.ui.verified)).not.toBeInTheDocument();
+  });
+
   it("renders every language with its proficiency", () => {
     expectRendered(region(d.ui.sections.languages), [
       ...d.languages.map((l) => l.language),

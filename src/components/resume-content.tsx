@@ -5,7 +5,7 @@ import { ProfileAvatar } from "@/components/profile-avatar";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Section } from "@/components/ui/section";
-import { GlobeIcon, MailIcon } from "lucide-react";
+import { BadgeCheckIcon, GlobeIcon, MailIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ProjectCard } from "@/components/project-card";
 import { SiteFooter } from "@/components/site-footer";
@@ -241,15 +241,23 @@ export function ResumeView({ data }: { data: ResumeData }) {
             {data.certifications.map((cert) => (
               <div key={`${cert.title}-${cert.issuer}`} className="flex items-center justify-between">
                 <div className="flex flex-col">
-                  <a
-                    href={cert.url}
-                    onClick={() => track("cert_link", { cert: cert.title, issuer: cert.issuer })}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="font-medium hover:underline text-sm"
-                  >
-                    {cert.title}
-                  </a>
+                  <div className="flex flex-wrap items-center gap-x-2">
+                    <a
+                      href={cert.url}
+                      onClick={() => track("cert_link", { cert: cert.title, issuer: cert.issuer })}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-medium hover:underline text-sm"
+                    >
+                      {cert.title}
+                    </a>
+                    {cert.verified ? (
+                      <span className="inline-flex items-center gap-0.5 text-xs text-muted-foreground">
+                        <BadgeCheckIcon className="size-3" aria-hidden="true" />
+                        {data.ui.verified}
+                      </span>
+                    ) : null}
+                  </div>
                   <span className="text-xs text-muted-foreground">{cert.issuer}</span>
                 </div>
                 <span className="text-sm tabular-nums text-gray-500 shrink-0 ml-4">{cert.year}</span>
