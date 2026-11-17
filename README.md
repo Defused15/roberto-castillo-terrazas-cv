@@ -1,6 +1,6 @@
 
 
-# Minimalist CV [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FBartoszJarocki%2Fcv) ![CI](https://github.com/Defused15/roberto-castillo-terrazas-cv/actions/workflows/GithubActions.yml/badge.svg)
+# Minimalist CV ![CI](https://github.com/Defused15/roberto-castillo-terrazas-cv/actions/workflows/GithubActions.yml/badge.svg)
 
 > **Live site:** [rcastillo.dev](https://www.rcastillo.dev/)
 
@@ -41,7 +41,6 @@ Reports are automatically deployed to GitHub Pages on every push to `main`.
 - Responsive across devices
 - Optimized for Next.js and Vercel
 - Dark mode support
-- Docker support
 
 ---
 
@@ -75,28 +74,6 @@ Reports are automatically deployed to GitHub Pages on every push to `main`.
 
 ---
 
-## Run with Docker
-
-Build the container:
-
-```bash
-docker compose build
-```
-
-Run the container:
-
-```bash
-docker compose up -d
-```
-
-Stop the container:
-
-```bash
-docker compose down
-```
-
----
-
 ## 🧪 Testing
 
 ### Unit Tests — Jest + React Testing Library
@@ -107,7 +84,6 @@ Tests cover the main UI components and resume data logic.
 |---|---|
 | `Section.test.tsx` | Verifies section rendering and children |
 | `Projectcard.test.tsx` | Validates project card props and rendering |
-| `Commandmenu.test.tsx` | Tests command menu behavior and navigation |
 | `Darkmode.test.tsx` | Checks theme toggle functionality |
 | `LanguageProvider.test.tsx` | Tests the language provider and stored language preference |
 | `LanguageToggle.test.tsx` | Checks the EN/ES language toggle |

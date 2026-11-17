@@ -11,7 +11,7 @@ global.ResizeObserver = ResizeObserver as any
 window.HTMLElement.prototype.scrollIntoView = jest.fn()
 window.scrollTo = jest.fn()
 
-// Silence React act() warnings from Radix UI / cmdk components
+// Silence React act() warnings from Radix UI components
 const originalError = console.error
 
 beforeAll(() => {
