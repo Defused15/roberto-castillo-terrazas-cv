@@ -14,6 +14,7 @@ export type AnalyticsEvents = {
   project_repo: { project: string };
   cert_link: { cert: string; issuer: string };
   not_found: { path: string };
+  app_error: { digest: string };
 };
 
 export type AnalyticsEvent = keyof AnalyticsEvents;
