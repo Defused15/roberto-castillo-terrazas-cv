@@ -12,7 +12,8 @@
     "dashboard": "jest --json --outputFile=jest-report.json && npm run dashboard:build && node serve-dashboard.mjs",
     "dashboard:build": "node generate-jest-dashboard.mjs --json ./jest-report.json --html ./reports/jest-dashboard.html",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "prepare": "husky"
   },
   "dependencies": {
     "@radix-ui/react-dropdown-menu": "^2.2.1",
@@ -29,6 +30,8 @@
     "tailwind-merge": "^2.6.1"
   },
   "devDependencies": {
+    "@commitlint/cli": "^21.2.4",
+    "@commitlint/config-conventional": "^21.2.4",
     "@stryker-mutator/core": "^10.1.1",
     "@stryker-mutator/jest-runner": "^10.1.1",
     "@swc/core": "^1.16.22",
@@ -45,10 +48,12 @@
     "eslint": "^9.39.5",
     "eslint-config-next": "16.4.6",
     "eslint-config-prettier": "^10.1.8",
+    "husky": "^9.1.7",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^30.5.2",
     "jest-axe": "^11.0.0",
     "jest-environment-jsdom": "^30.5.2",
+    "lint-staged": "^17.6.1",
     "postcss": "^8.5.33",
     "prettier": "^3.10.1",
     "prettier-plugin-tailwindcss": "^0.8.1",
