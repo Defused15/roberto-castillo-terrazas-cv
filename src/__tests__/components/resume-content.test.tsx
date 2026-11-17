@@ -96,22 +96,6 @@ describe.each(LANGS)("ResumeContent [%s]", (lang) => {
     expect(hrefs(phonesOf(d).map((p) => callLink(d, p)))).toEqual(phonesOf(d).map((p) => `tel:${p}`));
   });
 
-  it("reveals the same numbers from the phone icon button, which has no tel: link", async () => {
-    const user = userEvent.setup();
-    const icon = screen.getByRole("button", { name: d.ui.contact.phoneButton });
-    expect(icon).not.toHaveAttribute("href");
-    expect(icon).toHaveAttribute("aria-expanded", "false");
-
-    await user.click(icon);
-
-    expect(icon).toHaveAttribute("aria-expanded", "true");
-    expect(phoneLineText(d)).toBe(phonesOf(d).map(formatPhone).join("·"));
-    // Focus stays on the icon; a second press moves it to the first number.
-    expect(icon).toHaveFocus();
-    await user.click(icon);
-    expect(copyButton(d, phonesOf(d)[0])).toHaveFocus();
-  });
-
   it("copies a revealed number and confirms it in place", async () => {
     const user = userEvent.setup();
     await user.click(screen.getByRole("button", { name: d.ui.contact.showPhones }));
@@ -144,7 +128,9 @@ describe.each(LANGS)("ResumeContent [%s]", (lang) => {
       "href",
       `mailto:${d.contact.email}`,
     );
-    expect(screen.getByRole("button", { name: d.ui.contact.phoneButton })).toBeInTheDocument();
+    // Phones are reachable only through the header line: the row has no phone control.
+    const row = screen.getByRole("link", { name: d.ui.contact.email }).parentElement!;
+    expect(row.querySelectorAll("a[href^='tel:'], .lucide-phone")).toHaveLength(0);
     d.contact.social.forEach((s) => {
       const link = screen.getByRole("link", { name: d.ui.contact.profiles[s.name] });
       expect(link).toHaveAttribute("href", s.url);
@@ -252,10 +238,9 @@ describe.each(LANGS)("ResumeContent › analytics events [%s]", (lang) => {
     expect(events).toEqual([["contact_email_copy", undefined]]);
   });
 
-  it("sends contact_phone_reveal once, whichever button reveals the numbers", async () => {
+  it("sends contact_phone_reveal from the Show phone numbers button", async () => {
     const { user } = renderWithProviders(<ResumeContent />, { lang });
     await user.click(screen.getByRole("button", { name: d.ui.contact.showPhones }));
-    await user.click(screen.getByRole("button", { name: d.ui.contact.phoneButton }));
     expect(capturedEvents()).toEqual([["contact_phone_reveal", undefined]]);
   });
 
@@ -263,7 +248,7 @@ describe.each(LANGS)("ResumeContent › analytics events [%s]", (lang) => {
     "sends contact_phone with the country only when %s is copied or called",
     async (phone) => {
       const { user } = renderWithProviders(<ResumeContent />, { lang });
-      await user.click(screen.getByRole("button", { name: d.ui.contact.phoneButton }));
+      await user.click(screen.getByRole("button", { name: d.ui.contact.showPhones }));
       posthogClear();
       await user.click(copyButton(d, phone));
       await user.click(callLink(d, phone));
@@ -371,7 +356,6 @@ describe("ResumeContent › print", () => {
       screen.getByRole("button", { name: EN.ui.theme.toggle }),
       screen.getByRole("button", { name: languageToggleName("en") }),
       screen.getByRole("link", { name: EN.ui.contact.email }),
-      screen.getByRole("button", { name: EN.ui.contact.phoneButton }),
       screen.getByRole("button", { name: EN.ui.contact.showPhones }),
       ...EN.contact.social.map((s) => screen.getByRole("link", { name: EN.ui.contact.profiles[s.name] })),
     ];
@@ -421,7 +405,6 @@ describe("ResumeView › optional content", () => {
     const contactHrefs = hrefs(screen.getAllByRole("link")).filter((h) => /^(mailto|tel):/.test(h ?? ""));
     expect(contactHrefs).toEqual([]);
     expect(screen.queryByRole("button", { name: EN.ui.contact.showPhones })).not.toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: EN.ui.contact.phoneButton })).not.toBeInTheDocument();
     // Social profiles do not depend on email or phone.
     expect(screen.getByRole("link", { name: EN.ui.contact.profiles.GitHub })).toBeInTheDocument();
   });

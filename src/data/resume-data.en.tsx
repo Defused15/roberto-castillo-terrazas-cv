@@ -273,7 +273,6 @@ export const RESUME_DATA_EN: ResumeData = {
       email: "Send an email",
       call: "Call",
       showPhones: "Show phone numbers",
-      phoneButton: "Reveal phone numbers",
       copy: "Copy",
       copyEmail: "Copy email address",
       copied: "Copied ✓",

@@ -13,7 +13,7 @@ import { ModeToggle } from "@/components/darkmode";
 import { LanguageToggle } from "@/components/language-toggle";
 import { useLanguage } from "@/components/language-provider";
 import { CopyText } from "@/components/copy-text";
-import { PhoneIconButton, PhoneLine, usePhoneReveal } from "@/components/contact-phones";
+import { PhoneLine, usePhoneReveal } from "@/components/contact-phones";
 import { formatPhone } from "@/lib/format-phone";
 import { track } from "@/lib/analytics";
 import type { ResumeData, SocialNetwork } from "@/data/resume-data";
@@ -98,9 +98,6 @@ export function ResumeView({ data }: { data: ResumeData }) {
                     <MailIcon className="size-4" aria-hidden="true" />
                   </a>
                 </Button>
-              ) : null}
-              {data.contact.phones.length > 0 ? (
-                <PhoneIconButton state={phones} ui={data.ui.contact} />
               ) : null}
               {data.contact.social.map((social) => (
                 <Button

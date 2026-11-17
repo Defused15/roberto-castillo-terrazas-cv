@@ -3,7 +3,6 @@
 import React from "react";
 import { flushSync } from "react-dom";
 import { PhoneIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { CopyText } from "@/components/copy-text";
 import { decodePhone, type EncodedPhone } from "@/lib/decode-phone";
 import { formatPhone, phoneCountry } from "@/lib/format-phone";
@@ -22,14 +21,13 @@ export function trackPhone(e164: string) {
 
 /**
  * Reveal state for the phone numbers. They stay encoded until the visitor asks
- * for them (text or icon button), or until the browser is about to print, so
+ * for them (the "Show phone numbers" button), or until the browser is about to print, so
  * the server HTML never contains them.
  */
 export function usePhoneReveal(encoded: readonly EncodedPhone[]) {
   const [revealed, setRevealed] = React.useState(false);
   const [printing, setPrinting] = React.useState(false);
   const firstNumber = React.useRef<HTMLButtonElement>(null);
-  const focusPending = React.useRef(false);
 
   // Stryker disable next-line ArrayDeclaration: equivalent mutant
   React.useEffect(() => {
@@ -39,25 +37,15 @@ export function usePhoneReveal(encoded: readonly EncodedPhone[]) {
     return () => window.removeEventListener("beforeprint", onBeforePrint);
   }, []);
 
+  // The button that was clicked is replaced by the numbers, so focus moves to the first one.
   React.useEffect(() => {
-    if (revealed && focusPending.current) {
-      focusPending.current = false;
-      firstNumber.current?.focus();
-    }
+    if (revealed) firstNumber.current?.focus();
   }, [revealed]);
 
-  const reveal = React.useCallback(
-    ({ focus }: { focus: boolean }) => {
-      if (revealed) {
-        if (focus) firstNumber.current?.focus();
-        return;
-      }
-      focusPending.current = focus;
-      setRevealed(true);
-      track("contact_phone_reveal");
-    },
-    [revealed],
-  );
+  const reveal = React.useCallback(() => {
+    setRevealed(true);
+    track("contact_phone_reveal");
+  }, []);
 
   const decoded = React.useMemo(
     () => (revealed || printing ? encoded.map(decodePhone) : []),
@@ -104,7 +92,7 @@ export function PhoneLine({ state, ui }: { state: Reveal; ui: ContactUi }) {
           type="button"
           aria-expanded={false}
           aria-controls={PHONE_LINE_ID}
-          onClick={() => state.reveal({ focus: true })}
+          onClick={state.reveal}
           className="inline-flex items-center gap-1 rounded-sm underline-offset-2 transition-colors hover:text-foreground hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
           <PhoneIcon className="size-3" aria-hidden="true" />
@@ -150,22 +138,5 @@ function PhoneNumber({
         <PhoneIcon className="size-3" aria-hidden="true" />
       </a>
     </span>
-  );
-}
-
-/** The phone icon in the quick-contact row: reveals the header line (no tel: link in the HTML). */
-export function PhoneIconButton({ state, ui }: { state: Reveal; ui: ContactUi }) {
-  return (
-    <Button
-      className="size-8"
-      variant="outline"
-      size="icon"
-      aria-label={ui.phoneButton}
-      aria-expanded={state.revealed}
-      aria-controls={PHONE_LINE_ID}
-      onClick={() => state.reveal({ focus: state.revealed })}
-    >
-      <PhoneIcon className="size-4" aria-hidden="true" />
-    </Button>
   );
 }

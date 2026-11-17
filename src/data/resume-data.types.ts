@@ -92,8 +92,6 @@ export type ResumeData = {
       call: string;
       /** Text button in the header that reveals the phone numbers. */
       showPhones: string;
-      /** Accessible name of the phone icon button, which reveals the numbers too. */
-      phoneButton: string;
       /** Prefix for a revealed number's copy button, e.g. "Copy" → "Copy +34 610 831 754". */
       copy: string;
       /** Prefix for the email line's copy button, e.g. "Copy email address" → "Copy email address me@x.dev". */

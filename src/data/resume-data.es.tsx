@@ -130,7 +130,6 @@ export const RESUME_DATA_ES: ResumeData = {
       email: "Enviar un correo",
       call: "Llamar al",
       showPhones: "Ver teléfonos",
-      phoneButton: "Mostrar teléfonos",
       copy: "Copiar",
       copyEmail: "Copiar correo",
       copied: "Copiado ✓",
