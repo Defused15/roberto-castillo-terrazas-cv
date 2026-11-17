@@ -65,12 +65,14 @@ export function WorkBullets({
             aria-expanded={expanded}
             aria-controls={id}
             onClick={toggle}
-            className="mt-1.5 inline-flex items-center gap-1 rounded-sm text-xs text-muted-foreground underline-offset-2 transition-colors hover:text-foreground hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring print:hidden"
+            // ml-4 lines the label up with the bullet text (the list's pl-4);
+            // min-h-8 gives a 32px hit area without changing the visual size.
+            className="ml-4 inline-flex min-h-8 items-center gap-1 rounded-sm text-sm font-medium text-foreground/80 underline-offset-4 transition-colors hover:text-foreground hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring print:hidden"
           >
             {expanded ? ui.showLess : ui.showMore.replace("{n}", String(rest.length))}
             <ChevronDownIcon
               aria-hidden="true"
-              className={cn("bullets-chevron size-3", expanded && "rotate-180")}
+              className={cn("bullets-chevron size-3.5", expanded && "rotate-180")}
             />
           </button>
         </>
