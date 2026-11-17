@@ -24,6 +24,11 @@ describe("robots.txt", () => {
     expect(sitemapUrl).toBe(`${SITE_URL}/sitemap.xml`);
     expect(host).toBe(SITE_URL);
   });
+
+  it("does not disallow any path (the old /graphql route no longer exists)", () => {
+    const rules = [robots().rules].flat();
+    expect(rules.filter((r) => r.disallow !== undefined)).toEqual([]);
+  });
 });
 
 describe("sitemap.xml", () => {
