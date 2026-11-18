@@ -75,7 +75,7 @@ describe('buildPersonJsonLd', () => {
 });
 
 describe('serializeJsonLd', () => {
-  it('escapes < so a </script> in the data cannot close the script tag', () => {
+  it('escapes < so a closing script tag in the data cannot end the inline script', () => {
     const payload = {name: '</script><script>alert(1)</script>'};
     const out = serializeJsonLd(payload);
     expect(out).not.toContain('<');
