@@ -55,6 +55,18 @@ const nextConfig: NextConfig = {
   async headers() {
     return [{source: '/:path*', headers: securityHeaders}];
   },
+  // /c is the URL printed in the business card QR (and later written to NFC tags).
+  // Temporary (307), so the target can change without reprinting the cards; the UTM
+  // tags let analytics tell card scans apart from other visits.
+  async redirects() {
+    return [
+      {
+        source: '/c',
+        destination: '/?utm_source=business-card&utm_medium=qr',
+        permanent: false,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
