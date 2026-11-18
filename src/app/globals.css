@@ -72,8 +72,7 @@
   }
   /* One keyboard focus style for every link and button; mouse clicks show nothing. */
   a:focus-visible,
-  button:focus-visible,
-  [role="menuitem"]:focus-visible {
+  button:focus-visible {
     @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
   }
   body {

@@ -1,23 +1,23 @@
-"use client";
+'use client';
 
-import { useEffect } from "react";
-import Link from "next/link";
-import { ArrowLeftIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useLanguage } from "@/components/language-provider";
-import { trackWhenReady } from "@/lib/analytics";
+import {useEffect} from 'react';
+import Link from 'next/link';
+import {ArrowLeftIcon} from 'lucide-react';
+import {buttonVariants} from '@/components/ui/button';
+import {useLanguage} from '@/components/language-provider';
+import {trackWhenReady} from '@/lib/analytics';
 
 // Stryker disable next-line all: entrance animation delay, verified visually
 function stagger(n: number): React.CSSProperties {
-  return { "--stagger": n } as React.CSSProperties;
+  return {'--stagger': n} as React.CSSProperties;
 }
 
 export function NotFoundContent() {
-  const { data } = useLanguage();
-  const { title, description, backHome } = data.ui.notFound;
+  const {data} = useLanguage();
+  const {title, description, backHome} = data.ui.notFound;
 
   useEffect(() => {
-    trackWhenReady("not_found", { path: window.location.pathname });
+    trackWhenReady('not_found', {path: window.location.pathname});
   }, []);
 
   return (
@@ -43,16 +43,17 @@ export function NotFoundContent() {
           {description}
         </p>
         <div className="nf-enter mt-8" style={stagger(3)}>
-          <Button
-            asChild
-            size="lg"
-            className="gap-2 transition-[transform,background-color] duration-150 ease-out active:scale-[0.97]"
+          <Link
+            href="/"
+            className={buttonVariants({
+              size: 'lg',
+              className:
+                'gap-2 transition-[transform,background-color] duration-150 ease-out active:scale-[0.97]',
+            })}
           >
-            <Link href="/">
-              <ArrowLeftIcon className="size-4" aria-hidden="true" />
-              {backHome}
-            </Link>
-          </Button>
+            <ArrowLeftIcon className="size-4" aria-hidden="true" />
+            {backHome}
+          </Link>
         </div>
       </section>
     </main>
