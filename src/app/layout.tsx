@@ -5,7 +5,6 @@ import {Inter} from 'next/font/google';
 import {ThemeProvider} from '@/components/theme-provider';
 import {LanguageProvider} from '@/components/language-provider';
 import {AnalyticsProvider} from '@/components/analytics-provider';
-import Script from 'next/script';
 
 import './globals.css';
 import React from 'react';
@@ -42,9 +41,9 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
         {onVercel ? (
           <>
             <Analytics />
-            <Script
+            {/* Plain inline script (CSP allows inline): next/script would add its client code to every page. */}
+            <script
               id="remove-vercel-toolbar"
-              strategy="afterInteractive"
               dangerouslySetInnerHTML={{
                 __html: `
                     (function() {
