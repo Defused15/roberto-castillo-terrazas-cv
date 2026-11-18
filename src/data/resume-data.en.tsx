@@ -1,4 +1,4 @@
-import {DivLogo, InetumLogo, MilwaukeeLogo} from '@/images/logos';
+import {DivLogo, InetumLogo, MilwaukeeLogo, VassLogo} from '@/images/logos';
 import {GitHubIcon, LinkedInIcon} from '@/components/icons';
 import type {ResumeData} from './resume-data.types';
 import type {EncodedPhone} from '@/lib/decode-phone';
@@ -48,13 +48,31 @@ export const RESUME_DATA_EN: ResumeData = {
   ],
   work: [
     {
+      company: 'VASS',
+      link: 'https://vasscompany.com/en/',
+      badges: ['Remote'],
+      title: 'QA Consultant',
+      logo: VassLogo,
+      start: '2026-07',
+      end: null,
+      description: [
+        "Led the migration of end-to-end regression suites for an insurance company's applications from Selenium (Java/TestNG) to Playwright with TypeScript, and built new automation projects from scratch.",
+        'Cut execution time per suite from ~2 hours to ~40 minutes (≈67% faster) by refactoring to the Page Object Model, optimizing database queries and isolating every test to enable parallel execution.',
+        'Introduced standardized QA processes: a shared automation project structure and conventions, a standard bug report template and Allure as the reporting standard across all projects.',
+        'Built an AI-assisted QA workflow with Claude Code custom skills and subagents: agents triage failed runs from the Playwright traces and report, classify each failure as a test or application issue with evidence, and draft Jira tickets with reproduction steps that I review before sending to development.',
+        'Ran k6 load tests and pinpointed the root cause of recurring outages.',
+        'Added API verifications within UI flows and integrated HashiCorp Vault for test credentials, using Postman collections to work with the Vault API.',
+        'Prepared the suites to run in the existing Jenkins pipelines from Bitbucket, with Allure reports on every build, and kept coverage traceable to Zephyr test cases.',
+      ],
+    },
+    {
       company: 'Inetum',
       link: 'https://www.inetum.com/es',
       badges: ['Remote'],
       title: 'Quality Engineer',
       logo: InetumLogo,
       start: '2025-03',
-      end: null,
+      end: '2026-03',
       description: [
         'Led the end-to-end quality strategy for a Sitecore-based CMS platform, covering functional, SIT, UAT, regression and accessibility testing.',
         'Applied shift-left practices, reviewing UI/UX designs and analyzing tickets for ambiguities before development to resolve requirement gaps early and prevent late-stage rework.',
@@ -119,6 +137,8 @@ export const RESUME_DATA_EN: ResumeData = {
         'Insomnia',
         'Pact',
         'Swagger / OpenAPI',
+        'Selenium',
+        'Allure',
       ],
     },
     {
@@ -138,7 +158,16 @@ export const RESUME_DATA_EN: ResumeData = {
     },
     {
       category: 'CI/CD & DevOps',
-      items: ['Azure DevOps', 'GitHub Actions', 'Git', 'GitHub', 'Docker'],
+      items: [
+        'Azure DevOps',
+        'GitHub Actions',
+        'Git',
+        'GitHub',
+        'Docker',
+        'Jenkins',
+        'Bitbucket',
+        'HashiCorp Vault',
+      ],
     },
     {
       category: 'Project Management',
@@ -150,6 +179,7 @@ export const RESUME_DATA_EN: ResumeData = {
         'Azure Test Plans',
         'Qase',
         'Agile',
+        'Zephyr',
       ],
     },
     {
@@ -174,6 +204,8 @@ export const RESUME_DATA_EN: ResumeData = {
         'Anthropic API',
         'Model Context Protocol (MCP)',
         'AI-Powered Testing',
+        'AI Agents & Custom Skills',
+        'Playwright MCP',
       ],
     },
     {
