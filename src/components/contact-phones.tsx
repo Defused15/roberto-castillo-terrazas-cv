@@ -66,8 +66,8 @@ type Reveal = ReturnType<typeof usePhoneReveal>;
 /**
  * The header line: a muted "Show phone numbers" button that turns into the
  * numbers. Each number copies itself; on touch screens a small call link sits
- * next to it. The line reserves its revealed height (two stacked lines on
- * narrow screens, one from `sm` up) so nothing below moves. Lines are 24px
+ * next to it. On narrow screens the numbers stack on two lines, so the line
+ * grows smoothly from one line to two when revealed. Lines are 24px
  * tall so every button and link meets the WCAG 2.5.8 minimum target size.
  */
 export function PhoneLine({state, ui}: {state: Reveal; ui: ContactUi}) {
@@ -76,7 +76,7 @@ export function PhoneLine({state, ui}: {state: Reveal; ui: ContactUi}) {
       id={PHONE_LINE_ID}
       aria-live="polite"
       // Stryker disable next-line StringLiteral: layout-only classes
-      className="flex min-h-12 flex-col items-start text-xs leading-6 text-muted-foreground sm:min-h-6 sm:flex-row sm:flex-wrap sm:items-center print:hidden"
+      className={`flex min-h-6 flex-col items-start text-xs leading-6 text-muted-foreground sm:flex-row sm:flex-wrap sm:items-center print:hidden${state.revealed ? 'phone-line-open' : ''}`}
     >
       {state.revealed ? (
         state.phones.map((phone, index) => (
