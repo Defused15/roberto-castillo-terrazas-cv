@@ -130,8 +130,9 @@ jobs:
   # hook for main in the VERCEL_DEPLOY_HOOK secret; without it the job only logs a notice.
   redeploy:
     name: Weekly Vercel Redeploy
-    needs: test
-    if: github.event_name == 'schedule' && github.ref == 'refs/heads/main'
+    # After the hub publish, so the rebuild picks up this run's test report for the badge.
+    needs: [test, hub]
+    if: ${{ !cancelled() && needs.test.result == 'success' && github.event_name == 'schedule' && github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
 
