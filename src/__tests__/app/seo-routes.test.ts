@@ -169,7 +169,7 @@ describe('open graph card copy', () => {
   });
   it('leads the value line with experience, projects and the current industry', () => {
     expect(OG_VALUE_LINE).toBe(
-      `${claim} · 15+ projects · insurance, healthcare, e-commerce`,
+      `${claim} · 20+ projects · insurance, healthcare, e-commerce`,
     );
     expect(claim).toMatch(/^\d+\+ years$/);
   });
