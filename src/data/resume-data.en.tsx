@@ -5,6 +5,7 @@ import {
 } from "@/images/logos";
 import { GitHubIcon, LinkedInIcon } from "@/components/icons";
 import type { ResumeData } from "./resume-data.types";
+import type { EncodedPhone } from "@/lib/decode-phone";
 
 export const RESUME_DATA_EN: ResumeData = {
   name: "Roberto Castillo",
@@ -19,7 +20,8 @@ export const RESUME_DATA_EN: ResumeData = {
   avatarUrl: "/avatar.jpg",
   contact: {
     email: "rct18130984@gmail.com",
-    phones: ["+34610831754", "+528711053221"],
+    // +34 610 831 754 and +52 871 105 3221, encoded (see src/lib/decode-phone.ts).
+    phones: ["NDU3MTM4MDE2NDMr", "MTIyMzUwMTE3ODI1Kw=="] as EncodedPhone[],
     social: [
       {
         name: "GitHub",
@@ -153,48 +155,70 @@ export const RESUME_DATA_EN: ResumeData = {
       issuer: "Anthropic",
       year: "2026",
       url: "https://verify.skilljar.com/c/q968tshgyfc9",
+      verified: true,
     },
     {
       title: "Introduction to Agent Skills",
       issuer: "Anthropic",
       year: "2026",
       url: "https://verify.skilljar.com/c/pevyfncx8rbp",
+      verified: true,
     },
     {
       title: "Introduction to Model Context Protocol",
       issuer: "Anthropic",
       year: "2026",
       url: "https://verify.skilljar.com/c/nrdyumuk4zqg",
+      verified: true,
+    },
+    {
+      title: "Data Analytics Essentials",
+      issuer: "Cisco",
+      year: "2025",
+      url: "https://www.credly.com/badges/02a73076-2bf0-4c6f-89a1-1beabdff4b0b",
+      verified: true,
+    },
+    {
+      title: "Introduction to Data Science",
+      issuer: "Cisco",
+      year: "2025",
+      url: "https://www.credly.com/badges/9d0114a7-eb43-4102-932b-a69626b5a028",
+      verified: true,
+    },
+    {
+      title: "Prompt Design in Vertex AI Skill Badge",
+      issuer: "Google Cloud",
+      year: "2025",
+      url: "https://www.credly.com/badges/d3e3f07f-8d25-42c5-a10e-55cc26293449",
+      verified: true,
     },
     {
       title: "Mobile App Metrics & Optimization",
       issuer: "Platzi",
       year: "2025",
       url: "https://platzi.com/p/roberto.castillo6549/curso/11930-course/diploma/detalle/",
-    },
-    {
-      title: "Google Data Analytics",
-      issuer: "Cisco",
-      year: "2025",
-      url: "https://www.credly.com/users/roberto-castillo.7a5e2dcd/badges/credly",
+      verified: true,
     },
     {
       title: "Bug Bounty & Web Security Testing",
       issuer: "Udemy",
       year: "2024",
       url: "https://www.udemy.com/certificate/UC-ca2d1e93-8ffb-4c40-8260-560e8b6e2653/",
+      verified: true,
     },
     {
       title: "Google Cloud Skills Boost",
       issuer: "Google",
       year: "2023",
       url: "https://www.cloudskillsboost.google/public_profiles/a2e36a7b-5b82-49c3-a098-153eec5e545f",
+      verified: true,
     },
     {
       title: "Google Data Analytics",
       issuer: "Coursera",
       year: "2022",
       url: "https://coursera.org/share/8761afde9926f90f13b641f355e4bcd3",
+      verified: true,
     },
   ],
   languages: [
@@ -259,6 +283,7 @@ export const RESUME_DATA_EN: ResumeData = {
       projects: "Projects",
     },
     present: "Present",
+    verified: "Verified",
     githubRepo: "GitHub repo",
     theme: {
       toggle: "Toggle theme",
@@ -270,6 +295,10 @@ export const RESUME_DATA_EN: ResumeData = {
     contact: {
       email: "Send an email",
       call: "Call",
+      showPhones: "Show phone numbers",
+      copy: "Copy",
+      copyEmail: "Copy email address",
+      copied: "Copied ✓",
       profiles: {
         GitHub: "GitHub profile",
         LinkedIn: "LinkedIn profile",
@@ -303,7 +332,7 @@ export const RESUME_DATA_EN: ResumeData = {
           title: "What I measure",
           paragraphs: [
             "I use PostHog, hosted in its EU cloud in Frankfurt, to count page visits and how long they last, including visits to pages that don't exist. PostHog doesn't store your IP address: it's removed as soon as the visit arrives. It also collects basic page-speed measurements. Sessions are not recorded and no visitor profiles are built.",
-            "I also count which links and buttons on the CV get used (contact details, profiles, projects, certificates, language, theme and printing) to see which parts are useful. For phone clicks I only keep the country of the number. I don't record what you type, where you move the mouse, or anything you do outside this site.",
+            "I also count which links and buttons on the CV get used (contact details, including copying the email or a phone number, revealing the phone numbers, profiles, projects, certificates, language, theme and printing) to see which parts are useful. When a phone number is copied or called, I only keep the country of the number. I don't record what you type, where you move the mouse, or anything you do outside this site.",
             "Vercel Web Analytics also counts page visits, in aggregate and without cookies, and shows roughly which country they come from without storing your IP address. Vercel hosts the site, so its servers keep standard logs (IP address and browser type) to deliver the pages.",
           ],
         },

@@ -1,5 +1,6 @@
 import type { ComponentType, SVGProps } from "react";
 import type { StaticImageData } from "next/image";
+import type { EncodedPhone } from "@/lib/decode-phone";
 
 export type Lang = "en" | "es";
 
@@ -31,7 +32,8 @@ export type ResumeData = {
   avatarUrl: string;
   contact: {
     email: string;
-    phones: readonly string[];
+    /** E.164 numbers, encoded with encodePhone(); decode with decodePhone() in the browser only. */
+    phones: readonly EncodedPhone[];
     social: readonly {
       name: SocialNetwork;
       url: string;
@@ -63,6 +65,11 @@ export type ResumeData = {
     issuer: string;
     year: string;
     url: string;
+    /**
+     * The link opens a page that verifies this credential for this person
+     * (checked by hand, not inferred from the URL), so the CV can say "Verified".
+     */
+    verified: boolean;
   }[];
   languages: readonly {
     language: string;
@@ -80,6 +87,8 @@ export type ResumeData = {
       projects: string;
     };
     present: string;
+    /** Label next to a certification whose link verifies it. */
+    verified: string;
     githubRepo: string;
     theme: { toggle: string; light: string; dark: string; system: string };
     languageToggle: string;
@@ -88,6 +97,14 @@ export type ResumeData = {
       email: string;
       /** Prefix for the phone number, e.g. "Call" → "Call +34 610 831 754". */
       call: string;
+      /** Text button in the header that reveals the phone numbers. */
+      showPhones: string;
+      /** Prefix for a revealed number's copy button, e.g. "Copy" → "Copy +34 610 831 754". */
+      copy: string;
+      /** Prefix for the email line's copy button, e.g. "Copy email address" → "Copy email address me@x.dev". */
+      copyEmail: string;
+      /** Feedback shown after a number or the email is copied. */
+      copied: string;
       profiles: Record<SocialNetwork, string>;
     };
     notFound: { title: string; description: string; backHome: string };

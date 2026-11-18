@@ -118,6 +118,7 @@ export const RESUME_DATA_ES: ResumeData = {
       projects: "Proyectos",
     },
     present: "Actual",
+    verified: "Verificado",
     githubRepo: "Repo en GitHub",
     theme: {
       toggle: "Cambiar tema",
@@ -129,6 +130,10 @@ export const RESUME_DATA_ES: ResumeData = {
     contact: {
       email: "Enviar un correo",
       call: "Llamar al",
+      showPhones: "Ver teléfonos",
+      copy: "Copiar",
+      copyEmail: "Copiar correo",
+      copied: "Copiado ✓",
       profiles: {
         GitHub: "Perfil de GitHub",
         LinkedIn: "Perfil de LinkedIn",
@@ -162,7 +167,7 @@ export const RESUME_DATA_ES: ResumeData = {
           title: "Qué mido",
           paragraphs: [
             "Uso PostHog, en su nube europea de Frankfurt, para contar las visitas y cuánto duran, también las que llegan a páginas que no existen. PostHog no guarda tu dirección IP: la elimina en cuanto llega la visita. También recoge mediciones básicas de la velocidad de carga. No se graban sesiones ni se crean perfiles de visitantes.",
-            "También cuento qué enlaces y botones del CV se usan (contacto, perfiles, proyectos, certificados, idioma, tema e impresión) para saber qué partes resultan útiles. En los clics al teléfono solo guardo el país del número. No registro lo que escribes, por dónde mueves el ratón ni lo que haces fuera de este sitio.",
+            "También cuento qué enlaces y botones del CV se usan (contacto, incluido copiar el correo o un teléfono, mostrar los teléfonos, perfiles, proyectos, certificados, idioma, tema e impresión) para saber qué partes resultan útiles. Cuando se copia o se llama a un teléfono, solo guardo el país del número. No registro lo que escribes, por dónde mueves el ratón ni lo que haces fuera de este sitio.",
             "Vercel Web Analytics también cuenta visitas, de forma agregada y sin cookies, y muestra aproximadamente desde qué país llegan sin guardar tu dirección IP. Vercel aloja la web, así que sus servidores guardan los registros habituales (IP y tipo de navegador) para poder servir las páginas.",
           ],
         },

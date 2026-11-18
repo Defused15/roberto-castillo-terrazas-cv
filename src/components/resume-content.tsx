@@ -6,14 +6,17 @@ import { ProfileAvatar } from "@/components/profile-avatar";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Section } from "@/components/ui/section";
-import { GlobeIcon, MailIcon, PhoneIcon } from "lucide-react";
+import { BadgeCheckIcon, GlobeIcon, MailIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ProjectCard } from "@/components/project-card";
 import { SiteFooter } from "@/components/site-footer";
 import { ModeToggle } from "@/components/darkmode";
 import { LanguageToggle } from "@/components/language-toggle";
 import { useLanguage } from "@/components/language-provider";
-import { formatPhone, phoneCountry } from "@/lib/format-phone";
+import { CopyText } from "@/components/copy-text";
+import { IssuerIcon } from "@/components/icons/issuers";
+import { PhoneLine, usePhoneReveal } from "@/components/contact-phones";
+import { formatPhone } from "@/lib/format-phone";
 import { track } from "@/lib/analytics";
 import type { ResumeData, SocialNetwork } from "@/data/resume-data";
 
@@ -21,12 +24,6 @@ const SOCIAL_EVENTS = {
   GitHub: "social_github",
   LinkedIn: "social_linkedin",
 } as const satisfies Record<SocialNetwork, string>;
-
-/** Reports a phone click by country only; the number itself is never sent. */
-function trackPhone(e164: string) {
-  const country = phoneCountry(e164);
-  if (country) track("contact_phone", { number_country: country });
-}
 
 /** Responsive columns for the project grid: never more columns than projects. */
 // Stryker disable next-line all: layout-only classes, verified visually
@@ -38,8 +35,9 @@ export function ResumeContent() {
   return <ResumeView data={data} />;
 }
 
-/** Pure rendering of one language's resume data. */
+/** One language's resume data. Its only state is whether the phone numbers are revealed. */
 export function ResumeView({ data }: { data: ResumeData }) {
+  const phones = usePhoneReveal(data.contact.phones);
 
   return (
     <>
@@ -76,30 +74,16 @@ export function ResumeView({ data }: { data: ResumeData }) {
               ))}
             </p>
             {data.contact.email ? (
-              <p className="text-xs text-muted-foreground">
-                {data.contact.email}
+              <p aria-live="polite" className="flex text-xs leading-4 text-muted-foreground">
+                <CopyText
+                  text={data.contact.email}
+                  label={`${data.ui.contact.copyEmail} ${data.contact.email}`}
+                  copiedLabel={data.ui.contact.copied}
+                  onCopy={() => track("contact_email_copy")}
+                />
               </p>
             ) : null}
-            {data.contact.phones.length > 0 ? (
-              <p className="text-xs text-muted-foreground print:hidden">
-                {data.contact.phones.map((phone, index) => (
-                  <React.Fragment key={phone}>
-                    {index > 0 ? (
-                      <span aria-hidden="true" className="mx-1.5">
-                        ·
-                      </span>
-                    ) : null}
-                    <a
-                      className="hover:underline"
-                      href={`tel:${phone}`}
-                      onClick={() => trackPhone(phone)}
-                    >
-                      {formatPhone(phone)}
-                    </a>
-                  </React.Fragment>
-                ))}
-              </p>
-            ) : null}
+            {data.contact.phones.length > 0 ? <PhoneLine state={phones} ui={data.ui.contact} /> : null}
             <div className="flex gap-x-1 pt-1 text-sm text-muted-foreground print:hidden">
               {data.contact.email ? (
                 <Button
@@ -114,22 +98,6 @@ export function ResumeView({ data }: { data: ResumeData }) {
                     onClick={() => track("contact_email")}
                   >
                     <MailIcon className="size-4" aria-hidden="true" />
-                  </a>
-                </Button>
-              ) : null}
-              {data.contact.phones[0] ? (
-                <Button
-                  className="size-8"
-                  variant="outline"
-                  size="icon"
-                  asChild
-                >
-                  <a
-                    href={`tel:${data.contact.phones[0]}`}
-                    onClick={() => trackPhone(data.contact.phones[0])}
-                    aria-label={`${data.ui.contact.call} ${formatPhone(data.contact.phones[0])}`}
-                  >
-                    <PhoneIcon className="size-4" aria-hidden="true" />
                   </a>
                 </Button>
               ) : null}
@@ -165,7 +133,8 @@ export function ResumeView({ data }: { data: ResumeData }) {
                   <span className="underline">{data.contact.email}</span>
                 </a>
               ) : null}
-              {data.contact.phones.map((phone) => (
+              {/* Decoded on reveal or on beforeprint, so paper always has both numbers. */}
+              {phones.printPhones.map((phone) => (
                 <a key={phone} href={`tel:${phone}`}>
                   <span className="underline">{formatPhone(phone)}</span>
                 </a>
@@ -279,16 +248,27 @@ export function ResumeView({ data }: { data: ResumeData }) {
             {data.certifications.map((cert) => (
               <div key={`${cert.title}-${cert.issuer}`} className="flex items-center justify-between">
                 <div className="flex flex-col">
-                  <a
-                    href={cert.url}
-                    onClick={() => track("cert_link", { cert: cert.title, issuer: cert.issuer })}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="font-medium hover:underline text-sm"
-                  >
-                    {cert.title}
-                  </a>
-                  <span className="text-xs text-muted-foreground">{cert.issuer}</span>
+                  <div className="flex flex-wrap items-center gap-x-2">
+                    <a
+                      href={cert.url}
+                      onClick={() => track("cert_link", { cert: cert.title, issuer: cert.issuer })}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-medium hover:underline text-sm"
+                    >
+                      {cert.title}
+                    </a>
+                    {cert.verified ? (
+                      <span className="inline-flex items-center gap-0.5 text-xs text-muted-foreground">
+                        <BadgeCheckIcon className="size-3" aria-hidden="true" />
+                        {data.ui.verified}
+                      </span>
+                    ) : null}
+                  </div>
+                  <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
+                    <IssuerIcon issuer={cert.issuer} className="size-3.5 shrink-0" />
+                    {cert.issuer}
+                  </span>
                 </div>
                 <span className="text-sm tabular-nums text-muted-foreground shrink-0 ml-4">{cert.year}</span>
               </div>

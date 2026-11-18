@@ -61,6 +61,9 @@ export const siteMetadata: Metadata = {
     },
   },
   icons: [
+    // Vector first: browsers that support SVG favicons pick it (it follows the
+    // colour scheme); the .ico and PNGs remain as fallbacks.
+    { rel: "icon", url: "/icon.svg", type: "image/svg+xml" },
     { rel: "icon", url: "/favicon.ico" },
     {
       rel: "apple-touch-icon",
