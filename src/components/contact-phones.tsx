@@ -1,22 +1,22 @@
-"use client";
+'use client';
 
-import React from "react";
-import { flushSync } from "react-dom";
-import { PhoneIcon } from "lucide-react";
-import { CopyText } from "@/components/copy-text";
-import { decodePhone, type EncodedPhone } from "@/lib/decode-phone";
-import { formatPhone, phoneCountry } from "@/lib/format-phone";
-import { track } from "@/lib/analytics";
-import type { ResumeData } from "@/data/resume-data";
+import React from 'react';
+import {flushSync} from 'react-dom';
+import {PhoneIcon} from 'lucide-react';
+import {CopyText} from '@/components/copy-text';
+import {decodePhone, type EncodedPhone} from '@/lib/decode-phone';
+import {formatPhone, phoneCountry} from '@/lib/format-phone';
+import {track} from '@/lib/analytics';
+import type {ResumeData} from '@/data/resume-data';
 
-type ContactUi = ResumeData["ui"]["contact"];
+type ContactUi = ResumeData['ui']['contact'];
 
-const PHONE_LINE_ID = "contact-phones";
+const PHONE_LINE_ID = 'contact-phones';
 
 /** Reports a phone copy or call by country only; the number itself is never sent. */
 export function trackPhone(e164: string) {
   const country = phoneCountry(e164);
-  if (country) track("contact_phone", { number_country: country });
+  if (country) track('contact_phone', {number_country: country});
 }
 
 /**
@@ -33,8 +33,8 @@ export function usePhoneReveal(encoded: readonly EncodedPhone[]) {
   React.useEffect(() => {
     // flushSync: the print block must be in the DOM before the browser lays out the page.
     const onBeforePrint = () => flushSync(() => setPrinting(true));
-    window.addEventListener("beforeprint", onBeforePrint);
-    return () => window.removeEventListener("beforeprint", onBeforePrint);
+    window.addEventListener('beforeprint', onBeforePrint);
+    return () => window.removeEventListener('beforeprint', onBeforePrint);
   }, []);
 
   // The button that was clicked is replaced by the numbers, so focus moves to the first one.
@@ -44,7 +44,7 @@ export function usePhoneReveal(encoded: readonly EncodedPhone[]) {
 
   const reveal = React.useCallback(() => {
     setRevealed(true);
-    track("contact_phone_reveal");
+    track('contact_phone_reveal');
   }, []);
 
   const decoded = React.useMemo(
@@ -52,7 +52,13 @@ export function usePhoneReveal(encoded: readonly EncodedPhone[]) {
     [encoded, revealed, printing],
   );
 
-  return { revealed, phones: revealed ? decoded : [], printPhones: decoded, reveal, firstNumber };
+  return {
+    revealed,
+    phones: revealed ? decoded : [],
+    printPhones: decoded,
+    reveal,
+    firstNumber,
+  };
 }
 
 type Reveal = ReturnType<typeof usePhoneReveal>;
@@ -61,21 +67,26 @@ type Reveal = ReturnType<typeof usePhoneReveal>;
  * The header line: a muted "Show phone numbers" button that turns into the
  * numbers. Each number copies itself; on touch screens a small call link sits
  * next to it. The line reserves its revealed height (two stacked lines on
- * narrow screens, one from `sm` up) so nothing below moves.
+ * narrow screens, one from `sm` up) so nothing below moves. Lines are 24px
+ * tall so every button and link meets the WCAG 2.5.8 minimum target size.
  */
-export function PhoneLine({ state, ui }: { state: Reveal; ui: ContactUi }) {
+export function PhoneLine({state, ui}: {state: Reveal; ui: ContactUi}) {
   return (
     <p
       id={PHONE_LINE_ID}
       aria-live="polite"
       // Stryker disable next-line StringLiteral: layout-only classes
-      className="flex min-h-8 flex-col items-start text-xs leading-4 text-muted-foreground sm:min-h-4 sm:flex-row sm:flex-wrap sm:items-center print:hidden"
+      className="flex min-h-12 flex-col items-start text-xs leading-6 text-muted-foreground sm:min-h-6 sm:flex-row sm:flex-wrap sm:items-center print:hidden"
     >
       {state.revealed ? (
         state.phones.map((phone, index) => (
           <React.Fragment key={phone}>
             {index > 0 ? (
-              <span aria-hidden="true" className="phone-reveal mx-1.5 hidden sm:inline" style={stagger(index)}>
+              <span
+                aria-hidden="true"
+                className="phone-reveal mx-1.5 hidden sm:inline"
+                style={stagger(index)}
+              >
                 ·
               </span>
             ) : null}
@@ -104,7 +115,8 @@ export function PhoneLine({ state, ui }: { state: Reveal; ui: ContactUi }) {
 }
 
 // Stryker disable next-line all: animation timing only, verified visually
-const stagger = (index: number) => ({ "--stagger": index }) as React.CSSProperties;
+const stagger = (index: number) =>
+  ({'--stagger': index}) as React.CSSProperties;
 
 function PhoneNumber({
   e164,
@@ -119,7 +131,10 @@ function PhoneNumber({
 }) {
   const formatted = formatPhone(e164);
   return (
-    <span className="phone-reveal inline-flex items-center gap-1 whitespace-nowrap" style={stagger(index)}>
+    <span
+      className="phone-reveal inline-flex items-center gap-1 whitespace-nowrap"
+      style={stagger(index)}
+    >
       <CopyText
         text={formatted}
         value={e164}
@@ -133,7 +148,7 @@ function PhoneNumber({
         href={`tel:${e164}`}
         onClick={() => trackPhone(e164)}
         aria-label={`${ui.call} ${formatted}`}
-        className="hidden rounded-sm p-0.5 hover:text-foreground [@media(pointer:coarse)]:inline-flex"
+        className="hidden size-6 items-center justify-center rounded-sm hover:text-foreground [@media(pointer:coarse)]:inline-flex"
       >
         <PhoneIcon className="size-3" aria-hidden="true" />
       </a>

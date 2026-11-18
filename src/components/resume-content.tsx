@@ -93,7 +93,8 @@ export function ResumeView({data}: {data: ResumeData}) {
               {data.contact.email ? (
                 <p
                   aria-live="polite"
-                  className="flex text-xs leading-4 text-muted-foreground"
+                  // leading-6: the copy button is a 24px-tall target (WCAG 2.5.8)
+                  className="flex text-xs leading-6 text-muted-foreground"
                 >
                   <CopyText
                     text={data.contact.email}
