@@ -13,7 +13,7 @@ const TEXT = {
   },
 } as const;
 
-/** Live result of the CV's own test suite, read from the QA Test Hub at build time. */
+/** Live result of a project's test suite, read from the QA Test Hub at build time. */
 export function QualityBadge({stats, lang}: {stats: TestHubStats; lang: Lang}) {
   const t = TEXT[lang];
   const date = new Date(`${stats.ranOn}T00:00:00Z`).toLocaleDateString(
