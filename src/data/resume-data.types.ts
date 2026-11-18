@@ -1,6 +1,7 @@
 import type {ComponentType, SVGProps} from 'react';
 import type {StaticImageData} from 'next/image';
 import type {EncodedPhone} from '@/lib/decode-phone';
+import type {YearMonth} from '@/lib/dates';
 
 export type Lang = 'en' | 'es';
 
@@ -28,6 +29,7 @@ export type ResumeData = {
   initials: string;
   locations: readonly {name: string; link: string}[];
   about: string;
+  /** Contains `{years}` once; it becomes the computed years claim ("4+ years"). */
   summary: string;
   avatarUrl: string;
   contact: {
@@ -43,8 +45,10 @@ export type ResumeData = {
   education: readonly {
     school: string;
     degree: string;
-    start: string;
-    end: string | null;
+    /** "YYYY-MM". */
+    start: YearMonth;
+    /** "YYYY-MM", or null while ongoing. */
+    end: YearMonth | null;
   }[];
   work: readonly {
     company: string;
@@ -52,8 +56,10 @@ export type ResumeData = {
     badges: readonly string[];
     title: string;
     logo: StaticImageData;
-    start: string;
-    end: string | null;
+    /** "YYYY-MM". */
+    start: YearMonth;
+    /** "YYYY-MM", or null for the current job. */
+    end: YearMonth | null;
     description: readonly string[];
   }[];
   skills: readonly {
@@ -108,6 +114,8 @@ export type ResumeData = {
       profiles: Record<SocialNetwork, string>;
       /** Accessible name of the print / save-as-PDF button. */
       print: string;
+      /** Header text link that downloads the vCard (/contact.vcf). */
+      saveContact: string;
     };
     /** Strings that only show in the printed CV. */
     print: {

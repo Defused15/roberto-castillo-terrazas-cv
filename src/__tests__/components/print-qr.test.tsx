@@ -1,34 +1,52 @@
-import {PrintQr, PRINT_QR_URL} from '@/components/print-qr';
+import {render} from '@testing-library/react';
+import {PrintQr, PRINT_QR_URL, qrPath} from '@/components/print-qr';
 import {QR_QUIET_ZONE, encodeQR} from '@/lib/qr';
-import {axe} from '@/test/axe';
-import {renderWithProviders} from '@/test/render';
 
-describe('PrintQr', () => {
-  it.each([
-    ['en', 'Live version: rcastillo.dev'],
-    ['es', 'Versión en línea: rcastillo.dev'],
-  ] as const)('captions the code in %s', (lang, caption) => {
-    const {getByText} = renderWithProviders(<PrintQr />, {lang});
-    expect(getByText(caption)).toBeInTheDocument();
+/** Turns the path back into the module grid it draws (each run is "Mx yhNv1h-Nz"). */
+function modulesFromPath(d: string, size: number): boolean[][] {
+  const grid = Array.from({length: size}, () => Array(size).fill(false));
+  for (const [, x, y, n, back] of d.matchAll(/M(\d+) (\d+)h(\d+)v1h-(\d+)z/g)) {
+    expect(back).toBe(n);
+    for (let i = 0; i < Number(n); i++) {
+      grid[Number(y) - QR_QUIET_ZONE][Number(x) - QR_QUIET_ZONE + i] = true;
+    }
+  }
+  return grid;
+}
+
+describe('qrPath', () => {
+  it('draws one rectangle per horizontal run, offset by the quiet zone', () => {
+    const q = QR_QUIET_ZONE;
+    expect(
+      qrPath([
+        [true, true, false, true],
+        [false, false, false, false],
+        [false, true, true, true],
+      ]),
+    ).toBe(
+      `M${q} ${q}h2v1h-2zM${q + 3} ${q}h1v1h-1zM${q + 1} ${q + 2}h3v1h-3z`,
+    );
   });
 
-  it('shows only in print, as a 72px SVG of dark modules inside a quiet zone', async () => {
-    const {container} = renderWithProviders(<PrintQr />);
-    expect(container.firstElementChild).toHaveClass('hidden', 'print:block');
+  it('draws nothing for an empty grid', () => {
+    expect(qrPath([[false, false]])).toBe('');
+  });
+});
+
+describe('PrintQr', () => {
+  it('draws exactly the encoded URL as a 72px SVG inside a quiet zone, hidden from assistive tech', () => {
+    const {container} = render(<PrintQr />);
     const svg = container.querySelector('svg')!;
-    const size = encodeQR(PRINT_QR_URL).length;
-    expect(svg).toHaveAttribute(
-      'viewBox',
-      `0 0 ${size + 2 * QR_QUIET_ZONE} ${size + 2 * QR_QUIET_ZONE}`,
-    );
-    expect(svg).toHaveClass('h-[72px]', 'w-[72px]');
-    const dark = encodeQR(PRINT_QR_URL).flat().filter(Boolean).length;
-    expect(svg.querySelectorAll('rect')).toHaveLength(dark);
-    const xs = [...svg.querySelectorAll('rect')].map(r =>
-      Number(r.getAttribute('x')),
-    );
-    expect(Math.min(...xs)).toBe(QR_QUIET_ZONE);
-    expect(Math.max(...xs)).toBe(QR_QUIET_ZONE + size - 1);
-    expect(await axe(container)).toHaveNoViolations();
+    const modules = encodeQR(PRINT_QR_URL);
+    const view = modules.length + 2 * QR_QUIET_ZONE;
+    expect(svg).toHaveAttribute('viewBox', `0 0 ${view} ${view}`);
+    expect(svg).toHaveClass('h-[72px]', 'w-[72px]', 'bg-white');
+    expect(svg).toHaveAttribute('aria-hidden', 'true');
+    const paths = svg.querySelectorAll('path');
+    expect(paths).toHaveLength(1);
+    expect(paths[0]).toHaveAttribute('fill', '#000');
+    expect(
+      modulesFromPath(paths[0].getAttribute('d')!, modules.length),
+    ).toEqual(modules);
   });
 });

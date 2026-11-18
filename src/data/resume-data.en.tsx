@@ -12,7 +12,7 @@ export const RESUME_DATA_EN: ResumeData = {
   ],
   about: 'QA Engineer | AI-Augmented SDET',
   summary:
-    'QA Engineer with 4+ years of experience contributing to and leading end-to-end quality strategies across 15+ projects in e-commerce, healthcare, logistics and finance within fast-paced IT consulting environments. Proven ability to own the full testing lifecycle, from requirements analysis and shift-left validation to CI/CD integration and defect triage, adapting quickly across industries, teams and tech stacks. Combines strong automation skills (Playwright, Cypress, Jest) and API testing expertise (Postman, Pact) with hands-on experience in enterprise platforms such as Salesforce, HubSpot and Stripe. Uses AI-augmented workflows, including multi-agent systems, custom agent skills and autonomous CI/CD remediation built with Claude Code and MCP, to accelerate delivery and reduce manual intervention. Comfortable working with distributed, international teams and contributing beyond QA when needed.',
+    'QA Engineer with {years} of experience contributing to and leading end-to-end quality strategies across 15+ projects in e-commerce, healthcare, logistics and finance within fast-paced IT consulting environments. Proven ability to own the full testing lifecycle, from requirements analysis and shift-left validation to CI/CD integration and defect triage, adapting quickly across industries, teams and tech stacks. Combines strong automation skills (Playwright, Cypress, Jest) and API testing expertise (Postman, Pact) with hands-on experience in enterprise platforms such as Salesforce, HubSpot and Stripe. Uses AI-augmented workflows, including multi-agent systems, custom agent skills and autonomous CI/CD remediation built with Claude Code and MCP, to accelerate delivery and reduce manual intervention. Comfortable working with distributed, international teams and contributing beyond QA when needed.',
   avatarUrl: '/avatar.jpg',
   contact: {
     email: 'rct18130984@gmail.com',
@@ -36,14 +36,14 @@ export const RESUME_DATA_EN: ResumeData = {
       school: 'Universidad de Almería',
       degree:
         "Master's Degree in Computer Engineering (Big Data specialization)",
-      start: '2026',
+      start: '2026-10',
       end: null,
     },
     {
       school: 'Instituto Tecnológico de La Laguna',
       degree: 'Bachelor of Engineering in Mechatronics',
-      start: '2018',
-      end: '2022',
+      start: '2018-08',
+      end: '2022-12',
     },
   ],
   work: [
@@ -53,7 +53,7 @@ export const RESUME_DATA_EN: ResumeData = {
       badges: ['Remote'],
       title: 'Quality Engineer',
       logo: InetumLogo,
-      start: '2025',
+      start: '2025-03',
       end: null,
       description: [
         'Led the end-to-end quality strategy for a Sitecore-based CMS platform, covering functional, SIT, UAT, regression and accessibility testing.',
@@ -74,8 +74,8 @@ export const RESUME_DATA_EN: ResumeData = {
       badges: ['Remote'],
       title: 'QA Engineer',
       logo: DivLogo,
-      start: '2023',
-      end: '2025',
+      start: '2023-01',
+      end: '2025-03',
       description: [
         'Owned end-to-end QA delivery across multiple concurrent client projects in e-commerce, healthcare and logistics, adapting test strategies to diverse tech stacks and delivery rhythms.',
         "Analyzed requirements for clarity, completeness and testability, translating them into test plans that defined strategy, scope, environments and entry/exit criteria aligned with each project's goals.",
@@ -94,8 +94,8 @@ export const RESUME_DATA_EN: ResumeData = {
       badges: ['On-site'],
       title: 'QA & Testing Intern',
       logo: MilwaukeeLogo,
-      start: '2022',
-      end: '2022',
+      start: '2022-04',
+      end: '2022-12',
       description: [
         'Developed a C# application backed by SQL Server that supported 200+ concurrent users managing 800+ records daily; designed the full database schema and served as sole QA owner for functional, regression and data validation testing.',
         'Wrote SQL Server queries to verify data accuracy and record integrity, detect anomalies and confirm correct storage across all database operations.',
@@ -363,6 +363,7 @@ export const RESUME_DATA_EN: ResumeData = {
         LinkedIn: 'LinkedIn profile',
       },
       print: 'Print or save as PDF',
+      saveContact: 'Save contact',
     },
     print: {
       qrCaption: 'Live version: rcastillo.dev',
@@ -396,7 +397,7 @@ export const RESUME_DATA_EN: ResumeData = {
           title: 'What I measure',
           paragraphs: [
             "I use PostHog, hosted in its EU cloud in Frankfurt, to count page visits and how long they last, including visits to pages that don't exist. PostHog doesn't store your IP address: it's removed as soon as the visit arrives. It also collects basic page-speed measurements. Sessions are not recorded and no visitor profiles are built.",
-            "I also count which links and buttons on the CV get used (contact details, including copying the email or a phone number, revealing the phone numbers, profiles, projects, certificates, language, theme and printing) to see which parts are useful. When a phone number is copied or called, I only keep the country of the number. I don't record what you type, where you move the mouse, or anything you do outside this site.",
+            "I also count which links and buttons on the CV get used (contact details, including copying the email or a phone number, revealing the phone numbers and saving the contact card, profiles, projects, certificates, language, theme and printing, from the print button or the browser) to see which parts are useful. When a phone number is copied or called, I only keep the country of the number. I don't record what you type, where you move the mouse, or anything you do outside this site.",
             'Vercel Web Analytics also counts page visits, in aggregate and without cookies, and shows roughly which country they come from without storing your IP address. Vercel hosts the site, so its servers keep standard logs (IP address and browser type) to deliver the pages.',
           ],
         },
@@ -432,7 +433,7 @@ export const RESUME_DATA_EN: ResumeData = {
         },
       ],
       lastUpdatedLabel: 'Last updated',
-      lastUpdated: 'November 17, 2026',
+      lastUpdated: 'November 18, 2026',
     },
   },
 };

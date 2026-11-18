@@ -1,7 +1,20 @@
 import {act, cleanup, render, screen, within} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {ResumeContent, ResumeView} from '@/components/resume-content';
-import {LANGS, RESUME_DATA_BY_LANG, type ResumeData} from '@/data/resume-data';
+import {
+  LANGS,
+  RESUME_DATA_BY_LANG,
+  withExperience,
+  type Lang,
+  type ResumeData,
+} from '@/data/resume-data';
+import {
+  durationMonths,
+  formatDuration,
+  formatPeriod,
+  monthStart,
+  type YearMonth,
+} from '@/lib/dates';
 import {decodePhone, encodePhone} from '@/lib/decode-phone';
 import {formatPhone, phoneCountry} from '@/lib/format-phone';
 import {
@@ -12,6 +25,7 @@ import {
 } from '@/test/analytics';
 import {languageToggleName, themeToggleName} from '@/test/labels';
 import {renderWithProviders} from '@/test/render';
+import {AS_OF} from '@/test/dates';
 import {isKnownIssuer} from '@/components/icons/issuers';
 
 /**
@@ -62,14 +76,21 @@ const regionNames = () =>
         document.getElementById(r.getAttribute('aria-labelledby') ?? '')
           ?.textContent,
     );
-const dates = (x: {start: string; end: string | null}, present: string) =>
-  `${x.start} - ${x.end ?? present}`;
+const TODAY = monthStart(AS_OF);
+type Dated = {start: YearMonth; end: YearMonth | null};
+const period = (x: Dated, d: ResumeData, lang: Lang) =>
+  formatPeriod(x.start, x.end, lang, d.ui.present);
+const duration = (x: Dated, lang: Lang) =>
+  formatDuration(durationMonths(x.start, x.end, TODAY), lang);
+/** The summary as rendered: the years placeholder filled in for AS_OF. */
+const summaryOf = (d: ResumeData, lang: Lang) =>
+  withExperience(d.summary, lang, TODAY);
 
 describe.each(LANGS)('ResumeContent [%s]', lang => {
   const d = RESUME_DATA_BY_LANG[lang];
 
   beforeEach(() => {
-    renderWithProviders(<ResumeContent />, {lang});
+    renderWithProviders(<ResumeContent asOf={AS_OF} />, {lang});
   });
 
   it('renders every section as a named region, in CV order', () => {
@@ -83,7 +104,7 @@ describe.each(LANGS)('ResumeContent [%s]', lang => {
     expect(screen.getByText(d.about)).toBeInTheDocument();
     expect(screen.getByRole('img', {name: d.name})).toBeInTheDocument();
     expect(
-      within(region(d.ui.sections.about)).getByText(d.summary),
+      within(region(d.ui.sections.about)).getByText(summaryOf(d, lang)),
     ).toBeInTheDocument();
   });
 
@@ -208,7 +229,8 @@ describe.each(LANGS)('ResumeContent [%s]', lang => {
     });
     expectRendered(work, [
       ...d.work.map(w => w.title),
-      ...d.work.map(w => dates(w, d.ui.present)),
+      ...d.work.map(w => period(w, d, lang)),
+      ...d.work.map(w => duration(w, lang)),
       ...d.work.flatMap(w => w.badges),
       ...d.work.flatMap(w => w.description),
     ]);
@@ -221,7 +243,46 @@ describe.each(LANGS)('ResumeContent [%s]', lang => {
     expectRendered(region(d.ui.sections.education), [
       ...d.education.map(e => e.school),
       ...d.education.map(e => e.degree),
-      ...d.education.map(e => dates(e, d.ui.present)),
+      ...d.education.map(e => period(e, d, lang)),
+    ]);
+  });
+
+  it('shows how long each job lasted next to its title, but no duration for degrees', () => {
+    const work = region(d.ui.sections.work);
+    d.work.forEach(w => {
+      const title = within(work).getByText(w.title, {selector: 'h4'});
+      expect(title.parentElement).toHaveTextContent(
+        `${w.title}${duration(w, lang)}`,
+      );
+    });
+    const education = region(d.ui.sections.education);
+    d.education.forEach(e =>
+      expect(
+        within(education).queryByText(duration(e, lang)),
+      ).not.toBeInTheDocument(),
+    );
+  });
+
+  it('offers the contact card as a download from a text line', () => {
+    const link = screen.getByRole('link', {name: d.ui.contact.saveContact});
+    expect(link).toHaveAttribute('href', '/contact.vcf');
+    expect(link).toHaveAttribute('download');
+    expect(link.querySelector('svg')).toHaveAttribute('aria-hidden', 'true');
+    expect(link.closest('p')).toHaveClass('print:hidden');
+  });
+
+  it('puts the print button in the icon row, after the profiles and before the theme', () => {
+    const print = screen.getByRole('button', {name: d.ui.contact.print});
+    const row = print.parentElement!;
+    const names = [...row.querySelectorAll('a, button')].map(el =>
+      el.getAttribute('aria-label'),
+    );
+    expect(names).toEqual([
+      d.ui.contact.email,
+      ...d.contact.social.map(s => d.ui.contact.profiles[s.name]),
+      d.ui.contact.print,
+      themeToggleName(lang),
+      languageToggleName(lang),
     ]);
   });
 
@@ -283,7 +344,7 @@ describe.each(LANGS)('ResumeContent [%s]', lang => {
       ...d,
       certifications: [{...d.certifications[0], issuer: 'Unknown Academy'}],
     };
-    render(<ResumeView data={unknown} />);
+    render(<ResumeView data={unknown} lang={lang} asOf={AS_OF} />);
     const regions = screen.getAllByRole('region', {
       name: d.ui.sections.certifications,
     });
@@ -296,7 +357,7 @@ describe.each(LANGS)('ResumeContent [%s]', lang => {
       ...d,
       certifications: d.certifications.map(c => ({...c, verified: false})),
     };
-    render(<ResumeView data={unverified} />);
+    render(<ResumeView data={unverified} lang={lang} asOf={AS_OF} />);
     expect(
       within(
         screen
@@ -345,7 +406,7 @@ describe.each(LANGS)('ResumeContent › analytics events [%s]', lang => {
 
   /** Renders the page, clicks `link` and returns the events it sent. */
   async function click(find: () => HTMLElement) {
-    const {user} = renderWithProviders(<ResumeContent />, {lang});
+    const {user} = renderWithProviders(<ResumeContent asOf={AS_OF} />, {lang});
     await user.click(find());
     return capturedEvents();
   }
@@ -366,7 +427,7 @@ describe.each(LANGS)('ResumeContent › analytics events [%s]', lang => {
   });
 
   it('sends contact_phone_reveal from the Show phone numbers button', async () => {
-    const {user} = renderWithProviders(<ResumeContent />, {lang});
+    const {user} = renderWithProviders(<ResumeContent asOf={AS_OF} />, {lang});
     await user.click(
       screen.getByRole('button', {name: d.ui.contact.showPhones}),
     );
@@ -376,7 +437,9 @@ describe.each(LANGS)('ResumeContent › analytics events [%s]', lang => {
   it.each(phonesOf(RESUME_DATA_BY_LANG[lang]))(
     'sends contact_phone with the country only when %s is copied or called',
     async phone => {
-      const {user} = renderWithProviders(<ResumeContent />, {lang});
+      const {user} = renderWithProviders(<ResumeContent asOf={AS_OF} />, {
+        lang,
+      });
       await user.click(
         screen.getByRole('button', {name: d.ui.contact.showPhones}),
       );
@@ -418,7 +481,7 @@ describe.each(LANGS)('ResumeContent › analytics events [%s]', lang => {
   it('sends project_link and project_repo with the project title', async () => {
     const withSite = d.projects.find(p => p.link)!;
     const withRepo = d.projects.find(p => p.githubLink)!;
-    const {user} = renderWithProviders(<ResumeContent />, {lang});
+    const {user} = renderWithProviders(<ResumeContent asOf={AS_OF} />, {lang});
     const projects = region(d.ui.sections.projects);
 
     await user.click(
@@ -446,6 +509,14 @@ describe.each(LANGS)('ResumeContent › analytics events [%s]', lang => {
     ]);
   });
 
+  it('sends save_contact from the Save contact link', async () => {
+    expect(
+      await click(() =>
+        screen.getByRole('link', {name: d.ui.contact.saveContact}),
+      ),
+    ).toEqual([['save_contact', undefined]]);
+  });
+
   it('sends nothing for links without an event, such as locations', async () => {
     expect(
       await click(() => screen.getByRole('link', {name: d.locations[0].name})),
@@ -456,7 +527,7 @@ describe.each(LANGS)('ResumeContent › analytics events [%s]', lang => {
 describe.each(LANGS)('ResumeContent › footer [%s]', lang => {
   it('ends the page with a footer linking to the privacy notice', () => {
     const d = RESUME_DATA_BY_LANG[lang];
-    renderWithProviders(<ResumeContent />, {lang});
+    renderWithProviders(<ResumeContent asOf={AS_OF} />, {lang});
     const footer = screen.getByRole('contentinfo');
     expect(
       within(footer).getByRole('link', {name: d.ui.privacy.link}),
@@ -469,15 +540,16 @@ describe.each(LANGS)('ResumeContent › footer [%s]', lang => {
 describe('ResumeContent › language switch', () => {
   it('switches the whole page to Spanish and back', async () => {
     const ES = RESUME_DATA_BY_LANG.es;
-    const {user} = renderWithProviders(<ResumeContent />);
+    const {user} = renderWithProviders(<ResumeContent asOf={AS_OF} />);
 
     await user.click(
       screen.getByRole('button', {name: languageToggleName('en')}),
     );
 
     expect(regionNames()).toEqual(Object.values(ES.ui.sections));
-    expect(screen.getByText(ES.summary)).toBeInTheDocument();
-    expect(screen.queryByText(EN.summary)).not.toBeInTheDocument();
+    expect(screen.getByText(summaryOf(ES, 'es'))).toBeInTheDocument();
+    expect(screen.queryByText(summaryOf(EN, 'en'))).not.toBeInTheDocument();
+    expect(screen.getByText(period(ES.work[0], ES, 'es'))).toBeInTheDocument();
     expect(
       screen.getByRole('link', {name: ES.ui.contact.profiles.GitHub}),
     ).toBeInTheDocument();
@@ -504,7 +576,7 @@ describe('ResumeContent › print', () => {
     el.closest('.hidden.print\\:flex') !== null;
 
   beforeEach(() => {
-    renderWithProviders(<ResumeContent />);
+    renderWithProviders(<ResumeContent asOf={AS_OF} />);
   });
 
   it('hides every interactive control on paper', () => {
@@ -513,6 +585,11 @@ describe('ResumeContent › print', () => {
       screen.getByRole('button', {name: languageToggleName('en')}),
       screen.getByRole('link', {name: EN.ui.contact.email}),
       screen.getByRole('button', {name: EN.ui.contact.showPhones}),
+      screen.getByRole('button', {name: EN.ui.contact.print}),
+      screen.getByRole('button', {
+        name: `${EN.ui.contact.copyEmail} ${EN.contact.email}`,
+      }),
+      screen.getByRole('link', {name: EN.ui.contact.saveContact}),
       ...EN.contact.social.map(s =>
         screen.getByRole('link', {name: EN.ui.contact.profiles[s.name]}),
       ),
@@ -557,6 +634,24 @@ describe('ResumeContent › print', () => {
     },
   );
 
+  it('prints the QR code it is given, with a caption in the page language, never on screen', async () => {
+    cleanup();
+    const {user} = renderWithProviders(
+      <ResumeContent asOf={AS_OF} printQr={<svg data-testid="qr" />} />,
+    );
+    const figure = screen.getByTestId('qr').closest('figure')!;
+    expect(figure).toHaveClass('hidden', 'print:flex');
+    expect(figure).toHaveTextContent(EN.ui.print.qrCaption);
+    await user.click(
+      screen.getByRole('button', {name: languageToggleName('en')}),
+    );
+    expect(figure).toHaveTextContent(RESUME_DATA_BY_LANG.es.ui.print.qrCaption);
+  });
+
+  it('renders no QR figure without a code', () => {
+    expect(document.querySelector('figure')).toBeNull();
+  });
+
   it('stops listening for print once the page is gone', () => {
     const remove = jest.spyOn(window, 'removeEventListener');
     cleanup();
@@ -569,12 +664,13 @@ describe('ResumeView › optional content', () => {
     ...EN,
     ...overrides,
   });
+  const View = ({data}: {data: ResumeData}) => (
+    <ResumeView data={data} lang="en" asOf={AS_OF} />
+  );
 
   it('omits every email and phone link when the contact has none', () => {
     const {container} = render(
-      <ResumeView
-        data={build({contact: {...EN.contact, email: '', phones: []}})}
-      />,
+      <View data={build({contact: {...EN.contact, email: '', phones: []}})} />,
     );
     // An empty contact line would still take up vertical space in the header.
     expect(container.querySelector('p:empty')).toBeNull();
@@ -595,9 +691,7 @@ describe('ResumeView › optional content', () => {
   it('shows a single phone without a separator', async () => {
     const [phone] = EN.contact.phones;
     const user = userEvent.setup();
-    render(
-      <ResumeView data={build({contact: {...EN.contact, phones: [phone]}})} />,
-    );
+    render(<View data={build({contact: {...EN.contact, phones: [phone]}})} />);
     await user.click(
       screen.getByRole('button', {name: EN.ui.contact.showPhones}),
     );
@@ -610,7 +704,7 @@ describe('ResumeView › optional content', () => {
     jest.useFakeTimers();
     try {
       const user = userEvent.setup({advanceTimers: jest.advanceTimersByTime});
-      render(<ResumeView data={EN} />);
+      render(<ResumeView data={EN} lang="en" asOf={AS_OF} />);
       await user.click(
         screen.getByRole('button', {name: EN.ui.contact.showPhones}),
       );
@@ -633,7 +727,7 @@ describe('ResumeView › optional content', () => {
     jest
       .spyOn(navigator.clipboard, 'writeText')
       .mockRejectedValue(new Error('denied'));
-    render(<ResumeView data={EN} />);
+    render(<ResumeView data={EN} lang="en" asOf={AS_OF} />);
     await user.click(
       screen.getByRole('button', {name: EN.ui.contact.showPhones}),
     );
@@ -653,7 +747,7 @@ describe('ResumeView › optional content', () => {
     const phone = '+15551234567';
     const user = userEvent.setup();
     render(
-      <ResumeView
+      <View
         data={build({contact: {...EN.contact, phones: [encodePhone(phone)]}})}
       />,
     );
@@ -667,7 +761,7 @@ describe('ResumeView › optional content', () => {
 
   it('renders a project without a website as a plain title', () => {
     const project = {...EN.projects[0], link: undefined};
-    render(<ResumeView data={build({projects: [project]})} />);
+    render(<View data={build({projects: [project]})} />);
     const projects = region(EN.ui.sections.projects);
     expect(within(projects).getByText(project.title)).toBeInTheDocument();
     expect(

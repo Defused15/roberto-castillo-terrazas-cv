@@ -1,7 +1,11 @@
 import {
   durationMonths,
   formatDuration,
+  formatMonth,
+  formatPeriod,
   formatYearsClaim,
+  monthStart,
+  toYearMonth,
   yearsOfExperience,
 } from '@/lib/dates';
 
@@ -68,5 +72,60 @@ describe('formatYearsClaim', () => {
     [1, 'es', 'más de 1 año'],
   ] as const)('%i in %s is %s', (n, lang, expected) => {
     expect(formatYearsClaim(n, lang)).toBe(expected);
+  });
+});
+
+describe('toYearMonth / monthStart', () => {
+  it.each([
+    [day(2026, 11, 18), '2026-11'],
+    [day(2027, 1, 1), '2027-01'],
+    [day(2025, 12, 31), '2025-12'],
+  ])('%s is in %s', (date, ym) => {
+    expect(toYearMonth(date)).toBe(ym);
+  });
+
+  it('starts a month on its first day at local midnight', () => {
+    expect(monthStart('2025-03')).toEqual(day(2025, 3, 1));
+    expect(toYearMonth(monthStart('2026-10'))).toBe('2026-10');
+  });
+});
+
+describe('formatMonth', () => {
+  it.each([
+    ['2023-01', 'en', 'Jan 2023'],
+    ['2025-03', 'en', 'Mar 2025'],
+    ['2022-12', 'en', 'Dec 2022'],
+    ['2023-01', 'es', 'ene. 2023'],
+    ['2018-08', 'es', 'ago. 2018'],
+    ['2026-09', 'es', 'sept. 2026'],
+    ['2022-12', 'es', 'dic. 2022'],
+  ] as const)('%s in %s is %s', (ym, lang, expected) => {
+    expect(formatMonth(ym, lang)).toBe(expected);
+  });
+
+  it('names every month differently', () => {
+    const names = (lang: 'en' | 'es') =>
+      Array.from({length: 12}, (_, i) =>
+        formatMonth(`2024-${String(i + 1).padStart(2, '0')}`, lang),
+      );
+    expect(new Set(names('en')).size).toBe(12);
+    expect(new Set(names('es')).size).toBe(12);
+    expect(names('en').join(',')).toBe(
+      'Jan 2024,Feb 2024,Mar 2024,Apr 2024,May 2024,Jun 2024,Jul 2024,Aug 2024,Sep 2024,Oct 2024,Nov 2024,Dec 2024',
+    );
+    expect(names('es').join(',')).toBe(
+      'ene. 2024,feb. 2024,mar. 2024,abr. 2024,may. 2024,jun. 2024,jul. 2024,ago. 2024,sept. 2024,oct. 2024,nov. 2024,dic. 2024',
+    );
+  });
+});
+
+describe('formatPeriod', () => {
+  it.each([
+    ['2023-01', '2025-03', 'en', 'Present', 'Jan 2023 – Mar 2025'],
+    ['2025-03', null, 'en', 'Present', 'Mar 2025 – Present'],
+    ['2025-03', null, 'es', 'Actual', 'mar. 2025 – Actual'],
+    ['2022-04', '2022-12', 'es', 'Actual', 'abr. 2022 – dic. 2022'],
+  ] as const)('%s to %s in %s', (start, end, lang, present, expected) => {
+    expect(formatPeriod(start, end, lang, present)).toBe(expected);
   });
 });

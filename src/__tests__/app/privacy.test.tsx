@@ -80,10 +80,10 @@ describe.each(LANGS)('Privacy page [%s]', lang => {
 describe('Privacy page', () => {
   it('states the fixed last update date in both languages', () => {
     expect(RESUME_DATA_BY_LANG.en.ui.privacy.lastUpdated).toBe(
-      'November 17, 2026',
+      'November 18, 2026',
     );
     expect(RESUME_DATA_BY_LANG.es.ui.privacy.lastUpdated).toBe(
-      '17 de noviembre de 2026',
+      '18 de noviembre de 2026',
     );
   });
 

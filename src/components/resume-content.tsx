@@ -6,19 +6,32 @@ import {ProfileAvatar} from '@/components/profile-avatar';
 import {Card, CardHeader, CardContent} from '@/components/ui/card';
 import {Badge} from '@/components/ui/badge';
 import {Section} from '@/components/ui/section';
-import {BadgeCheckIcon, GlobeIcon, MailIcon} from 'lucide-react';
+import {BadgeCheckIcon, DownloadIcon, GlobeIcon, MailIcon} from 'lucide-react';
 import {buttonVariants} from '@/components/ui/button';
 import {ProjectCard} from '@/components/project-card';
 import {SiteFooter} from '@/components/site-footer';
 import {ModeToggle} from '@/components/darkmode';
 import {LanguageToggle} from '@/components/language-toggle';
+import {PrintButton} from '@/components/print-button';
 import {useLanguage} from '@/components/language-provider';
 import {CopyText} from '@/components/copy-text';
 import {IssuerIcon} from '@/components/icons/issuers';
 import {PhoneLine, usePhoneReveal} from '@/components/contact-phones';
 import {formatPhone} from '@/lib/format-phone';
 import {track} from '@/lib/analytics';
-import type {ResumeData, SocialNetwork} from '@/data/resume-data';
+import {
+  withExperience,
+  type Lang,
+  type ResumeData,
+  type SocialNetwork,
+} from '@/data/resume-data';
+import {
+  durationMonths,
+  formatDuration,
+  formatPeriod,
+  monthStart,
+  type YearMonth,
+} from '@/lib/dates';
 
 const SOCIAL_EVENTS = {
   GitHub: 'social_github',
@@ -37,15 +50,36 @@ const projectGridCols = (n: number) =>
       ? 'grid-cols-1 md:grid-cols-2'
       : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3';
 
+/** Muted text link in the header, styled like the "Show phone numbers" button. */
+const TEXT_LINK =
+  'inline-flex items-center gap-1 rounded-sm underline-offset-2 transition-colors hover:text-foreground hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring';
+
+type DateProps = {
+  /**
+   * Month the CV is dated to ("YYYY-MM"): the build month, passed down from the
+   * server page so the server HTML and the hydrated page show the same years
+   * and durations. Never computed in the browser.
+   */
+  asOf: YearMonth;
+  /** Print-only QR code, rendered on the server (see PrintQr). */
+  printQr?: React.ReactNode;
+};
+
 /** The CV in the language currently selected in LanguageProvider. */
-export function ResumeContent() {
-  const {data} = useLanguage();
-  return <ResumeView data={data} />;
+export function ResumeContent(props: DateProps) {
+  const {lang, data} = useLanguage();
+  return <ResumeView data={data} lang={lang} {...props} />;
 }
 
 /** One language's resume data. Its only state is whether the phone numbers are revealed. */
-export function ResumeView({data}: {data: ResumeData}) {
+export function ResumeView({
+  data,
+  lang,
+  asOf,
+  printQr,
+}: DateProps & {data: ResumeData; lang: Lang}) {
   const phones = usePhoneReveal(data.contact.phones);
+  const today = monthStart(asOf);
 
   return (
     <>
@@ -89,8 +123,9 @@ export function ResumeView({data}: {data: ResumeData}) {
               {data.contact.email ? (
                 <p
                   aria-live="polite"
-                  // leading-6: the copy button is a 24px-tall target (WCAG 2.5.8)
-                  className="flex text-xs leading-6 text-muted-foreground"
+                  // leading-6: the copy button is a 24px-tall target (WCAG 2.5.8).
+                  // Hidden on paper: the print-only block below has the address.
+                  className="flex text-xs leading-6 text-muted-foreground print:hidden"
                 >
                   <CopyText
                     text={data.contact.email}
@@ -103,6 +138,17 @@ export function ResumeView({data}: {data: ResumeData}) {
               {data.contact.phones.length > 0 ? (
                 <PhoneLine state={phones} ui={data.ui.contact} />
               ) : null}
+              <p className="flex text-xs leading-6 text-muted-foreground print:hidden">
+                <a
+                  href="/contact.vcf"
+                  download
+                  onClick={() => track('save_contact')}
+                  className={TEXT_LINK}
+                >
+                  <DownloadIcon className="size-3" aria-hidden="true" />
+                  {data.ui.contact.saveContact}
+                </a>
+              </p>
               <div className="flex gap-x-1 pt-1 text-sm text-muted-foreground print:hidden">
                 {data.contact.email ? (
                   <a
@@ -127,6 +173,7 @@ export function ResumeView({data}: {data: ResumeData}) {
                     <social.icon className="size-4" aria-hidden="true" />
                   </a>
                 ))}
+                <PrintButton />
                 <div className="flex size-8 items-center justify-center">
                   <ModeToggle />
                 </div>
@@ -149,15 +196,25 @@ export function ResumeView({data}: {data: ResumeData}) {
               </div>
             </div>
 
-            <ProfileAvatar
-              src={data.avatarUrl}
-              alt={data.name}
-              fallback={data.initials}
-            />
+            <div className="flex shrink-0 items-end gap-4">
+              {printQr ? (
+                <figure className="hidden flex-col items-center print:flex">
+                  {printQr}
+                  <figcaption className="text-[10px] text-muted-foreground">
+                    {data.ui.print.qrCaption}
+                  </figcaption>
+                </figure>
+              ) : null}
+              <ProfileAvatar
+                src={data.avatarUrl}
+                alt={data.name}
+                fallback={data.initials}
+              />
+            </div>
           </div>
           <Section title={data.ui.sections.about}>
             <p className="text-pretty text-sm text-muted-foreground print:text-[12px]">
-              {data.summary}
+              {withExperience(data.summary, lang, today)}
             </p>
           </Section>
           <Section title={data.ui.sections.work}>
@@ -190,14 +247,27 @@ export function ResumeView({data}: {data: ResumeData}) {
                           ))}
                         </span>
                       </h3>
-                      <div className="text-sm tabular-nums text-muted-foreground">
-                        {work.start} - {work.end ?? data.ui.present}
+                      <div className="shrink-0 text-sm tabular-nums text-muted-foreground">
+                        {formatPeriod(
+                          work.start,
+                          work.end,
+                          lang,
+                          data.ui.present,
+                        )}
                       </div>
                     </div>
 
-                    <h4 className="text-sm leading-none print:text-[12px]">
-                      {work.title}
-                    </h4>
+                    <div className="flex items-baseline justify-between gap-x-2">
+                      <h4 className="text-sm leading-none print:text-[12px]">
+                        {work.title}
+                      </h4>
+                      <span className="shrink-0 text-xs tabular-nums text-muted-foreground print:text-[10px]">
+                        {formatDuration(
+                          durationMonths(work.start, work.end, today),
+                          lang,
+                        )}
+                      </span>
+                    </div>
                   </CardHeader>
                   <CardContent className="mt-2 text-sm print:text-[10px]">
                     <ul className="list-disc space-y-1 pl-4">
@@ -219,8 +289,13 @@ export function ResumeView({data}: {data: ResumeData}) {
                       <h3 className="font-semibold leading-none">
                         {education.school}
                       </h3>
-                      <div className="text-sm tabular-nums text-muted-foreground">
-                        {education.start} - {education.end ?? data.ui.present}
+                      <div className="shrink-0 text-sm tabular-nums text-muted-foreground">
+                        {formatPeriod(
+                          education.start,
+                          education.end,
+                          lang,
+                          data.ui.present,
+                        )}
                       </div>
                     </div>
                   </CardHeader>

@@ -50,3 +50,63 @@ export function formatYearsClaim(n: number, lang: Lang): string {
   if (lang === 'es') return `más de ${n} ${n === 1 ? 'año' : 'años'}`;
   return `${n}+ ${n === 1 ? 'year' : 'years'}`;
 }
+
+/** The month of `date` in local time, as "YYYY-MM". */
+export function toYearMonth(date: Date): YearMonth {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+}
+
+/** First day of a "YYYY-MM" month in local time, so month arithmetic agrees in every time zone. */
+export function monthStart(ym: YearMonth): Date {
+  const [y, m] = parts(ym);
+  return new Date(y, m - 1, 1);
+}
+
+// Fixed names instead of Intl: ICU data differs between Node and browsers
+// ("sep" vs "sept"), and the server HTML must match the hydrated text.
+const MONTHS = {
+  en: [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ],
+  es: [
+    'ene.',
+    'feb.',
+    'mar.',
+    'abr.',
+    'may.',
+    'jun.',
+    'jul.',
+    'ago.',
+    'sept.',
+    'oct.',
+    'nov.',
+    'dic.',
+  ],
+} as const;
+
+/** "2023-01" → "Jan 2023" / "ene. 2023". */
+export function formatMonth(ym: YearMonth, lang: Lang): string {
+  const [y, m] = parts(ym);
+  return `${MONTHS[lang][m - 1]} ${y}`;
+}
+
+/** "Jan 2023 – Mar 2025"; an open range ends with `present` ("Present" / "Actual"). */
+export function formatPeriod(
+  start: YearMonth,
+  end: YearMonth | null,
+  lang: Lang,
+  present: string,
+): string {
+  return `${formatMonth(start, lang)} – ${end ? formatMonth(end, lang) : present}`;
+}
