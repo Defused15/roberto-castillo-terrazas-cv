@@ -48,6 +48,9 @@ const nextConfig: NextConfig = {
   // Do not advertise the framework in an X-Powered-By header.
   poweredByHeader: false,
   agentRules: false,
+  // Global CSS (~20 kB raw) goes inline in each static HTML page instead of a
+  // render-blocking stylesheet request: mobile Lighthouse FCP 0.9 s -> 0.75 s.
+  // Allowed by the CSP's style-src 'unsafe-inline'.
   experimental: {inlineCss: true},
   async headers() {
     return [{source: '/:path*', headers: securityHeaders}];
