@@ -4,8 +4,8 @@ import {RESUME_DATA} from '@/data/resume-data';
 import {renderWithProviders} from '@/test/render';
 
 describe('home page', () => {
-  it("embeds the person's JSON-LD, serialized safely for an inline script", () => {
-    const {container} = renderWithProviders(<Page />);
+  it("embeds the person's JSON-LD, serialized safely for an inline script", async () => {
+    const {container} = renderWithProviders(await Page());
     const scripts = container.querySelectorAll(
       'script[type="application/ld+json"]',
     );

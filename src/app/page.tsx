@@ -4,8 +4,10 @@ import {ResumeContent} from '@/components/resume-content';
 import {PrintQr} from '@/components/print-qr';
 import {buildPersonJsonLd, serializeJsonLd} from './structured-data';
 import {BUILD_MONTH} from './site-config';
+import {fetchTestHubStats} from '@/lib/test-hub';
 
-export default function Page() {
+export default async function Page() {
+  const quality = await fetchTestHubStats();
   const jsonLd = serializeJsonLd(buildPersonJsonLd(RESUME_DATA));
 
   return (
@@ -16,7 +18,11 @@ export default function Page() {
       />
       <SkipLink targetId="main-content" />
       {/* The QR code is encoded here, on the server, so the encoder ships no client JS. */}
-      <ResumeContent asOf={BUILD_MONTH} printQr={<PrintQr />} />
+      <ResumeContent
+        asOf={BUILD_MONTH}
+        printQr={<PrintQr />}
+        quality={quality}
+      />
     </>
   );
 }
