@@ -17,13 +17,14 @@ export const alt = `Social card for ${RESUME_DATA.name}, ${
 export const size = {width: 1200, height: 630};
 export const contentType = 'image/png';
 
-// Palette: the site's navy and grey family plus one soft blue accent.
+// Palette: the business card's. White paper, black type, greys, and one navy accent.
 const C = {
-  bg: '#0b1120',
-  fg: '#f9fafb',
-  soft: '#d1d5db',
-  muted: '#9ca3af',
-  accent: '#93c5fd',
+  bg: '#ffffff',
+  fg: '#000000',
+  soft: '#4b5563',
+  muted: '#6b7280',
+  rule: '#9ca3af',
+  accent: '#1e3a8a',
 };
 
 // Self-hosted avatar, inlined at build time so rendering needs no network.
@@ -79,19 +80,19 @@ function Avatar({src}: {src: string}) {
           height: AV,
           display: 'flex',
           borderRadius: 999,
-          border: '1px solid rgba(255,255,255,0.14)',
+          border: '1px solid rgba(17,24,39,0.10)',
         }}
       />
     </div>
   );
 
-  // No hard ring: a hairline edge plus a soft emerald halo give depth without weight.
+  // No hard ring: a hairline edge plus a soft shadow, like a card resting on paper.
   return (
     <div
       style={{
         display: 'flex',
         borderRadius: 999,
-        boxShadow: '0 0 70px 6px rgba(147,197,253,0.22)',
+        boxShadow: '0 10px 40px rgba(17,24,39,0.12)',
       }}
     >
       {photo}
@@ -113,45 +114,6 @@ export default function OpengraphImage() {
         color: C.fg,
       }}
     >
-      <div
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          display: 'flex',
-          backgroundImage:
-            'linear-gradient(180deg, rgba(255,255,255,0.03) 1px, transparent 1px)',
-          backgroundSize: '40px 40px',
-        }}
-      />
-      <div
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          display: 'flex',
-          backgroundImage:
-            'linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)',
-          backgroundSize: '40px 40px',
-        }}
-      />
-      {/* soft glow centred on the avatar */}
-      <div
-        style={{
-          position: 'absolute',
-          top: -10,
-          left: 650,
-          width: 760,
-          height: 560,
-          display: 'flex',
-          backgroundImage:
-            'radial-gradient(closest-side, rgba(147,197,253,0.13), transparent)',
-        }}
-      />
       <div
         style={{
           position: 'absolute',
@@ -203,20 +165,33 @@ export default function OpengraphImage() {
             >
               {RESUME_DATA.name}
             </div>
+            {/* the card's short navy rule between name and role */}
             <div
               style={{
                 display: 'flex',
-                marginTop: 22,
-                fontSize: 42,
-                color: C.accent,
+                width: 56,
+                height: 4,
+                marginTop: 28,
+                background: C.accent,
+              }}
+            />
+            <div
+              style={{
+                display: 'flex',
+                marginTop: 26,
+                fontSize: 30,
+                fontWeight: 500,
+                letterSpacing: '0.09em',
+                textTransform: 'uppercase',
+                color: C.fg,
               }}
             >
-              {RESUME_DATA.about}
+              {RESUME_DATA.about.replace(' | ', ' · ')}
             </div>
             <div
               style={{
                 display: 'flex',
-                marginTop: 16,
+                marginTop: 18,
                 fontSize: 26,
                 color: C.soft,
               }}
@@ -234,7 +209,7 @@ export default function OpengraphImage() {
             justifyContent: 'space-between',
             marginTop: 52,
             paddingTop: 32,
-            borderTop: '1px solid rgba(255,255,255,0.09)',
+            borderTop: `1px solid ${C.rule}`,
           }}
         >
           <div style={{display: 'flex'}}>
@@ -244,12 +219,12 @@ export default function OpengraphImage() {
                 style={{
                   display: 'flex',
                   fontSize: 28,
-                  color: C.fg,
+                  color: C.soft,
                   padding: '10px 24px',
                   marginRight: 14,
                   borderRadius: 999,
-                  background: 'rgba(255,255,255,0.05)',
-                  border: '1px solid rgba(255,255,255,0.16)',
+                  background: '#f9fafb',
+                  border: '1px solid #d1d5db',
                 }}
               >
                 {h}
