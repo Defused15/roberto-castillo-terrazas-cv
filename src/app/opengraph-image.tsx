@@ -17,13 +17,13 @@ export const alt = `Social card for ${RESUME_DATA.name}, ${
 export const size = {width: 1200, height: 630};
 export const contentType = 'image/png';
 
-// Palette: gray-900 family from the site's dark mode plus a single emerald accent.
+// Palette: the site's navy and grey family plus one soft blue accent.
 const C = {
   bg: '#0b1120',
   fg: '#f9fafb',
   soft: '#d1d5db',
   muted: '#9ca3af',
-  accent: '#34d399',
+  accent: '#93c5fd',
 };
 
 // Self-hosted avatar, inlined at build time so rendering needs no network.
@@ -91,7 +91,7 @@ function Avatar({src}: {src: string}) {
       style={{
         display: 'flex',
         borderRadius: 999,
-        boxShadow: '0 0 70px 6px rgba(52,211,153,0.22)',
+        boxShadow: '0 0 70px 6px rgba(147,197,253,0.22)',
       }}
     >
       {photo}
@@ -149,7 +149,7 @@ export default function OpengraphImage() {
           height: 560,
           display: 'flex',
           backgroundImage:
-            'radial-gradient(closest-side, rgba(52,211,153,0.13), transparent)',
+            'radial-gradient(closest-side, rgba(147,197,253,0.13), transparent)',
         }}
       />
       <div

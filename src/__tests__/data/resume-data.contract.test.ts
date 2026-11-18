@@ -253,7 +253,7 @@ describe('EN/ES parity', () => {
     /^ui\./,
   ];
   // Translatable, but legitimately identical in both languages: role titles stay
-  // in English ("QA Engineer", the "QA Engineer | AI-Augmented SDET" headline).
+  // in English ("QA Engineer", the "QA Consultant | AI-Augmented SDET" headline).
   const MAY_MATCH = [/^about$/, /^work\[\d+\]\.title$/];
 
   const is = (patterns: RegExp[]) => (path: string) =>

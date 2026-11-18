@@ -1,6 +1,6 @@
 # Roberto Castillo Terrazas · rcastillo.dev
 
-Bilingual (EN/ES) CV site for a QA Engineer, built with Next.js and treated like a product under test: behaviour tests, accessibility checks, mutation testing and CI quality gates on every change.
+Bilingual (EN/ES) CV site for a QA Consultant, built with Next.js and treated like a product under test: behaviour tests, accessibility checks, mutation testing and CI quality gates on every change.
 
 [![CI](https://github.com/Defused15/roberto-castillo-terrazas-cv/actions/workflows/GithubActions.yml/badge.svg)](https://github.com/Defused15/roberto-castillo-terrazas-cv/actions/workflows/GithubActions.yml)
 ![Next.js 16](https://img.shields.io/badge/Next.js-16-black?logo=nextdotjs)
