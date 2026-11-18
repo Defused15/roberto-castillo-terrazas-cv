@@ -7,6 +7,7 @@ import {CopyText} from '@/components/copy-text';
 import {decodePhone, type EncodedPhone} from '@/lib/decode-phone';
 import {formatPhone, phoneCountry} from '@/lib/format-phone';
 import {track} from '@/lib/analytics';
+import {cn} from '@/lib/utils';
 import type {ResumeData} from '@/data/resume-data';
 
 type ContactUi = ResumeData['ui']['contact'];
@@ -76,7 +77,10 @@ export function PhoneLine({state, ui}: {state: Reveal; ui: ContactUi}) {
       id={PHONE_LINE_ID}
       aria-live="polite"
       // Stryker disable next-line StringLiteral: layout-only classes
-      className={`flex min-h-6 flex-col items-start text-xs leading-6 text-muted-foreground sm:flex-row sm:flex-wrap sm:items-center print:hidden${state.revealed ? 'phone-line-open' : ''}`}
+      className={cn(
+        'flex min-h-6 flex-col items-start text-xs leading-6 text-muted-foreground sm:flex-row sm:flex-wrap sm:items-center print:hidden',
+        state.revealed && 'phone-line-open',
+      )}
     >
       {state.revealed ? (
         state.phones.map((phone, index) => (
