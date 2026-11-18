@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import React from "react";
-import { cn } from "@/lib/utils";
+import React from 'react';
+import {cn} from '@/lib/utils';
 
 /** How long the "Copied ✓" label stays up after a copy. */
-export const COPIED_MS = 1600;
+const COPIED_MS = 1600;
 
 /**
  * Text that copies `value` on click and confirms it in place: the confirmation
@@ -60,22 +60,26 @@ export function CopyText({
         onClick={copy}
         aria-label={label}
         className={cn(
-          "grid justify-items-start rounded-sm underline-offset-2 transition-colors hover:text-foreground hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+          'grid justify-items-start rounded-sm underline-offset-2 transition-colors hover:text-foreground hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
           className,
         )}
       >
-        <span className={cn("copy-swap [grid-area:1/1]", copied && "opacity-0")}>{text}</span>
+        <span
+          className={cn('copy-swap [grid-area:1/1]', copied && 'opacity-0')}
+        >
+          {text}
+        </span>
         <span
           aria-hidden="true"
           className={cn(
-            "copy-swap select-none [grid-area:1/1] text-foreground",
-            !copied && "invisible translate-y-0.5 opacity-0",
+            'copy-swap select-none text-foreground [grid-area:1/1]',
+            !copied && 'invisible translate-y-0.5 opacity-0',
           )}
         >
           {copiedLabel}
         </span>
       </button>
-      <span className="sr-only">{copied ? copiedLabel : ""}</span>
+      <span className="sr-only">{copied ? copiedLabel : ''}</span>
     </>
   );
 }

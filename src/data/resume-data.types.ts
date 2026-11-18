@@ -1,18 +1,18 @@
-import type { ComponentType, SVGProps } from "react";
-import type { StaticImageData } from "next/image";
-import type { EncodedPhone } from "@/lib/decode-phone";
+import type {ComponentType, SVGProps} from 'react';
+import type {StaticImageData} from 'next/image';
+import type {EncodedPhone} from '@/lib/decode-phone';
 
-export type Lang = "en" | "es";
+export type Lang = 'en' | 'es';
 
-export type SocialNetwork = "GitHub" | "LinkedIn";
+export type SocialNetwork = 'GitHub' | 'LinkedIn';
 
-export const LANGS: readonly Lang[] = ["en", "es"];
+export const LANGS: readonly Lang[] = ['en', 'es'];
 
 export function isLang(value: unknown): value is Lang {
   return (LANGS as readonly unknown[]).includes(value);
 }
 
-export type Project = {
+type Project = {
   title: string;
   techStack: readonly string[];
   description: string;
@@ -26,7 +26,7 @@ export type Project = {
 export type ResumeData = {
   name: string;
   initials: string;
-  locations: readonly { name: string; link: string }[];
+  locations: readonly {name: string; link: string}[];
   about: string;
   summary: string;
   avatarUrl: string;
@@ -90,7 +90,7 @@ export type ResumeData = {
     /** Label next to a certification whose link verifies it. */
     verified: string;
     githubRepo: string;
-    theme: { toggle: string; light: string; dark: string; system: string };
+    theme: {toggle: string; light: string; dark: string; system: string};
     languageToggle: string;
     /** Accessible names for the icon-only contact links. */
     contact: {
@@ -107,9 +107,14 @@ export type ResumeData = {
       copied: string;
       profiles: Record<SocialNetwork, string>;
     };
-    notFound: { title: string; description: string; backHome: string };
+    notFound: {title: string; description: string; backHome: string};
     skipToContent: string;
-    error: { title: string; description: string; retry: string; backHome: string };
+    error: {
+      title: string;
+      description: string;
+      retry: string;
+      backHome: string;
+    };
     /**
      * Privacy notice and its footer link. In paragraphs, `{email}` becomes a
      * mailto link to the contact email and `{aepd}` a link to the AEPD site.
@@ -118,7 +123,7 @@ export type ResumeData = {
       link: string;
       title: string;
       intro: string;
-      sections: readonly { title: string; paragraphs: readonly string[] }[];
+      sections: readonly {title: string; paragraphs: readonly string[]}[];
       lastUpdatedLabel: string;
       lastUpdated: string;
     };

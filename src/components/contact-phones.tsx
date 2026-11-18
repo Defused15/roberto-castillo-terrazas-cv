@@ -14,7 +14,7 @@ type ContactUi = ResumeData['ui']['contact'];
 const PHONE_LINE_ID = 'contact-phones';
 
 /** Reports a phone copy or call by country only; the number itself is never sent. */
-export function trackPhone(e164: string) {
+function trackPhone(e164: string) {
   const country = phoneCountry(e164);
   if (country) track('contact_phone', {number_country: country});
 }
