@@ -1,7 +1,6 @@
 'use client';
 
 import {useEffect} from 'react';
-import Link from 'next/link';
 import {ArrowLeftIcon, RotateCcwIcon} from 'lucide-react';
 import {Button, buttonVariants} from '@/components/ui/button';
 import {useLanguage} from '@/components/language-provider';
@@ -50,7 +49,9 @@ export function ErrorContent({
             <RotateCcwIcon className="size-4" aria-hidden="true" />
             {retry}
           </Button>
-          <Link
+          {/* Plain <a>: next/link adds ~5 kB gzip to the first load; a full load of a static page is fine here. */}
+          {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+          <a
             href="/"
             className={buttonVariants({
               size: 'lg',
@@ -60,7 +61,7 @@ export function ErrorContent({
           >
             <ArrowLeftIcon className="size-4" aria-hidden="true" />
             {backHome}
-          </Link>
+          </a>
         </div>
       </section>
     </main>

@@ -1,7 +1,6 @@
 'use client';
 
 import {useEffect} from 'react';
-import Link from 'next/link';
 import {ArrowLeftIcon} from 'lucide-react';
 import {buttonVariants} from '@/components/ui/button';
 import {useLanguage} from '@/components/language-provider';
@@ -43,7 +42,9 @@ export function NotFoundContent() {
           {description}
         </p>
         <div className="nf-enter mt-8" style={stagger(3)}>
-          <Link
+          {/* Plain <a>: next/link adds ~5 kB gzip to the first load; a full load of a static page is fine here. */}
+          {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+          <a
             href="/"
             className={buttonVariants({
               size: 'lg',
@@ -53,7 +54,7 @@ export function NotFoundContent() {
           >
             <ArrowLeftIcon className="size-4" aria-hidden="true" />
             {backHome}
-          </Link>
+          </a>
         </div>
       </section>
     </main>
