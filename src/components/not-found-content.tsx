@@ -21,7 +21,7 @@ export function NotFoundContent() {
   }, []);
 
   return (
-    <main className="flex min-h-[100dvh] items-center justify-center bg-white p-4 dark:bg-gray-900 md:p-16">
+    <main className="flex min-h-[100dvh] items-center justify-center bg-background p-4 md:p-16">
       <section className="mx-auto flex w-full max-w-2xl flex-col items-center text-center">
         <p
           className="nf-enter select-none bg-gradient-to-b from-foreground/30 to-foreground/5 bg-clip-text text-8xl font-bold tabular-nums leading-none text-transparent md:text-9xl"

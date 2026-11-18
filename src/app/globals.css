@@ -36,10 +36,10 @@
   }
 
   .dark {
-    --background: 224 71.4% 4.1%;
+    --background: 220.9 39.3% 11%;
     --foreground: 210 20% 98%;
 
-    --card: 224 71.4% 4.1%;
+    --card: 220.9 39.3% 11%;
     --card-foreground: 210 20% 98%;
 
     --popover: 224 71.4% 4.1%;
@@ -70,13 +70,20 @@
   * {
     @apply border-border;
   }
+  /* One keyboard focus style for every link and button; mouse clicks show nothing. */
+  a:focus-visible,
+  button:focus-visible,
+  [role="menuitem"]:focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
   body {
     @apply bg-background text-foreground;
   }
 }
 
 .print-force-new-page {
-  page-break-before: always;
+  page-break-before: always; /* legacy fallback */
+  break-before: page;
 }
 
 /* 404 entrance: fade and rise, staggered via --stagger. transform/opacity only. */

@@ -1,4 +1,5 @@
 import { RESUME_DATA } from "@/data/resume-data";
+import { SkipLink } from "@/components/skip-link";
 import { ResumeContent } from "@/components/resume-content";
 import { buildPersonJsonLd, serializeJsonLd } from "./structured-data";
 
@@ -11,6 +12,7 @@ export default function Page() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: jsonLd }}
       />
+      <SkipLink targetId="main-content" />
       <ResumeContent />
     </>
   );

@@ -139,6 +139,13 @@ export const RESUME_DATA_ES: ResumeData = {
       description: "La página que buscas no existe.",
       backHome: "Volver al CV",
     },
+    skipToContent: "Saltar al contenido",
+    error: {
+      title: "Algo salió mal",
+      description: "Ocurrió un error inesperado. Puedes intentarlo de nuevo o volver al CV.",
+      retry: "Intentar de nuevo",
+      backHome: "Volver al CV",
+    },
     privacy: {
       link: "Privacidad",
       title: "Privacidad",
