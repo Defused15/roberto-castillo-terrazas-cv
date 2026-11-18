@@ -61,6 +61,10 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      - name: Format check
+        if: ${{ !cancelled() }}
+        run: npm run format:check
+
       - name: Type check
         if: ${{ !cancelled() }}
         run: npx tsc --noEmit
