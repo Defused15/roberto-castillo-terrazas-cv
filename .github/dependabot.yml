@@ -25,8 +25,11 @@ updates:
       # Pinned to 5.9.x on purpose; TypeScript 6/7 is a separate migration.
       - dependency-name: typescript
         update-types: [version-update:semver-major]
-      # @types/node tracks the Node runtime (engines >=22, CI on 22).
+      # @types/node tracks the Node runtime (Node 22 on CI and Vercel).
       - dependency-name: '@types/node'
+        update-types: [version-update:semver-major]
+      # eslint-config-next's plugins (react, jsx-a11y, import) support up to ESLint 9.
+      - dependency-name: eslint
         update-types: [version-update:semver-major]
 
   # GitHub Actions are pinned by SHA; Dependabot bumps the SHA and the version comment.

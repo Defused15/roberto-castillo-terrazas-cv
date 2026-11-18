@@ -243,7 +243,6 @@ describe('EN/ES parity', () => {
   // tech names) must stay identical, so a new field defaults to "identical"
   // until it is deliberately declared translatable here.
   const TRANSLATED = [
-    /^about$/,
     /^summary$/,
     /^locations\[\d+\]\.name$/,
     /^education\[\d+\]\.degree$/,
@@ -253,8 +252,9 @@ describe('EN/ES parity', () => {
     /^projects\[\d+\]\.description$/,
     /^ui\./,
   ];
-  // Translatable, but legitimately identical in both languages ("QA Engineer").
-  const MAY_MATCH = [/^work\[\d+\]\.title$/];
+  // Translatable, but legitimately identical in both languages: role titles stay
+  // in English ("QA Engineer", the "QA Engineer | AI-Augmented SDET" headline).
+  const MAY_MATCH = [/^about$/, /^work\[\d+\]\.title$/];
 
   const is = (patterns: RegExp[]) => (path: string) =>
     patterns.some(p => p.test(path));
