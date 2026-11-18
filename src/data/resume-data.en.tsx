@@ -76,7 +76,7 @@ export const RESUME_DATA_EN: ResumeData = {
     },
     {
       company: 'Inetum',
-      link: 'https://www.inetum.com/es',
+      link: 'https://www.inetum.com/',
       badges: ['Remote'],
       title: 'Quality Engineer',
       logo: InetumLogo,
