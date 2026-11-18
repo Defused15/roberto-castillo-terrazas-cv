@@ -5,13 +5,13 @@
  * Uses only Node built-ins — no extra dependencies needed.
  */
 
-import { createServer } from 'http';
-import { readFileSync, existsSync } from 'fs';
-import { resolve, extname } from 'path';
-import { exec } from 'child_process';
+import {createServer} from 'http';
+import {readFileSync, existsSync} from 'fs';
+import {resolve, extname} from 'path';
+import {exec} from 'child_process';
 
 const PORT = 4000;
-const HTML  = resolve('./reports/jest-dashboard.html');
+const HTML = resolve('./reports/jest-dashboard.html');
 
 if (!existsSync(HTML)) {
   console.error('❌  Dashboard not found: ' + HTML);
@@ -19,10 +19,14 @@ if (!existsSync(HTML)) {
   process.exit(1);
 }
 
-const MIME = { '.html':'text/html', '.js':'application/javascript', '.css':'text/css' };
+const MIME = {
+  '.html': 'text/html',
+  '.js': 'application/javascript',
+  '.css': 'text/css',
+};
 
 const server = createServer((req, res) => {
-  res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+  res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
   res.end(readFileSync(HTML));
 });
 

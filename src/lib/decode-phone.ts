@@ -4,9 +4,9 @@
  * bundle. This only stops scrapers that grep HTML or JS for numbers; anyone
  * who runs the page's JavaScript or reads this file can decode them.
  */
-export type EncodedPhone = string & { readonly __encodedPhone: true };
+export type EncodedPhone = string & {readonly __encodedPhone: true};
 
-const reverse = (s: string) => [...s].reverse().join("");
+const reverse = (s: string) => [...s].reverse().join('');
 
 /** `+34610831754` → its encoded form. Used to write the data and in tests. */
 export function encodePhone(e164: string): EncodedPhone {

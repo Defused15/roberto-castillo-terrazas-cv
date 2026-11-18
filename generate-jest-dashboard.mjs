@@ -18,39 +18,43 @@
  * ─────────────────────────────────────────────────────────────────────────────
  */
 
-import { readFileSync, writeFileSync, existsSync } from 'fs';
-import { resolve, relative, dirname } from 'path';
-import { fileURLToPath } from 'url';
+import {readFileSync, writeFileSync, existsSync} from 'fs';
+import {resolve, relative, dirname} from 'path';
+import {fileURLToPath} from 'url';
 
 // ── CLI args ─────────────────────────────────────────────────────────────────
 
 const args = process.argv.slice(2);
-const get  = (flag, fallback) => {
+const get = (flag, fallback) => {
   const i = args.indexOf(flag);
   return i !== -1 ? args[i + 1] : fallback;
 };
 
-const jsonPath = resolve(get('--json',     './jest-report.json'));
-const outPath  = resolve(get('--html',     './jest-dashboard.html'));
+const jsonPath = resolve(get('--json', './jest-report.json'));
+const outPath = resolve(get('--html', './jest-dashboard.html'));
 const tmplPath = resolve(get('--template', './reporter-template.html'));
 
 // ── Validate inputs ───────────────────────────────────────────────────────────
 
 if (!existsSync(jsonPath)) {
   console.error(`❌  JSON report not found: ${jsonPath}`);
-  console.error('    Make sure you ran: npx jest --json --outputFile=jest-report.json');
+  console.error(
+    '    Make sure you ran: npx jest --json --outputFile=jest-report.json',
+  );
   process.exit(1);
 }
 
 if (!existsSync(tmplPath)) {
   console.error(`❌  Template not found: ${tmplPath}`);
-  console.error('    Pass the correct path with: --template /path/to/reporter-template.html');
+  console.error(
+    '    Pass the correct path with: --template /path/to/reporter-template.html',
+  );
   process.exit(1);
 }
 
 // ── Read & parse ──────────────────────────────────────────────────────────────
 
-const raw  = JSON.parse(readFileSync(jsonPath, 'utf8'));
+const raw = JSON.parse(readFileSync(jsonPath, 'utf8'));
 const tmpl = readFileSync(tmplPath, 'utf8');
 
 // ── Status mapping: Jest → dashboard model ────────────────────────────────────
@@ -60,9 +64,12 @@ const tmpl = readFileSync(tmplPath, 'utf8');
 
 function mapStatus(jestStatus) {
   switch (jestStatus) {
-    case 'passed':  return 'expected';
-    case 'failed':  return 'unexpected';
-    default:        return 'skipped';   // pending, todo, skipped
+    case 'passed':
+      return 'expected';
+    case 'failed':
+      return 'unexpected';
+    default:
+      return 'skipped'; // pending, todo, skipped
   }
 }
 
@@ -91,19 +98,21 @@ function flattenTests(testResults) {
   const tests = [];
   for (const suite of testResults) {
     let file = suite.testFilePath ?? '';
-    try { file = relative(process.cwd(), file) || file; } catch (_) {}
+    try {
+      file = relative(process.cwd(), file) || file;
+    } catch (_) {}
     file = file.replace(/\\/g, '/');
 
     for (const a of suite.assertionResults ?? []) {
       tests.push({
-        title:    a.fullName ?? a.title ?? '(unnamed)',
+        title: a.fullName ?? a.title ?? '(unnamed)',
         file,
-        line:     a.location?.line ?? 0,
-        project:  'unit',
-        outcome:  mapStatus(a.status),
+        line: a.location?.line ?? 0,
+        project: 'unit',
+        outcome: mapStatus(a.status),
         duration: a.duration ?? 0,
-        retries:  0,
-        error:    a.failureMessages?.[0] ?? null,
+        retries: 0,
+        error: a.failureMessages?.[0] ?? null,
       });
     }
   }
@@ -114,23 +123,26 @@ function flattenTests(testResults) {
 
 const tests = flattenTests(raw.testResults ?? []);
 
-const expected   = raw.numPassedTests ?? tests.filter(t => t.outcome === 'expected').length;
-const unexpected = raw.numFailedTests ?? tests.filter(t => t.outcome === 'unexpected').length;
-const skipped    = (raw.numPendingTests ?? 0) + (raw.numTodoTests ?? 0)
-                 || tests.filter(t => t.outcome === 'skipped').length;
-const total      = raw.numTotalTests  ?? tests.length;
+const expected =
+  raw.numPassedTests ?? tests.filter(t => t.outcome === 'expected').length;
+const unexpected =
+  raw.numFailedTests ?? tests.filter(t => t.outcome === 'unexpected').length;
+const skipped =
+  (raw.numPendingTests ?? 0) + (raw.numTodoTests ?? 0) ||
+  tests.filter(t => t.outcome === 'skipped').length;
+const total = raw.numTotalTests ?? tests.length;
 
 const dashboardData = {
-  startTime:    raw.startTime ?? Date.now(),
-  duration:     computeDuration(raw),
-  workers:      1,
+  startTime: raw.startTime ?? Date.now(),
+  duration: computeDuration(raw),
+  workers: 1,
   stats: {
     total,
     expected,
     unexpected,
-    flaky:   0,
+    flaky: 0,
     skipped,
-    ok:      unexpected === 0,
+    ok: unexpected === 0,
   },
   projectNames: ['unit'],
   tests,
@@ -149,9 +161,11 @@ if (!tmpl.includes(PLACEHOLDER)) {
 
 const injected = tmpl.replace(
   PLACEHOLDER,
-  JSON.stringify(dashboardData, null, 2)
+  JSON.stringify(dashboardData, null, 2),
 );
 
 writeFileSync(outPath, injected, 'utf8');
 console.log(`✅  Dashboard written to: ${outPath}`);
-console.log(`    Tests: ${dashboardData.stats.total}  |  Passed: ${dashboardData.stats.expected}  |  Failed: ${dashboardData.stats.unexpected}  |  Skipped: ${dashboardData.stats.skipped}`);
+console.log(
+  `    Tests: ${dashboardData.stats.total}  |  Passed: ${dashboardData.stats.expected}  |  Failed: ${dashboardData.stats.unexpected}  |  Skipped: ${dashboardData.stats.skipped}`,
+);

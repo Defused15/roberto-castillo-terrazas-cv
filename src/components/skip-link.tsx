@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { useLanguage } from "@/components/language-provider";
+import {useLanguage} from '@/components/language-provider';
 
 /** First focusable element: hidden until focused, then jumps to the main landmark. */
-export function SkipLink({ targetId }: { targetId: string }) {
-  const { data } = useLanguage();
+export function SkipLink({targetId}: {targetId: string}) {
+  const {data} = useLanguage();
   return (
     <a
       href={`#${targetId}`}

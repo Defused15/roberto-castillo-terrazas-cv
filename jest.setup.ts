@@ -1,10 +1,10 @@
-import "@testing-library/jest-dom"
-import { format } from "util"
-import { toHaveNoViolations } from "jest-axe"
+import '@testing-library/jest-dom';
+import {format} from 'util';
+import {toHaveNoViolations} from 'jest-axe';
 
-expect.extend(toHaveNoViolations)
+expect.extend(toHaveNoViolations);
 
-const hasDom = typeof window !== "undefined"
+const hasDom = typeof window !== 'undefined';
 
 if (hasDom) {
   // Browser APIs Radix UI relies on that jsdom does not implement.
@@ -13,9 +13,10 @@ if (hasDom) {
     unobserve() {}
     disconnect() {}
   }
-  global.ResizeObserver = ResizeObserver as unknown as typeof global.ResizeObserver
-  window.HTMLElement.prototype.scrollIntoView = jest.fn()
-  window.scrollTo = jest.fn()
+  global.ResizeObserver =
+    ResizeObserver as unknown as typeof global.ResizeObserver;
+  window.HTMLElement.prototype.scrollIntoView = jest.fn();
+  window.scrollTo = jest.fn();
 }
 
 /**
@@ -23,25 +24,25 @@ if (hasDom) {
  * act() and hydration warnings are bugs, not noise. A test that expects a
  * warning must spy on the console itself and assert on it.
  */
-let consoleOutput: string[] = []
+let consoleOutput: string[] = [];
 
 beforeEach(() => {
-  consoleOutput = []
+  consoleOutput = [];
   if (hasDom) {
-    localStorage.clear()
-    document.documentElement.lang = "en"
+    localStorage.clear();
+    document.documentElement.lang = 'en';
   }
-  for (const method of ["error", "warn"] as const) {
+  for (const method of ['error', 'warn'] as const) {
     jest.spyOn(console, method).mockImplementation((...args: unknown[]) => {
-      consoleOutput.push(`console.${method}: ${format(...args)}`)
-    })
+      consoleOutput.push(`console.${method}: ${format(...args)}`);
+    });
   }
-})
+});
 
 afterEach(() => {
-  const output = consoleOutput
-  consoleOutput = []
+  const output = consoleOutput;
+  consoleOutput = [];
   if (output.length > 0) {
-    throw new Error(`Unexpected console output:\n${output.join("\n")}`)
+    throw new Error(`Unexpected console output:\n${output.join('\n')}`);
   }
-})
+});

@@ -1,23 +1,23 @@
-name: "Push Jest report to QA Hub"
-description: "Pushes an existing Jest JSON report to the QA Test Hub (retrying on sha conflicts) and dispatches a hub rebuild. Does not run Jest."
+name: 'Push Jest report to QA Hub'
+description: 'Pushes an existing Jest JSON report to the QA Test Hub (retrying on sha conflicts) and dispatches a hub rebuild. Does not run Jest.'
 
 inputs:
   hub_token:
-    description: "Token with Contents read/write on the hub repo"
+    description: 'Token with Contents read/write on the hub repo'
     required: true
   hub_repo:
-    description: "Hub repo in format owner/repo"
+    description: 'Hub repo in format owner/repo'
     required: true
   project_name:
-    description: "Project name used as folder key in the hub"
+    description: 'Project name used as folder key in the hub'
     required: true
   report_path:
-    description: "Path to the Jest JSON report"
+    description: 'Path to the Jest JSON report'
     required: false
-    default: "jest-report/report.json"
+    default: 'jest-report/report.json'
 
 runs:
-  using: "composite"
+  using: 'composite'
   steps:
     - name: Push report to QA Hub
       shell: bash
