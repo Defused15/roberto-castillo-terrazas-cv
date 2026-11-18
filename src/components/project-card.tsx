@@ -1,3 +1,4 @@
+import type React from 'react';
 import {
   Card,
   CardHeader,
@@ -17,6 +18,8 @@ interface Props {
   linkLabel?: string;
   githubLink?: string;
   githubLabel?: string;
+  /** Extra line under the description, e.g. the live test badge. */
+  footer?: React.ReactNode;
 }
 
 function getCleanLink(link: string) {
@@ -31,6 +34,7 @@ export function ProjectCard({
   linkLabel,
   githubLink,
   githubLabel = 'GitHub repo',
+  footer,
 }: Props) {
   const printedLink = linkLabel || (link && getCleanLink(link));
 
@@ -77,6 +81,7 @@ export function ProjectCard({
           <CardDescription className="print:text-[10px]">
             {description}
           </CardDescription>
+          {footer}
         </div>
       </CardHeader>
 

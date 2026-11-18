@@ -27,8 +27,8 @@ describe('server-rendered HTML', () => {
     }
   });
 
-  it('the home page, JSON-LD included, contains no phone number', () => {
-    const html = renderToString(<Page />);
+  it('the home page, JSON-LD included, contains no phone number', async () => {
+    const html = renderToString(await Page());
     expect(html).not.toMatch(/610 ?831|871 ?105|tel:/);
   });
 });

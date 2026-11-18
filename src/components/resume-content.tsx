@@ -9,6 +9,8 @@ import {Section} from '@/components/ui/section';
 import {BadgeCheckIcon, DownloadIcon, GlobeIcon, MailIcon} from 'lucide-react';
 import {buttonVariants} from '@/components/ui/button';
 import {ProjectCard} from '@/components/project-card';
+import {QualityBadge} from '@/components/quality-badge';
+import type {TestHubStats} from '@/lib/test-hub';
 import {SiteFooter} from '@/components/site-footer';
 import {ModeToggle} from '@/components/darkmode';
 import {LanguageToggle} from '@/components/language-toggle';
@@ -58,6 +60,9 @@ const TEXT_LINK =
 
 // Stryker restore all
 
+/** This site's own repository: its project card shows the live test badge. */
+const CV_REPO = 'https://github.com/Defused15/roberto-castillo-terrazas-cv';
+
 type DateProps = {
   /**
    * Month the CV is dated to ("YYYY-MM"): the build month, passed down from the
@@ -67,6 +72,8 @@ type DateProps = {
   asOf: YearMonth;
   /** Print-only QR code, rendered on the server (see PrintQr). */
   printQr?: React.ReactNode;
+  /** Latest test-suite result for this CV's own project, read at build time. */
+  quality?: TestHubStats | null;
 };
 
 /** The CV in the language currently selected in LanguageProvider. */
@@ -81,6 +88,7 @@ export function ResumeView({
   lang,
   asOf,
   printQr,
+  quality,
 }: DateProps & {data: ResumeData; lang: Lang}) {
   const phones = usePhoneReveal(data.contact.phones);
   const today = monthStart(asOf);
@@ -423,6 +431,11 @@ export function ResumeView({
                     linkLabel={project.link?.label}
                     githubLink={project.githubLink}
                     githubLabel={data.ui.githubRepo}
+                    footer={
+                      quality && project.githubLink === CV_REPO ? (
+                        <QualityBadge stats={quality} lang={lang} />
+                      ) : null
+                    }
                   />
                 );
               })}
