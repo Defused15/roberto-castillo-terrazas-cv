@@ -7,19 +7,19 @@ on:
     # Docs-only pushes to main skip CI. Not applied to pull_request on purpose: the required
     # "Unit Tests" check must always report on a PR, or a docs-only PR would wait forever.
     paths-ignore:
-      - "**/*.md"
-      - "docs/**"
-      - "LICENSE"
+      - '**/*.md'
+      - 'docs/**'
+      - 'LICENSE'
   pull_request:
     branches: [main]
   # Weekly full run (full Stryker, fresh dashboard and hub). GitHub disables scheduled
   # workflows after 60 days without repo activity; re-enable it from the Actions tab if so.
   schedule:
-    - cron: "17 6 * * 1"
+    - cron: '17 6 * * 1'
   workflow_dispatch:
     inputs:
       full_mutation:
-        description: "Run a full (non-incremental) Stryker run"
+        description: 'Run a full (non-incremental) Stryker run'
         type: boolean
         default: false
 
@@ -35,8 +35,8 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 env:
-  NODE_VERSION: "22"
-  NEXT_TELEMETRY_DISABLED: "1"
+  NODE_VERSION: '22'
+  NEXT_TELEMETRY_DISABLED: '1'
 
 jobs:
   test:
@@ -120,6 +120,28 @@ jobs:
           name: jest-dashboard
           path: reports/jest-dashboard.html
           retention-days: 1
+
+  # The site is static: the years of experience and job durations are computed at build
+  # time. A weekly rebuild keeps them current without a code push. Needs a Vercel deploy
+  # hook for main in the VERCEL_DEPLOY_HOOK secret; without it the job only logs a notice.
+  redeploy:
+    name: Weekly Vercel Redeploy
+    needs: test
+    if: github.event_name == 'schedule' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Trigger the Vercel deploy hook
+        env:
+          VERCEL_DEPLOY_HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK }}
+        run: |
+          if [ -z "$VERCEL_DEPLOY_HOOK" ]; then
+            echo "::notice::VERCEL_DEPLOY_HOOK is not set; skipping the weekly redeploy"
+            exit 0
+          fi
+          curl --fail --silent --show-error --max-time 30 --retry 2 -X POST "$VERCEL_DEPLOY_HOOK" > /dev/null
+          echo "Vercel redeploy of main requested"
 
   commitlint:
     name: Commit Lint # informative, not a required check
