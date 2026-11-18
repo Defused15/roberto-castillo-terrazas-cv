@@ -12,6 +12,7 @@ type AnalyticsEvents = {
   language_switch: {to: Lang};
   theme_change: {theme: 'light' | 'dark' | 'system'};
   print_cv: undefined;
+  print_cv_button: undefined;
   project_link: {project: string};
   project_repo: {project: string};
   cert_link: {cert: string; issuer: string};

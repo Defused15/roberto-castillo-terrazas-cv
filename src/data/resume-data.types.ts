@@ -106,6 +106,13 @@ export type ResumeData = {
       /** Feedback shown after a number or the email is copied. */
       copied: string;
       profiles: Record<SocialNetwork, string>;
+      /** Accessible name of the print / save-as-PDF button. */
+      print: string;
+    };
+    /** Strings that only show in the printed CV. */
+    print: {
+      /** Caption under the QR code, e.g. "Live version: rcastillo.dev". */
+      qrCaption: string;
     };
     notFound: {title: string; description: string; backHome: string};
     skipToContent: string;

@@ -362,6 +362,10 @@ export const RESUME_DATA_EN: ResumeData = {
         GitHub: 'GitHub profile',
         LinkedIn: 'LinkedIn profile',
       },
+      print: 'Print or save as PDF',
+    },
+    print: {
+      qrCaption: 'Live version: rcastillo.dev',
     },
     notFound: {
       title: 'Page not found',
