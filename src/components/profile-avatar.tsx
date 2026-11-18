@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import * as React from "react";
-import Image from "next/image";
+import * as React from 'react';
+import Image from 'next/image';
 
-import { cn } from "@/lib/utils";
+import {cn} from '@/lib/utils';
 
 interface Props {
   src: string;
@@ -17,13 +17,13 @@ interface Props {
  * server HTML (Radix AvatarImage only mounts it after a client-side load).
  * Falls back to initials if the image fails to load.
  */
-export function ProfileAvatar({ src, alt, fallback, className }: Props) {
+export function ProfileAvatar({src, alt, fallback, className}: Props) {
   const [failed, setFailed] = React.useState(false);
 
   return (
     <div
       className={cn(
-        "relative flex size-28 shrink-0 overflow-hidden rounded-xl",
+        'relative flex size-28 shrink-0 overflow-hidden rounded-xl',
         className,
       )}
     >

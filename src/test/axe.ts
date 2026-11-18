@@ -1,12 +1,12 @@
-import { act } from "@testing-library/react";
-import { configureAxe } from "jest-axe";
+import {act} from '@testing-library/react';
+import {configureAxe} from 'jest-axe';
 
 /**
  * Shared axe instance. Colour contrast needs real layout and computed styles,
  * which jsdom does not provide, so it is left to browser-level checks.
  */
 const runAxe = configureAxe({
-  rules: { "color-contrast": { enabled: false } },
+  rules: {'color-contrast': {enabled: false}},
 });
 
 /**

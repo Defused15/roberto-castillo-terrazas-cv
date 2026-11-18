@@ -1,17 +1,19 @@
-import type { ComponentType, SVGProps } from "react";
-import type { StaticImageData } from "next/image";
+import type {ComponentType, SVGProps} from 'react';
+import type {StaticImageData} from 'next/image';
+import type {EncodedPhone} from '@/lib/decode-phone';
+import type {YearMonth} from '@/lib/dates';
 
-export type Lang = "en" | "es";
+export type Lang = 'en' | 'es';
 
-export type SocialNetwork = "GitHub" | "LinkedIn";
+export type SocialNetwork = 'GitHub' | 'LinkedIn';
 
-export const LANGS: readonly Lang[] = ["en", "es"];
+export const LANGS: readonly Lang[] = ['en', 'es'];
 
 export function isLang(value: unknown): value is Lang {
   return (LANGS as readonly unknown[]).includes(value);
 }
 
-export type Project = {
+type Project = {
   title: string;
   techStack: readonly string[];
   description: string;
@@ -25,13 +27,15 @@ export type Project = {
 export type ResumeData = {
   name: string;
   initials: string;
-  locations: readonly { name: string; link: string }[];
+  locations: readonly {name: string; link: string}[];
   about: string;
+  /** Contains `{years}` once; it becomes the computed years claim ("4+ years"). */
   summary: string;
   avatarUrl: string;
   contact: {
     email: string;
-    phones: readonly string[];
+    /** E.164 numbers, encoded with encodePhone(); decode with decodePhone() in the browser only. */
+    phones: readonly EncodedPhone[];
     social: readonly {
       name: SocialNetwork;
       url: string;
@@ -41,8 +45,11 @@ export type ResumeData = {
   education: readonly {
     school: string;
     degree: string;
-    start: string;
-    end: string | null;
+    logo: StaticImageData;
+    /** "YYYY-MM". */
+    start: YearMonth;
+    /** "YYYY-MM", or null while ongoing. */
+    end: YearMonth | null;
   }[];
   work: readonly {
     company: string;
@@ -50,8 +57,10 @@ export type ResumeData = {
     badges: readonly string[];
     title: string;
     logo: StaticImageData;
-    start: string;
-    end: string | null;
+    /** "YYYY-MM". */
+    start: YearMonth;
+    /** "YYYY-MM", or null for the current job. */
+    end: YearMonth | null;
     description: readonly string[];
   }[];
   skills: readonly {
@@ -63,6 +72,11 @@ export type ResumeData = {
     issuer: string;
     year: string;
     url: string;
+    /**
+     * The link opens a page that verifies this credential for this person
+     * (checked by hand, not inferred from the URL), so the CV can say "Verified".
+     */
+    verified: boolean;
   }[];
   languages: readonly {
     language: string;
@@ -80,17 +94,43 @@ export type ResumeData = {
       projects: string;
     };
     present: string;
+    /** Label next to a certification whose link verifies it. */
+    verified: string;
     githubRepo: string;
-    theme: { toggle: string; light: string; dark: string; system: string };
+    theme: {toggle: string; light: string; dark: string; system: string};
     languageToggle: string;
     /** Accessible names for the icon-only contact links. */
     contact: {
       email: string;
       /** Prefix for the phone number, e.g. "Call" → "Call +34 610 831 754". */
       call: string;
+      /** Text button in the header that reveals the phone numbers. */
+      showPhones: string;
+      /** Prefix for a revealed number's copy button, e.g. "Copy" → "Copy +34 610 831 754". */
+      copy: string;
+      /** Prefix for the email line's copy button, e.g. "Copy email address" → "Copy email address me@x.dev". */
+      copyEmail: string;
+      /** Feedback shown after a number or the email is copied. */
+      copied: string;
       profiles: Record<SocialNetwork, string>;
+      /** Accessible name of the print / save-as-PDF button. */
+      print: string;
+      /** Header text link that downloads the vCard (/contact.vcf). */
+      saveContact: string;
     };
-    notFound: { title: string; description: string; backHome: string };
+    /** Strings that only show in the printed CV. */
+    print: {
+      /** Caption under the QR code, e.g. "Live version: rcastillo.dev". */
+      qrCaption: string;
+    };
+    notFound: {title: string; description: string; backHome: string};
+    skipToContent: string;
+    error: {
+      title: string;
+      description: string;
+      retry: string;
+      backHome: string;
+    };
     /**
      * Privacy notice and its footer link. In paragraphs, `{email}` becomes a
      * mailto link to the contact email and `{aepd}` a link to the AEPD site.
@@ -99,7 +139,7 @@ export type ResumeData = {
       link: string;
       title: string;
       intro: string;
-      sections: readonly { title: string; paragraphs: readonly string[] }[];
+      sections: readonly {title: string; paragraphs: readonly string[]}[];
       lastUpdatedLabel: string;
       lastUpdated: string;
     };

@@ -1,11 +1,15 @@
-import type { PostHogConfig } from "posthog-js";
+import type {PostHogConfig} from 'posthog-js';
 
 /** Public PostHog project key (EU cloud, project 355591). Public by design. */
 export const POSTHOG_KEY =
-  process.env.NEXT_PUBLIC_POSTHOG_KEY || "phc_x2gSRigvddtDS2LJeuuJQgewp4aAzTPEbmFfTNisX8bm";
+  process.env.NEXT_PUBLIC_POSTHOG_KEY ||
+  'phc_x2gSRigvddtDS2LJeuuJQgewp4aAzTPEbmFfTNisX8bm';
 
 /** Hostnames that count as real visits. Localhost and Vercel previews never load analytics. */
-export const PRODUCTION_HOSTS: readonly string[] = ["www.rcastillo.dev", "rcastillo.dev"];
+export const PRODUCTION_HOSTS: readonly string[] = [
+  'www.rcastillo.dev',
+  'rcastillo.dev',
+];
 
 /** Whether `hostname` is the production site, the only place analytics runs. */
 export function isProductionHost(hostname: string): boolean {
@@ -18,12 +22,12 @@ export function isProductionHost(hostname: string): boolean {
  * pageleaves and the explicit events in ./events.ts are sent.
  */
 export const POSTHOG_OPTIONS = {
-  api_host: "https://eu.i.posthog.com",
-  ui_host: "https://eu.posthog.com",
-  cookieless_mode: "always",
-  person_profiles: "never",
+  api_host: 'https://eu.i.posthog.com',
+  ui_host: 'https://eu.posthog.com',
+  cookieless_mode: 'always',
+  person_profiles: 'never',
   autocapture: false,
-  capture_pageview: "history_change",
+  capture_pageview: 'history_change',
   capture_pageleave: true,
   capture_heatmaps: false,
   capture_dead_clicks: false,

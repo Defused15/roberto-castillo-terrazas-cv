@@ -1,0 +1,8 @@
+.next
+coverage
+reports
+jest-report
+package-lock.json
+public
+.stryker-tmp
+.playwright-mcp

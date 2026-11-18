@@ -1,198 +1,150 @@
+# Roberto Castillo Terrazas · rcastillo.dev
 
+Bilingual (EN/ES) CV site for a QA Engineer, built with Next.js and treated like a product under test: behaviour tests, accessibility checks, mutation testing and CI quality gates on every change.
 
-# Minimalist CV ![CI](https://github.com/Defused15/roberto-castillo-terrazas-cv/actions/workflows/GithubActions.yml/badge.svg)
+[![CI](https://github.com/Defused15/roberto-castillo-terrazas-cv/actions/workflows/GithubActions.yml/badge.svg)](https://github.com/Defused15/roberto-castillo-terrazas-cv/actions/workflows/GithubActions.yml)
+![Next.js 16](https://img.shields.io/badge/Next.js-16-black?logo=nextdotjs)
+![React 19](https://img.shields.io/badge/React-19-149eca?logo=react&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6?logo=typescript&logoColor=white)
+![Node 22+](https://img.shields.io/badge/Node-%3E%3D22-5fa04e?logo=nodedotjs&logoColor=white)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-> **Live site:** [rcastillo.dev](https://www.rcastillo.dev/)
+## Live links
 
-A simple web app that renders a minimalist CV with a print-friendly layout.
+| What                    | Where                                                                                                                                                      |
+| ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| CV site                 | [www.rcastillo.dev](https://www.rcastillo.dev)                                                                                                             |
+| Jest test dashboard     | [defused15.github.io/roberto-castillo-terrazas-cv](https://defused15.github.io/roberto-castillo-terrazas-cv/)                                              |
+| Stryker mutation report | [defused15.github.io/roberto-castillo-terrazas-cv/mutation/mutation.html](https://defused15.github.io/roberto-castillo-terrazas-cv/mutation/mutation.html) |
+| QA Test Hub             | [qa.rcastillo.dev](https://qa.rcastillo.dev)                                                                                                               |
 
-Built with Next.js and shadcn/ui, deployed on Vercel.
+## Highlights
 
-> **Note:** This project is based on the open-source template [cv](https://github.com/BartoszJarocki/cv) by [Bartosz Jarocki](https://github.com/BartoszJarocki). I forked it and extended it with dark mode support and a full testing suite as a portfolio piece to showcase my QA skills.
+Built on top of [Bartosz Jarocki's minimalist CV template](https://github.com/BartoszJarocki/cv):
 
----
+- **EN/ES i18n.** Two typed data files with the same shape and a language toggle whose choice is remembered in `localStorage`. On a first visit, a browser set to Spanish gets the Spanish CV. The `<html lang>` attribute follows the selected language.
+- **SEO.** Site metadata, `robots.txt`, `sitemap.xml`, a web manifest, a generated Open Graph / Twitter card, and a schema.org `ProfilePage` + `Person` JSON-LD block.
+- **Accessibility.** `jest-axe` checks on the CV (both languages, light and dark, phones revealed, after a copy), the theme toggle button, the privacy page and the 404 page. WCAG fixes include a skip link, named landmarks, accessible names on contact links, contrast and visible focus rings.
+- **Behaviour and data-contract tests.** 430+ Jest tests. Expected text comes from the resume data, so content edits don't need test edits, while a contract suite validates both data files.
+- **Mutation testing** with Stryker on the logic-bearing modules, with a break threshold in CI.
+- **CI quality gates.** Lint, type check, tests with coverage thresholds, production build, commit lint and mutation score, all on GitHub Actions.
+- **Cookieless EU analytics** with PostHog, plus a GDPR privacy notice at [`/privacy`](https://www.rcastillo.dev/privacy) in both languages.
+- **Security headers.** Content Security Policy, `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy` and `Permissions-Policy` on every route; no `X-Powered-By`.
+- **Phone numbers kept out of the HTML.** They are stored encoded and only decoded in the browser after a click on "Show phone numbers" (or when printing). A test asserts the server HTML and JSON-LD contain no phone number.
+- **Copy to clipboard** for the email and phone numbers, with an in-place, screen-reader-announced confirmation.
+- **Custom 404 and error pages**, bilingual, including a self-contained global error page.
+- **Dates computed at build time.** Jobs show their month range and duration ("Jan 2023 – Mar 2025 · 2 yrs 3 mos"), and the "4+ years" claim in the summary, meta description and share card is derived from the oldest job's start. A weekly scheduled redeploy keeps them current.
+- **Save contact.** A "Save contact" link downloads a vCard from the static [`/contact.vcf`](https://www.rcastillo.dev/contact.vcf) route.
+- **Print-ready.** A print button in the header, a print layout with the email and phone numbers as text, and a QR code to the live site next to the photo (encoded on the server by a small built-in QR encoder, so it adds no client JS).
+- **Dark mode** with a toggle button that cycles light, dark and system.
 
-## 📊 Test Reports
+## Quality gates
 
-| Report | Link |
-|--------|------|
-| 🧪 Jest Dashboard | [defused15.github.io/roberto-castillo-terrazas-cv/jest-dashboard.html](https://defused15.github.io/roberto-castillo-terrazas-cv/jest-dashboard.html) |
+| Gate            | Tool                              | Threshold                                                       | Where it runs                                        |
+| --------------- | --------------------------------- | --------------------------------------------------------------- | ---------------------------------------------------- |
+| Lint            | ESLint (`eslint-config-next`)     | Zero errors                                                     | Pre-commit (staged files), CI `Unit Tests`           |
+| Formatting      | Prettier                          | Staged files are formatted                                      | Pre-commit                                           |
+| Types           | TypeScript `tsc --noEmit`         | Zero errors                                                     | CI `Unit Tests`, and again in `next build`           |
+| Unit tests      | Jest + React Testing Library      | All tests pass; any `console.error`/`console.warn` fails a test | CI `Unit Tests` (required check on `main`)           |
+| Coverage        | Jest coverage                     | Statements 97%, lines 97%, branches 90%, functions 90%          | CI `Unit Tests`                                      |
+| Accessibility   | `jest-axe` (axe-core)             | Zero violations                                                 | CI `Unit Tests`                                      |
+| Mutation score  | Stryker Mutator                   | Break below 90% (high 95%)                                      | CI `Mutation Testing`                                |
+| Build           | `next build`                      | Every route compiles and prerenders                             | CI `Build`                                           |
+| Commit messages | commitlint (Conventional Commits) | Every commit message passes                                     | `commit-msg` hook, CI `Commit Lint` on pull requests |
+| Dependencies    | Dependabot                        | Weekly update PRs, which go through the gates above             | npm and GitHub Actions, every Monday                 |
 
-Reports are automatically deployed to GitHub Pages on every push to `main`.
+Thresholds live in [`jest.config.js`](./jest.config.js) and [`stryker.config.json`](./stryker.config.json).
 
----
+## Architecture
 
-## ✨ My Contributions
+The CV content is data, the UI is a set of client components that read it through a language context, and every route is prerendered to static HTML at build time.
 
-- 🌙 **Dark mode** — implemented using `next-themes` with a custom toggle component
-- 🧪 **Unit tests** — written with Jest and React Testing Library
-- 🧬 **Mutation testing** — configured Stryker Mutator to validate test effectiveness
-- 📊 **Custom test dashboard** — self-contained HTML report generated from Jest's JSON output and deployed to GitHub Pages
-- 🔗 **Project card enhancements** — project titles link to live websites; a separate GitHub icon + label links to each repository
-- 🗂️ **QA Test Hub integration** — CV lists the QA Test Hub project (`qa.rcastillo.dev`), an aggregated dashboard that collects test results from multiple repos
+```
+src/
+├── app/                 # Routes: /, /privacy, /contact.vcf, 404, error, global
+│                        # error, OG/Twitter image, robots, sitemap, manifest, JSON-LD
+├── components/          # CV sections, language and theme toggles, contact
+│   │                    # copy/reveal, print button and QR, privacy, 404/error
+│   └── ui/              # shadcn/ui primitives and the Section landmark
+├── data/
+│   ├── resume-data.en.tsx
+│   ├── resume-data.es.tsx
+│   └── resume-data.types.ts   # Shared ResumeData type
+├── lib/
+│   ├── analytics/       # PostHog config, typed events, lazy init
+│   ├── dates.ts         # Month ranges, durations, years of experience
+│   ├── initial-lang.ts  # First-visit language from the browser
+│   ├── qr.ts            # Minimal QR encoder for the printed CV
+│   ├── vcard.ts         # vCard for /contact.vcf
+│   ├── decode-phone.ts
+│   └── format-phone.ts
+├── test/                # renderWithProviders, preconfigured axe, helpers
+└── __tests__/           # Test suites, mirroring src/
+```
 
----
+- **Data.** `resume-data.en.tsx` and `resume-data.es.tsx` share the `ResumeData` type, so the compiler and the contract tests keep the two languages in sync.
+- **Language provider.** `LanguageProvider` holds the current language and exposes the matching data. The server and first client render are English; after hydration it applies the stored choice or, on a first visit, Spanish for a Spanish browser.
+- **Build date.** The page passes the build month to the CV as a prop, so durations and the years claim are fixed at build time and the hydrated page matches the server HTML.
+- **Theme.** `next-themes` with light, dark and system, switched by one toggle button.
+- **Analytics.** `src/lib/analytics` wraps PostHog with a typed event map. It loads lazily and only on the production hostnames.
+- **Output.** Statically prerendered pages, deployed on Vercel.
 
-## Features
+## Privacy by design
 
-- Setup takes only a few minutes with a [single config file](./src/data/resume-data.tsx)
-- Built using Next.js 14, React, TypeScript, shadcn/ui, Tailwind CSS
-- Auto-generated layout
-- Responsive across devices
-- Optimized for Next.js and Vercel
-- Dark mode support
+- **No cookies.** The site sets none. The browser only keeps the chosen language and theme in `localStorage`.
+- **PostHog in the EU.** Hosted in PostHog's EU cloud, in cookieless mode, with no person profiles, no autocapture, no session recording and Do Not Track respected. It only runs on the production domain.
+- **Explicit events only.** Pageviews, page leaves and a typed list of interaction events. Phone events carry the country, never the number.
+- **Vercel Web Analytics** for aggregate, cookieless visit counts.
+- **No Google Analytics.** A test checks the root layout for it.
+- **Self-hosted assets.** The Inter font is served by `next/font` from the site's own origin, and the avatar is a local file. The CSP only allows fonts and images from `'self'`.
+- **Privacy notice** in English and Spanish at [rcastillo.dev/privacy](https://www.rcastillo.dev/privacy).
 
----
+## Getting started
 
-## Getting Started Locally
-
-1. Clone this repository to your local machine:
-
-   ```bash
-   git clone https://github.com/Defused15/roberto-castillo-terrazas-cv.git
-   ```
-
-2. Move to the cloned directory:
-
-   ```bash
-   cd roberto-castillo-terrazas-cv
-   ```
-
-3. Install dependencies:
-
-   ```bash
-   npm install
-   ```
-
-4. Start the local server:
-
-   ```bash
-   npm run dev
-   ```
-
-5. Open the [config file](./src/data/resume-data.tsx) and make changes.
-
----
-
-## 🧪 Testing
-
-### Unit Tests — Jest + React Testing Library
-
-Tests assert behavior and content invariants. Expected text comes from the resume data and UI strings instead of hard-coded copy, so adding a job or a project never needs a test change, while dropping one from the page fails a test. The only markup checked is the print contract (which content is screen-only or print-only), because jsdom cannot render print media.
-
-| Test Suite | Description |
-|---|---|
-| `data/resume-data.contract.test.ts` | Content contract for EN and ES: https-only URLs, no empty strings, E.164 phones, unique React keys, valid newest-first dates, EN/ES parity (same shape, text translated, everything else identical) |
-| `components/resume-content.test.tsx` | Every section and item rendered from the data in both languages, header contact details, end-to-end language switch, print-only vs screen-only content, edge cases |
-| `components/accessibility.test.tsx` | `jest-axe` checks on the CV (EN and ES), the theme menu and the 404 page |
-| `components/language-provider.test.tsx` | Stored language, StrictMode, blocked storage and the SSR/hydration guard |
-| `components/language-toggle.test.tsx` | EN/ES toggle and its accessible name |
-| `components/darkmode.test.tsx` | Theme menu options and wiring to `next-themes` |
-| `components/project-card.test.tsx` | Project links, repository label and the printed address |
-| `components/ui/section.test.tsx` | Sections are region landmarks named by their heading |
-| `components/profile-avatar.test.tsx` | Avatar image and initials fallback |
-| `app/not-found.test.tsx` | 404 page in both languages, noindex, reduced motion |
-| `lib/format-phone.test.ts` | Phone number formatting per country |
-| `app/seo-routes.test.ts` | robots.txt, sitemap, web manifest and site metadata |
-| `app/structured-data.test.ts`, `app/page.test.tsx` | JSON-LD Person schema, privacy and safe serialization |
-
-All suites live in `src/__tests__/`, mirroring `src/`. Shared helpers are in `src/test/` (`renderWithProviders`, a preconfigured `axe`). Any `console.error` or `console.warn` during a test fails it.
-
-Run tests:
+Requires Node.js 22 or newer.
 
 ```bash
-npm test
+git clone https://github.com/Defused15/roberto-castillo-terrazas-cv.git
+cd roberto-castillo-terrazas-cv
+npm ci                # also installs the Git hooks (lint-staged, commitlint)
+npm run dev           # http://localhost:3000
 ```
 
-Run with coverage:
+| Command             | What it does                                                               |
+| ------------------- | -------------------------------------------------------------------------- |
+| `npm test`          | Run the Jest suite                                                         |
+| `npm run coverage`  | Run Jest with coverage and the thresholds                                  |
+| `npx stryker run`   | Mutation testing; HTML report in `reports/mutation/mutation.html`          |
+| `npm run lint`      | ESLint                                                                     |
+| `npm run format`    | Prettier, write mode (`npm run format:check` to check only)                |
+| `npm run build`     | Production build                                                           |
+| `npm run dashboard` | Run Jest, build the HTML dashboard and serve it at `http://localhost:4000` |
 
-```bash
-npm run coverage
-```
+To use it as your own CV, edit the data files in [`src/data/`](./src/data/).
 
-Generate and open the custom dashboard locally:
+## CI/CD
 
-```bash
-npm run dashboard
-```
+The workflow is [`.github/workflows/GithubActions.yml`](.github/workflows/GithubActions.yml). It runs on pull requests to `main`, on pushes to `main`, weekly on Monday and on manual dispatch. Third-party actions are pinned by commit SHA.
 
-This runs Jest, generates a self-contained HTML report, and opens it at `http://localhost:4000`.
+| Job                                | When                                                      | What it does                                                                                                              |
+| ---------------------------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `Unit Tests`                       | Every run                                                 | Lint, type check, Jest with coverage and a JSON report; uploads coverage and report artifacts. Required check for `main`. |
+| `Commit Lint`                      | Pull requests                                             | commitlint over every commit in the PR                                                                                    |
+| `Build`                            | Pull requests, pushes, manual runs                        | `next build` with a cached `.next/cache`                                                                                  |
+| `Mutation Testing`                 | Every run                                                 | Stryker in incremental mode; a full run on the weekly schedule or on request. Uploads the HTML report.                    |
+| `Publish to QA Hub`                | Pushes to `main` and the weekly run                       | Sends the Jest JSON report to the QA Test Hub, passing or failing                                                         |
+| `Weekly Vercel Redeploy`           | Weekly run, once tests pass                               | POSTs to the Vercel deploy hook in the `VERCEL_DEPLOY_HOOK` secret so build-time dates stay current; skipped if unset     |
+| `Deploy Dashboard to GitHub Pages` | Pushes to `main`, weekly and manual runs, once tests pass | Publishes the Jest dashboard and the latest mutation report to GitHub Pages                                               |
 
-The suite contains 140+ unit tests across the EN and ES versions: data-driven cases run once per language. Coverage is measured on the app's own components, resume data, SEO route modules and helpers; CI fails if it drops below the thresholds in `jest.config.js`. Run `npm run coverage` to see the current figures.
+Two composite actions live in [`.github/actions/`](.github/actions/):
 
----
+- **`setup-deps`** installs Node and restores `node_modules` from a cache keyed on the OS, Node version and lockfile.
+- **`jest-report-hub`** pushes the report to `projects/<project>/latest.json` in the [Test Hub](https://qa.rcastillo.dev) data repo through the GitHub Contents API, retrying on conflicts, then dispatches a hub rebuild. The hub renders pass rate, failures and coverage per project.
 
-### 🧬 Mutation Testing — Stryker Mutator
+GitHub Pages serves the Jest dashboard at the site root and the Stryker report under `/mutation/`.
 
-Mutation testing goes beyond code coverage — it verifies that your tests actually **catch bugs**, not just execute lines. Stryker introduces small changes (mutations) to the source code and checks whether the tests fail as expected.
+## Credits and license
 
-Run mutation tests:
+Based on the open-source [cv](https://github.com/BartoszJarocki/cv) template by [Bartosz Jarocki](https://github.com/BartoszJarocki).
 
-```bash
-npx stryker run
-```
-
-An HTML report is generated at:
-
-```
-reports/mutation/mutation.html
-```
-
-The report shows the current mutation score and a per-file breakdown. Stryker mutates the logic-bearing modules: the resume page, the language provider and toggle, the theme toggle, the project card, the section and avatar components, the JSON-LD builder, the language helpers and `src/lib`. The current score is 98.7%, and the run fails below the `break` threshold in `stryker.config.json`.
-
----
-
-## CI/CD — GitHub Actions & Jest Report Hub
-
-The project uses two YAML files to automate testing and publish results on every push to `dev` or pull request to `main`.
-
-Live test results are visible on the QA dashboard: **[qa.rcastillo.dev](https://qa.rcastillo.dev)**
-
-The dashboard is powered by a separate **Test Hub** repo (`Defused15/test-hub`) that acts as a data store. After each CI run, the `jest-report-hub` action pushes a `latest.json` file with the Jest results to that repo using the GitHub Contents API. The QA dashboard reads those JSON files and renders the metrics — pass rate, failed tests, and coverage — per project, without requiring any external database or backend.
-
-### Workflow: `GithubActions.yml`
-
-Located at [`.github/workflows/GithubActions.yml`](.github/workflows/GithubActions.yml), this workflow runs three jobs:
-
-| Job | Trigger | Description |
-|---|---|---|
-| `test` | push to `dev` / `main` / PR to `main` | Runs Jest, pushes the report to the QA Hub, and on `main` also generates the dashboard |
-| `deploy-dashboard` | push to `main` only | Publishes the Jest dashboard to GitHub Pages |
-| `mutation` | after `test` passes | Runs Stryker and uploads the HTML mutation report as an artifact (retained for 7 days) |
-
-### Reusable Action: `jest-report-hub`
-
-Located at [`.github/actions/jest-report-hub/action.yml`](.github/actions/jest-report-hub/action.yml), this composite action encapsulates all Jest report logic so it can be reused across projects.
-
-**Inputs:**
-
-| Input | Required | Description |
-|---|---|---|
-| `hub_token` | yes | GitHub token with write access to the hub repo |
-| `hub_repo` | yes | Target repo in `owner/repo` format |
-| `project_name` | yes | Folder key used to store the report in the hub |
-
-**Steps it runs:**
-
-1. **Export Jest JSON report** — runs `npx jest --json` and writes `jest-report/report.json`
-2. **Upload coverage artifact** — uploads the `coverage/` folder as `coverage-report` (retained for 7 days)
-3. **Push report to QA Hub** — uses the GitHub Contents API to create or update `projects/<project_name>/latest.json` in the hub repo
-4. **Trigger hub build** — sends a `repository_dispatch` event of type `test-hub-trigger` to the hub repo to force a dashboard rebuild
-5. **Check test results** — reads the JSON report and fails the job if any tests failed
-
-**Usage example in a workflow:**
-
-```yaml
-- name: Jest Report & Push to QA Hub
-  uses: ./.github/actions/jest-report-hub
-  with:
-    hub_token: ${{ secrets.HUB_TOKEN }}
-    hub_repo: Defused15/test-hub
-    project_name: roberto-castillo-terrazas-cv
-```
-
----
-
-## License
-
-[MIT](https://choosealicense.com/licenses/mit/)
+Released under the [MIT License](./LICENSE). Copyright (c) 2023 Bartosz Jarocki, Copyright (c) 2026 Roberto Castillo.

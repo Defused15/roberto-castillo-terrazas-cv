@@ -1,6 +1,6 @@
-import posthog from "posthog-js";
-import { initAnalytics } from "@/lib/analytics";
-import { PRODUCTION_HOSTS } from "@/lib/analytics/config";
+import posthog from 'posthog-js';
+import {initAnalytics} from '@/lib/analytics';
+import {PRODUCTION_HOSTS} from '@/lib/analytics/config';
 
 /** The posthog-js mock from __mocks__/posthog-js.ts. */
 export const posthogMock = jest.mocked(posthog);
@@ -15,7 +15,8 @@ export async function startAnalytics() {
 }
 
 /** Events sent so far, as [name, props] pairs. */
-export const capturedEvents = () => posthogMock.capture.mock.calls.map(([event, props]) => [event, props]);
+export const capturedEvents = () =>
+  posthogMock.capture.mock.calls.map(([event, props]) => [event, props]);
 
 /**
  * Stops link clicks from navigating (jsdom cannot, and would log an error),
@@ -23,6 +24,6 @@ export const capturedEvents = () => posthogMock.capture.mock.calls.map(([event, 
  */
 export function preventNavigation() {
   const stop = (e: Event) => e.preventDefault();
-  document.addEventListener("click", stop);
-  return () => document.removeEventListener("click", stop);
+  document.addEventListener('click', stop);
+  return () => document.removeEventListener('click', stop);
 }

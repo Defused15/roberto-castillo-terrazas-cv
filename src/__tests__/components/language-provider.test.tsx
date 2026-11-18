@@ -1,59 +1,95 @@
-import { StrictMode } from "react";
-import { render, screen } from "@testing-library/react";
-import { TextEncoder } from "util";
-import { LanguageProvider, useLanguage } from "@/components/language-provider";
-import { RESUME_DATA_BY_LANG } from "@/data/resume-data";
-import { renderWithProviders } from "@/test/render";
+import {StrictMode} from 'react';
+import {render, screen} from '@testing-library/react';
+import {TextEncoder} from 'util';
+import {LanguageProvider, useLanguage} from '@/components/language-provider';
+import {RESUME_DATA_BY_LANG} from '@/data/resume-data';
+import {renderWithProviders} from '@/test/render';
 
 const ABOUT_EN = RESUME_DATA_BY_LANG.en.ui.sections.about;
 const ABOUT_ES = RESUME_DATA_BY_LANG.es.ui.sections.about;
 
 function Consumer() {
-  const { lang, setLang, data } = useLanguage();
+  const {lang, setLang, data} = useLanguage();
   return (
     <div>
       <span data-testid="lang">{lang}</span>
       <h2>{data.ui.sections.about}</h2>
-      <button onClick={() => setLang("es")}>to-es</button>
+      <button onClick={() => setLang('es')}>to-es</button>
     </div>
   );
 }
 
-const heading = () => screen.getByRole("heading", { level: 2 });
+const heading = () => screen.getByRole('heading', {level: 2});
 
-describe("LanguageProvider", () => {
-  it("works without a provider, defaulting to English", () => {
+describe('LanguageProvider', () => {
+  it('works without a provider, defaulting to English', () => {
     render(<Consumer />);
-    expect(screen.getByTestId("lang")).toHaveTextContent("en");
+    expect(screen.getByTestId('lang')).toHaveTextContent('en');
     expect(heading()).toHaveTextContent(ABOUT_EN);
   });
 
-  it("defaults to English and switches to Spanish, syncing html lang and storage", async () => {
-    const { user } = renderWithProviders(<Consumer />);
+  it('defaults to English and switches to Spanish, syncing html lang and storage', async () => {
+    const {user} = renderWithProviders(<Consumer />);
     expect(heading()).toHaveTextContent(ABOUT_EN);
-    expect(document.documentElement).toHaveAttribute("lang", "en");
+    expect(document.documentElement).toHaveAttribute('lang', 'en');
 
-    await user.click(screen.getByRole("button", { name: "to-es" }));
+    await user.click(screen.getByRole('button', {name: 'to-es'}));
 
     expect(heading()).toHaveTextContent(ABOUT_ES);
-    expect(document.documentElement).toHaveAttribute("lang", "es");
-    expect(localStorage.getItem("cv-lang")).toBe("es");
+    expect(document.documentElement).toHaveAttribute('lang', 'es');
+    expect(localStorage.getItem('cv-lang')).toBe('es');
   });
 
   it.each([
-    ["es", ABOUT_ES],
-    ["en", ABOUT_EN],
-    ["fr", ABOUT_EN],
-    ["ES", ABOUT_EN],
-    ["", ABOUT_EN],
-  ])("restores stored cv-lang=%p as %p", (stored, expected) => {
-    localStorage.setItem("cv-lang", stored);
-    render(<Consumer />, { wrapper: LanguageProvider });
+    ['es', ABOUT_ES],
+    ['en', ABOUT_EN],
+    ['fr', ABOUT_EN],
+    ['ES', ABOUT_EN],
+    ['', ABOUT_EN],
+  ])('restores stored cv-lang=%p as %p', (stored, expected) => {
+    localStorage.setItem('cv-lang', stored);
+    render(<Consumer />, {wrapper: LanguageProvider});
     expect(heading()).toHaveTextContent(expected);
   });
 
-  it("keeps a stored language under StrictMode double effects", () => {
-    localStorage.setItem("cv-lang", "es");
+  describe('first visit', () => {
+    const browserLanguages = (langs: string[]) =>
+      jest.spyOn(navigator, 'languages', 'get').mockReturnValue(langs);
+
+    it('starts a Spanish browser in Spanish without storing or tracking it', () => {
+      browserLanguages(['es-MX', 'en']);
+      const setItem = jest.spyOn(Storage.prototype, 'setItem');
+      render(<Consumer />, {wrapper: LanguageProvider});
+      expect(heading()).toHaveTextContent(ABOUT_ES);
+      expect(document.documentElement).toHaveAttribute('lang', 'es');
+      expect(setItem).not.toHaveBeenCalled();
+    });
+
+    it('keeps any other browser in English', () => {
+      browserLanguages(['fr-FR', 'en-GB']);
+      render(<Consumer />, {wrapper: LanguageProvider});
+      expect(heading()).toHaveTextContent(ABOUT_EN);
+    });
+
+    it('lets a stored manual choice win over a Spanish browser', () => {
+      browserLanguages(['es-ES']);
+      localStorage.setItem('cv-lang', 'en');
+      render(<Consumer />, {wrapper: LanguageProvider});
+      expect(heading()).toHaveTextContent(ABOUT_EN);
+    });
+
+    it('still follows a Spanish browser when storage throws', () => {
+      browserLanguages(['es']);
+      jest.spyOn(Storage.prototype, 'getItem').mockImplementation(() => {
+        throw new Error('denied');
+      });
+      render(<Consumer />, {wrapper: LanguageProvider});
+      expect(heading()).toHaveTextContent(ABOUT_ES);
+    });
+  });
+
+  it('keeps a stored language under StrictMode double effects', () => {
+    localStorage.setItem('cv-lang', 'es');
     render(
       <StrictMode>
         <LanguageProvider>
@@ -62,30 +98,30 @@ describe("LanguageProvider", () => {
       </StrictMode>,
     );
     expect(heading()).toHaveTextContent(ABOUT_ES);
-    expect(localStorage.getItem("cv-lang")).toBe("es");
+    expect(localStorage.getItem('cv-lang')).toBe('es');
   });
 
-  it("keeps working when storage throws (private mode, blocked cookies)", async () => {
-    jest.spyOn(Storage.prototype, "getItem").mockImplementation(() => {
-      throw new Error("denied");
+  it('keeps working when storage throws (private mode, blocked cookies)', async () => {
+    jest.spyOn(Storage.prototype, 'getItem').mockImplementation(() => {
+      throw new Error('denied');
     });
-    jest.spyOn(Storage.prototype, "setItem").mockImplementation(() => {
-      throw new Error("denied");
+    jest.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
+      throw new Error('denied');
     });
-    const { user } = renderWithProviders(<Consumer />);
+    const {user} = renderWithProviders(<Consumer />);
     expect(heading()).toHaveTextContent(ABOUT_EN);
 
-    await user.click(screen.getByRole("button", { name: "to-es" }));
+    await user.click(screen.getByRole('button', {name: 'to-es'}));
     expect(heading()).toHaveTextContent(ABOUT_ES);
   });
 
-  it("server-renders English even when Spanish is stored, so hydration matches", async () => {
-    const g = global as unknown as { TextEncoder?: unknown };
+  it('server-renders English even when Spanish is stored, so hydration matches', async () => {
+    const g = global as unknown as {TextEncoder?: unknown};
     const original = g.TextEncoder;
     g.TextEncoder = TextEncoder;
-    localStorage.setItem("cv-lang", "es");
+    localStorage.setItem('cv-lang', 'es');
     try {
-      const { renderToString } = await import("react-dom/server");
+      const {renderToString} = await import('react-dom/server');
       const html = renderToString(
         <LanguageProvider>
           <Consumer />

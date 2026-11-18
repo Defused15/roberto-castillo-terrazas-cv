@@ -1,14 +1,14 @@
-name: "Setup Node and dependencies"
-description: "Installs Node.js and restores node_modules from cache; runs npm ci only on a cache miss."
+name: 'Setup Node and dependencies'
+description: 'Installs Node.js and restores node_modules from cache; runs npm ci only on a cache miss.'
 
 inputs:
   node-version:
-    description: "Node.js version spec"
+    description: 'Node.js version spec'
     required: false
-    default: "22"
+    default: '22'
 
 runs:
-  using: "composite"
+  using: 'composite'
   steps:
     - name: Setup Node.js
       id: node
