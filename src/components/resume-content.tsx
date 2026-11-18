@@ -8,7 +8,6 @@ import {Badge} from '@/components/ui/badge';
 import {Section} from '@/components/ui/section';
 import {BadgeCheckIcon, GlobeIcon, MailIcon} from 'lucide-react';
 import {buttonVariants} from '@/components/ui/button';
-import {cn} from '@/lib/utils';
 import {ProjectCard} from '@/components/project-card';
 import {SiteFooter} from '@/components/site-footer';
 import {ModeToggle} from '@/components/darkmode';
@@ -27,10 +26,7 @@ const SOCIAL_EVENTS = {
 } as const satisfies Record<SocialNetwork, string>;
 
 /** Outlined 32px icon link, the same look as the theme and language buttons next to it. */
-const ICON_LINK = cn(
-  buttonVariants({variant: 'outline', size: 'icon'}),
-  'size-8',
-);
+const ICON_LINK = buttonVariants({variant: 'outline', size: 'icon'});
 
 /** Responsive columns for the project grid: never more columns than projects. */
 // Stryker disable next-line all: layout-only classes, verified visually

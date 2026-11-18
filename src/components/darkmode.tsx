@@ -55,7 +55,7 @@ export function ModeToggle() {
     <Button
       variant="outline"
       size="icon"
-      className="size-8 print:hidden"
+      className="print:hidden"
       aria-label={hydrated ? `${t.toggle}: ${t[next]}` : t.toggle}
       onClick={() => {
         track('theme_change', {theme: next});
