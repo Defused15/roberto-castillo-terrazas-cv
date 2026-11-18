@@ -290,7 +290,14 @@ export function ResumeView({
                 <Card key={education.school}>
                   <CardHeader>
                     <div className="flex items-center justify-between gap-x-2 text-base">
-                      <h3 className="font-semibold leading-none">
+                      <h3 className="inline-flex items-center gap-x-2 font-semibold leading-none">
+                        <Image
+                          src={education.logo}
+                          alt={`${education.school} logo`}
+                          width={20}
+                          height={20}
+                          className="size-5 rounded-sm object-contain"
+                        />
                         {education.school}
                       </h3>
                       <div className="shrink-0 text-sm tabular-nums text-muted-foreground">

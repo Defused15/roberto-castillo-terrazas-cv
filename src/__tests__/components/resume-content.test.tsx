@@ -239,12 +239,18 @@ describe.each(LANGS)('ResumeContent [%s]', lang => {
     );
   });
 
-  it('renders every degree with its school and dates', () => {
-    expectRendered(region(d.ui.sections.education), [
+  it('renders every degree with its school, logo and dates', () => {
+    const education = region(d.ui.sections.education);
+    expectRendered(education, [
       ...d.education.map(e => e.school),
       ...d.education.map(e => e.degree),
       ...d.education.map(e => period(e, d, lang)),
     ]);
+    d.education.forEach(e =>
+      expect(
+        within(education).getByRole('img', {name: `${e.school} logo`}),
+      ).toBeInTheDocument(),
+    );
   });
 
   it('shows how long each job lasted next to its title, but no duration for degrees', () => {

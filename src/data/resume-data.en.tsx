@@ -1,4 +1,11 @@
-import {DivLogo, InetumLogo, MilwaukeeLogo, VassLogo} from '@/images/logos';
+import {
+  DivLogo,
+  InetumLogo,
+  ItlLogo,
+  MilwaukeeLogo,
+  UalLogo,
+  VassLogo,
+} from '@/images/logos';
 import {GitHubIcon, LinkedInIcon} from '@/components/icons';
 import type {ResumeData} from './resume-data.types';
 import type {EncodedPhone} from '@/lib/decode-phone';
@@ -34,6 +41,7 @@ export const RESUME_DATA_EN: ResumeData = {
   education: [
     {
       school: 'Universidad de Almería',
+      logo: UalLogo,
       degree:
         "Master's Degree in Computer Engineering (Big Data specialization)",
       start: '2026-10',
@@ -41,6 +49,7 @@ export const RESUME_DATA_EN: ResumeData = {
     },
     {
       school: 'Instituto Tecnológico de La Laguna',
+      logo: ItlLogo,
       degree: 'Bachelor of Engineering in Mechatronics',
       start: '2018-08',
       end: '2022-12',

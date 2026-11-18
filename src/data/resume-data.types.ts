@@ -45,6 +45,7 @@ export type ResumeData = {
   education: readonly {
     school: string;
     degree: string;
+    logo: StaticImageData;
     /** "YYYY-MM". */
     start: YearMonth;
     /** "YYYY-MM", or null while ongoing. */
