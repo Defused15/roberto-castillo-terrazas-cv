@@ -4,10 +4,10 @@ import {ResumeContent} from '@/components/resume-content';
 import {PrintQr} from '@/components/print-qr';
 import {buildPersonJsonLd, serializeJsonLd} from './structured-data';
 import {BUILD_MONTH} from './site-config';
-import {fetchTestHubStats} from '@/lib/test-hub';
+import {fetchTestHubResults} from '@/lib/test-hub';
 
 export default async function Page() {
-  const quality = await fetchTestHubStats();
+  const quality = await fetchTestHubResults();
   const jsonLd = serializeJsonLd(buildPersonJsonLd(RESUME_DATA));
 
   return (
