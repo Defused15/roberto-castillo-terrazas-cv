@@ -167,9 +167,9 @@ describe('open graph card copy', () => {
   it('dates the site to the month it was built', () => {
     expect(BUILD_MONTH).toBe(toYearMonth(new Date()));
   });
-  it('leads the value line with experience, projects and the current industry', () => {
+  it('leads the value line with experience, then the business card tagline', () => {
     expect(OG_VALUE_LINE).toBe(
-      `${claim} · 20+ projects · insurance, healthcare, e-commerce`,
+      `${claim} · AI-driven QA for faster, safer releases`,
     );
     expect(claim).toMatch(/^\d+\+ years$/);
   });

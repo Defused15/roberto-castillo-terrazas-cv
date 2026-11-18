@@ -20,8 +20,8 @@ export const SITE_DESCRIPTION = `QA Consultant & SDET in Spain and Mexico with $
 /** Short domain shown on the social share card. */
 export const SITE_DOMAIN = 'rcastillo.dev';
 
-/** One factual value line for the social share card (current industry first). */
-export const OG_VALUE_LINE = `${YEARS_CLAIM} · 20+ projects · insurance, healthcare, e-commerce`;
+/** Value line for the social share card: experience plus the business card's tagline. */
+export const OG_VALUE_LINE = `${YEARS_CLAIM} · AI-driven QA for faster, safer releases`;
 
 /** Curated skill chips for the social share card (4 fit on one row). */
 export const OG_HIGHLIGHTS = [
