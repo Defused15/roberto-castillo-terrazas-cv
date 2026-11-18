@@ -17,7 +17,9 @@ describe('root layout analytics', () => {
   });
 
   it('only renders Vercel Analytics on Vercel builds', () => {
-    expect(layout).toMatch(/const onVercel = process\.env\.VERCEL === "1"/);
+    expect(layout).toMatch(
+      /const onVercel = process\.env\.VERCEL === ["']1["']/,
+    );
     expect(layout).toMatch(/\{onVercel \? \(\s*<>\s*<Analytics \/>/);
   });
 });
