@@ -12,7 +12,7 @@ export const RESUME_DATA_EN: ResumeData = {
   ],
   about: 'QA Engineer | AI-Augmented SDET',
   summary:
-    'QA Engineer with {years} of experience contributing to and leading end-to-end quality strategies across 15+ projects in e-commerce, healthcare, logistics and finance within fast-paced IT consulting environments. Proven ability to own the full testing lifecycle, from requirements analysis and shift-left validation to CI/CD integration and defect triage, adapting quickly across industries, teams and tech stacks. Combines strong automation skills (Playwright, Cypress, Jest) and API testing expertise (Postman, Pact) with hands-on experience in enterprise platforms such as Salesforce, HubSpot and Stripe. Uses AI-augmented workflows, including multi-agent systems, custom agent skills and autonomous CI/CD remediation built with Claude Code and MCP, to accelerate delivery and reduce manual intervention. Comfortable working with distributed, international teams and contributing beyond QA when needed.',
+    'QA Engineer with {years} of experience in IT consulting across 20+ projects in insurance, e-commerce, healthcare and logistics. Specialized in test automation with Playwright and TypeScript, from Selenium-to-Playwright migrations to new frameworks built on the Page Object Model, isolated tests and parallel execution, cutting suite execution time by ~67%. Covers the full testing lifecycle, from requirements analysis and shift-left reviews to API and k6 performance testing, accessibility (WCAG), CI/CD integration and defect triage. Has tested integrations with enterprise platforms such as Salesforce, HubSpot, Sitecore, Stripe, etc. Builds QA workflows with AI subagents that triage failed Playwright runs and draft Jira tickets for review.',
   avatarUrl: '/avatar.jpg',
   contact: {
     email: 'rct18130984@gmail.com',
@@ -57,7 +57,7 @@ export const RESUME_DATA_EN: ResumeData = {
       end: null,
       description: [
         "Led the migration of end-to-end regression suites for an insurance company's applications from Selenium (Java/TestNG) to Playwright with TypeScript, and built new automation projects from scratch.",
-        'Cut execution time per suite from ~2 hours to ~40 minutes (≈67% faster) by refactoring to the Page Object Model, optimizing database queries and isolating every test to enable parallel execution.',
+        'Cut execution time per suite by ~67% by refactoring to the Page Object Model, optimizing database queries and isolating every test to enable parallel execution.',
         'Introduced standardized QA processes: a shared automation project structure and conventions, a standard bug report template and Allure as the reporting standard across all projects.',
         'Built an AI-assisted QA workflow with Claude Code custom skills and subagents: agents triage failed runs from the Playwright traces and report, classify each failure as a test or application issue with evidence, and draft Jira tickets with reproduction steps that I review before sending to development.',
         'Ran k6 load tests and pinpointed the root cause of recurring outages.',

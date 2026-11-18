@@ -11,7 +11,7 @@ export const RESUME_DATA_ES: ResumeData = {
   ],
   about: 'QA Engineer | SDET potenciado con IA',
   summary:
-    'QA Engineer con {years} de experiencia participando en y liderando estrategias de calidad end-to-end en más de 15 proyectos de e-commerce, salud, logística y finanzas, en entornos dinámicos de consultoría de TI. Tengo capacidad comprobada para hacerme cargo de todo el ciclo de vida de pruebas, desde el análisis de requerimientos y la validación shift-left hasta la integración en CI/CD y el triage de defectos, adaptándome rápidamente a distintas industrias, equipos y stacks tecnológicos. Combino sólidas habilidades de automatización (Playwright, Cypress, Jest) y dominio de pruebas de API (Postman, Pact) con experiencia práctica en plataformas empresariales como Salesforce, HubSpot y Stripe. Aprovecho flujos de trabajo potenciados con IA, como sistemas multiagente, agent skills personalizadas y corrección autónoma de fallas en CI/CD con Claude Code y MCP, para acelerar la entrega y reducir la intervención manual. Me desenvuelvo con soltura en equipos distribuidos e internacionales y aporto más allá de QA cuando se necesita.',
+    'QA Engineer con {years} de experiencia en consultoría de TI en más de 20 proyectos de seguros, e-commerce, salud y logística. Especializado en automatización de pruebas con Playwright y TypeScript, desde migraciones de Selenium a Playwright hasta frameworks nuevos con Page Object Model, tests aislados y ejecución en paralelo, reduciendo el tiempo de ejecución de las suites en ~67 %. Cubro todo el ciclo de pruebas, desde el análisis de requerimientos y las revisiones shift-left hasta las pruebas de API y de rendimiento con k6, la accesibilidad (WCAG), la integración en CI/CD y el triage de defectos. He probado integraciones con plataformas empresariales como Salesforce, HubSpot, Sitecore, Stripe, etc. Construyo flujos de QA con subagentes de IA que analizan los fallos de Playwright y redactan tickets de Jira para su revisión.',
   education: [
     {
       ...EN.education[0],
@@ -30,7 +30,7 @@ export const RESUME_DATA_ES: ResumeData = {
       title: 'QA Consultant',
       description: [
         'Lideré la migración de las suites de regresión end-to-end de las aplicaciones de una aseguradora de Selenium (Java/TestNG) a Playwright con TypeScript, y creé nuevos proyectos de automatización desde cero.',
-        'Reduje el tiempo de ejecución por suite de ~2 horas a ~40 minutos (≈67 % menos) refactorizando con Page Object Model, optimizando las queries a la base de datos y aislando cada test para habilitar la ejecución en paralelo.',
+        'Reduje el tiempo de ejecución por suite en ~67 % refactorizando con Page Object Model, optimizando las queries a la base de datos y aislando cada test para habilitar la ejecución en paralelo.',
         'Introduje procesos de QA estandarizados: una estructura y convenciones comunes para los proyectos de automatización, una plantilla estándar de reporte de bugs y Allure como estándar de reportes en todos los proyectos.',
         'Construí un flujo de QA asistido por IA con skills y subagentes de Claude Code: los agentes analizan las ejecuciones fallidas a partir de los traces y el reporte de Playwright, clasifican cada fallo como problema del test o de la aplicación con evidencia, y redactan tickets de Jira con pasos de reproducción que reviso antes de enviarlos a desarrollo.',
         'Ejecuté pruebas de carga con k6 e identifiqué la causa raíz de caídas recurrentes.',

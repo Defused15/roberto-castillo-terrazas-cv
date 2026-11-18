@@ -21,7 +21,7 @@ export const SITE_DESCRIPTION = `QA Engineer & SDET in Spain and Mexico with ${Y
 export const SITE_DOMAIN = 'rcastillo.dev';
 
 /** One factual value line for the social share card (current industry first). */
-export const OG_VALUE_LINE = `${YEARS_CLAIM} · 15+ projects · insurance, healthcare, e-commerce`;
+export const OG_VALUE_LINE = `${YEARS_CLAIM} · 20+ projects · insurance, healthcare, e-commerce`;
 
 /** Curated skill chips for the social share card (4 fit on one row). */
 export const OG_HIGHLIGHTS = [
