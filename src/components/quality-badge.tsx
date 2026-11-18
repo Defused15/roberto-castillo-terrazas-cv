@@ -28,7 +28,7 @@ export function QualityBadge({stats, lang}: {stats: TestHubStats; lang: Lang}) {
       className="mt-2 inline-flex flex-wrap items-center gap-x-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground hover:underline print:hidden"
     >
       <CheckCircle2Icon
-        className="size-3.5 text-emerald-600 dark:text-emerald-400"
+        className="size-3.5 text-foreground"
         aria-hidden="true"
       />
       <span className="whitespace-nowrap font-medium text-foreground">
