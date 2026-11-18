@@ -15,6 +15,9 @@ describe('pickInitialLang', () => {
     ['', ['en'], 'en'],
     ['xx', [], 'en'],
     [null, ['esperanto'], 'en'],
+    // Only the primary subtag counts: Basque in Spain is not Spanish.
+    [null, ['eu-ES'], 'en'],
+    [null, [' es-MX '], 'es'],
   ])('stored %p with %p gives %s', (stored, languages, expected) => {
     expect(pickInitialLang(stored, languages)).toBe(expected);
   });

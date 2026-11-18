@@ -66,6 +66,20 @@ describe('buildVCard', () => {
     );
   });
 
+  it.each([
+    [75, ['TITLE:' + 'x'.repeat(69)]],
+    [76, ['TITLE:' + 'x'.repeat(69), ' x']],
+    [149, ['TITLE:' + 'x'.repeat(69), ' ' + 'x'.repeat(74)]],
+    [150, ['TITLE:' + 'x'.repeat(69), ' ' + 'x'.repeat(74), ' x']],
+  ])('folds a %i-character line into 75-character pieces', (length, folded) => {
+    const out = buildVCard({...RESUME_DATA, about: 'x'.repeat(length - 6)});
+    const start = out.split('\r\n').findIndex(x => x.startsWith('TITLE:'));
+    expect(out.split('\r\n').slice(start, start + folded.length + 1)).toEqual([
+      ...folded,
+      expect.stringMatching(/^EMAIL/),
+    ]);
+  });
+
   it('works for the Spanish data too', () => {
     expect(buildVCard(RESUME_DATA_BY_LANG.es)).toContain('FN:');
   });

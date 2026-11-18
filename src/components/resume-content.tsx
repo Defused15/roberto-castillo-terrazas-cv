@@ -38,11 +38,13 @@ const SOCIAL_EVENTS = {
   LinkedIn: 'social_linkedin',
 } as const satisfies Record<SocialNetwork, string>;
 
+// Stryker disable all: class names only (layout and look), verified visually in a browser.
+// A block, not disable next-line: Prettier spreads these over several lines.
+
 /** Outlined 32px icon link, the same look as the theme and language buttons next to it. */
 const ICON_LINK = buttonVariants({variant: 'outline', size: 'icon'});
 
 /** Responsive columns for the project grid: never more columns than projects. */
-// Stryker disable next-line all: layout-only classes, verified visually
 const projectGridCols = (n: number) =>
   n === 1
     ? 'grid-cols-1'
@@ -53,6 +55,8 @@ const projectGridCols = (n: number) =>
 /** Muted text link in the header, styled like the "Show phone numbers" button. */
 const TEXT_LINK =
   'inline-flex items-center gap-1 rounded-sm underline-offset-2 transition-colors hover:text-foreground hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring';
+
+// Stryker restore all
 
 type DateProps = {
   /**
