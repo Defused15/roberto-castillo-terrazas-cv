@@ -150,19 +150,23 @@ const dashboardData = {
 
 // ── Inject into template ──────────────────────────────────────────────────────
 
-const PLACEHOLDER = '/* __PLAYWRIGHT_DATA__ */null';
+// Formatters may add a space before `null`, so accept the marker with or without it.
+const PLACEHOLDER = /\/\* __PLAYWRIGHT_DATA__ \*\/\s*null/;
 
-if (!tmpl.includes(PLACEHOLDER)) {
-  console.error(`❌  Template is missing the injection point: ${PLACEHOLDER}`);
+if (!PLACEHOLDER.test(tmpl)) {
+  console.error(
+    '❌  Template is missing the injection point: /* __PLAYWRIGHT_DATA__ */null',
+  );
   console.error('    Add it inside your <script> block like:');
   console.error('      const DATA = /* __PLAYWRIGHT_DATA__ */null;');
   process.exit(1);
 }
 
-const injected = tmpl.replace(
-  PLACEHOLDER,
-  JSON.stringify(dashboardData, null, 2),
-);
+// The data lands inside an inline <script>: escape `<` so a test title containing
+// "</script>" or "<!--" cannot end the block early. The function replacer keeps
+// `$&`, `$'` and similar sequences in test titles from being read as patterns.
+const json = JSON.stringify(dashboardData, null, 2).replace(/</g, '\\u003c');
+const injected = tmpl.replace(PLACEHOLDER, () => json);
 
 writeFileSync(outPath, injected, 'utf8');
 console.log(`✅  Dashboard written to: ${outPath}`);
