@@ -27,8 +27,8 @@ describe('years of experience', () => {
   });
 
   it.each([
-    ['en', 'QA Engineer with 4+ years of experience'],
-    ['es', 'QA Engineer con más de 4 años de experiencia'],
+    ['en', 'QA Consultant with 4+ years of experience'],
+    ['es', 'QA Consultant con más de 4 años de experiencia'],
   ] as const)('fills the %s summary with the claim', (lang, opening) => {
     const text = withExperience(
       RESUME_DATA_BY_LANG[lang].summary,

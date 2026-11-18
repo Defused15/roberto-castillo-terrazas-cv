@@ -15,7 +15,7 @@ export const BUILD_MONTH = toYearMonth(new Date());
 /** "4+ years" as of the build, shared by the description, the share card and the summary. */
 const YEARS_CLAIM = experienceClaim('en', monthStart(BUILD_MONTH));
 
-export const SITE_DESCRIPTION = `QA Engineer & SDET in Spain and Mexico with ${YEARS_CLAIM} across 20+ projects. Playwright and TypeScript, API and k6 testing, CI/CD and AI-assisted QA.`;
+export const SITE_DESCRIPTION = `QA Consultant & SDET in Spain and Mexico with ${YEARS_CLAIM} across 20+ projects. Playwright and TypeScript, API and k6 testing, CI/CD and AI-assisted QA.`;
 
 /** Short domain shown on the social share card. */
 export const SITE_DOMAIN = 'rcastillo.dev';

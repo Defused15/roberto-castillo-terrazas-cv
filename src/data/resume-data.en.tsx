@@ -17,12 +17,12 @@ export const RESUME_DATA_EN: ResumeData = {
     {name: 'Spain', link: 'https://www.google.com/maps/place/Spain'},
     {name: 'Mexico', link: 'https://www.google.com/maps/place/Mexico'},
   ],
-  about: 'QA Engineer | AI-Augmented SDET',
+  about: 'QA Consultant | AI-Augmented SDET',
   summary:
-    'QA Engineer with {years} of experience in IT consulting across 20+ projects in insurance, e-commerce, healthcare and logistics. Specialized in test automation with Playwright and TypeScript, from Selenium-to-Playwright migrations to new frameworks built on the Page Object Model, isolated tests and parallel execution, cutting suite execution time by ~67%. Covers the full testing lifecycle, from requirements analysis and shift-left reviews to API and k6 performance testing, accessibility (WCAG), CI/CD integration and defect triage. Has tested integrations with enterprise platforms such as Salesforce, HubSpot, Sitecore, Stripe, etc. Builds QA workflows with AI subagents that triage failed Playwright runs and draft Jira tickets for review.',
+    'QA Consultant with {years} of experience in IT consulting across 20+ projects in insurance, e-commerce, healthcare and logistics. Specialized in test automation with Playwright and TypeScript, from Selenium-to-Playwright migrations to new frameworks built on the Page Object Model, isolated tests and parallel execution, cutting suite execution time by ~67%. Covers the full testing lifecycle, from requirements analysis and shift-left reviews to API and k6 performance testing, accessibility (WCAG), CI/CD integration and defect triage. Has tested integrations with enterprise platforms such as Salesforce, HubSpot, Sitecore, Stripe, etc. Builds QA workflows with AI subagents that triage failed Playwright runs and draft Jira tickets for review.',
   avatarUrl: '/avatar.jpg',
   contact: {
-    email: 'rct18130984@gmail.com',
+    email: 'roberto@rcastillo.dev',
     // +34 610 831 754 and +52 871 105 3221, encoded (see src/lib/decode-phone.ts).
     phones: ['NDU3MTM4MDE2NDMr', 'MTIyMzUwMTE3ODI1Kw=='] as EncodedPhone[],
     social: [
