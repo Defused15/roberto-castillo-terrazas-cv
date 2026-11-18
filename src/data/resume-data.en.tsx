@@ -135,7 +135,6 @@ export const RESUME_DATA_EN: ResumeData = {
         'Postman',
         'Bruno',
         'Insomnia',
-        'Pact',
         'Swagger / OpenAPI',
         'Selenium',
         'Allure',

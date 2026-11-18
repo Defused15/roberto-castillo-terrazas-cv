@@ -178,10 +178,10 @@ export function ResumeView({
                   </a>
                 ))}
                 <PrintButton />
-                <div className="flex size-8 items-center justify-center">
+                <div className="flex size-11 items-center justify-center sm:size-8">
                   <ModeToggle />
                 </div>
-                <div className="flex size-8 items-center justify-center">
+                <div className="flex size-11 items-center justify-center sm:size-8">
                   <LanguageToggle />
                 </div>
               </div>
@@ -363,10 +363,16 @@ export function ResumeView({
                       ) : null}
                     </div>
                     <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
-                      <IssuerIcon
-                        issuer={cert.issuer}
-                        className="size-3.5 shrink-0"
-                      />
+                      <span className="flex size-3.5 shrink-0 items-center justify-center">
+                        <IssuerIcon
+                          issuer={cert.issuer}
+                          className={
+                            cert.issuer === 'Cisco'
+                              ? 'size-5 shrink-0'
+                              : 'size-3.5 shrink-0'
+                          }
+                        />
+                      </span>
                       {cert.issuer}
                     </span>
                   </div>

@@ -12,7 +12,7 @@ export function PrintButton() {
     <Button
       variant="outline"
       size="icon"
-      className="size-8 print:hidden"
+      className="size-11 sm:size-8 print:hidden"
       aria-label={data.ui.contact.print}
       onClick={() => {
         track('print_cv_button');
