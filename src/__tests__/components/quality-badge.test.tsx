@@ -5,6 +5,7 @@ import {LANGS, RESUME_DATA_BY_LANG} from '@/data/resume-data';
 import {
   CV_REPO,
   QA_PLAYGROUND_REPO,
+  RESTFUL_BOOKER_REPO,
   TEST_HUB_URL,
   type TestHubStats,
 } from '@/lib/test-hub';
@@ -64,12 +65,18 @@ describe.each(LANGS)('ResumeView › quality badge [%s]', lang => {
         data={d}
         lang={lang}
         asOf={AS_OF}
-        quality={{[CV_REPO]: STATS, [QA_PLAYGROUND_REPO]: PLAYWRIGHT_STATS}}
+        quality={{
+          [CV_REPO]: STATS,
+          [QA_PLAYGROUND_REPO]: PLAYWRIGHT_STATS,
+          [RESTFUL_BOOKER_REPO]: {total: 34, passed: 34, ranOn: '2026-11-18'},
+        }}
       />,
     );
+    const booker = within(projects()).getByRole('link', {name: /34 tests/});
+    expect(cardOf(booker)).toHaveTextContent(titleOf(RESTFUL_BOOKER_REPO));
     expect(
       within(projects()).getAllByRole('link', {name: /tests/}),
-    ).toHaveLength(2);
+    ).toHaveLength(3);
     const playground = within(projects()).getByRole('link', {
       name: /971 tests/,
     });

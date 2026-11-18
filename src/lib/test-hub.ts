@@ -7,6 +7,8 @@ export const CV_REPO =
   'https://github.com/Defused15/roberto-castillo-terrazas-cv';
 export const QA_PLAYGROUND_REPO =
   'https://github.com/Defused15/QA-Playground-Tests';
+export const RESTFUL_BOOKER_REPO =
+  'https://github.com/Defused15/restful-booker-api-testing';
 
 export type TestHubStats = {
   total: number;
@@ -33,6 +35,17 @@ type PlaywrightReport = {
     unexpected?: unknown;
     flaky?: unknown;
     skipped?: unknown;
+  };
+};
+
+type NewmanCounter = {total?: unknown; failed?: unknown};
+
+type NewmanReport = {
+  run?: {
+    stats?: {items?: NewmanCounter; assertions?: NewmanCounter};
+    timings?: {started?: unknown};
+    failures?: unknown;
+    error?: unknown;
   };
 };
 
@@ -84,6 +97,33 @@ export function parsePlaywrightReport(
   };
 }
 
+/**
+ * Keeps only a green, well-formed Newman (Postman) report. Each request is one test,
+ * as the QA Test Hub counts it; a single failed assertion hides the badge.
+ */
+export function parseNewmanReport(report: NewmanReport): TestHubStats | null {
+  const {stats, timings, failures, error} = report.run ?? {};
+  const items = stats?.items;
+  const started = timings?.started;
+  if (
+    typeof items?.total !== 'number' ||
+    typeof started !== 'number' ||
+    items.total <= 0 ||
+    items.failed !== 0 ||
+    stats?.assertions?.failed !== 0 ||
+    !Array.isArray(failures) ||
+    failures.length > 0 ||
+    error != null
+  ) {
+    return null;
+  }
+  return {
+    total: items.total,
+    passed: items.total,
+    ranOn: new Date(started).toISOString().slice(0, 10),
+  };
+}
+
 /** Projects whose CI publishes a report to the QA Test Hub on every push to main. */
 export const TEST_HUB_REPORTS = [
   {
@@ -95,6 +135,11 @@ export const TEST_HUB_REPORTS = [
     repo: QA_PLAYGROUND_REPO,
     url: `${REPORTS_BASE}/QA-Playground-Tests/latest.json`,
     parse: parsePlaywrightReport,
+  },
+  {
+    repo: RESTFUL_BOOKER_REPO,
+    url: `${REPORTS_BASE}/Restful-Booker/latest.json`,
+    parse: parseNewmanReport,
   },
 ] as const;
 
