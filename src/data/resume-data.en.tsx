@@ -337,7 +337,7 @@ export const RESUME_DATA_EN: ResumeData = {
         'Playwright test automation suite for the QA Playground mini web apps, built to showcase test automation skills, with a GitHub Actions CI/CD pipeline and a published test dashboard.',
       link: {
         label: 'defused15.github.io',
-        href: 'https://defused15.github.io/QA-Playground-Tests/dashboard.html',
+        href: 'https://defused15.github.io/QA-Playground-Tests/',
       },
       githubLink: 'https://github.com/Defused15/QA-Playground-Tests',
     },

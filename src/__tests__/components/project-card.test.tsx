@@ -12,7 +12,7 @@ const props = {
   description: 'A project to showcase QA test automation skills.',
   tags: ['Playwright', 'GitHub Actions'],
 };
-const site = 'https://defused15.github.io/QA-Playground-Tests/dashboard.html';
+const site = 'https://defused15.github.io/QA-Playground-Tests/';
 const repo = 'https://github.com/Defused15/QA-Playground-Tests';
 
 describe('ProjectCard', () => {
