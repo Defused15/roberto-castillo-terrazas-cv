@@ -48,6 +48,7 @@ const nextConfig: NextConfig = {
   // Do not advertise the framework in an X-Powered-By header.
   poweredByHeader: false,
   agentRules: false,
+  experimental: {inlineCss: true},
   async headers() {
     return [{source: '/:path*', headers: securityHeaders}];
   },
