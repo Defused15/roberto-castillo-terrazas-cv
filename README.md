@@ -22,10 +22,10 @@ Bilingual (EN/ES) CV site for a QA Engineer, built with Next.js and treated like
 
 Built on top of [Bartosz Jarocki's minimalist CV template](https://github.com/BartoszJarocki/cv):
 
-- **EN/ES i18n.** Two typed data files with the same shape, a language toggle, and the choice remembered in `localStorage`. The `<html lang>` attribute follows the selected language.
+- **EN/ES i18n.** Two typed data files with the same shape and a language toggle whose choice is remembered in `localStorage`. On a first visit, a browser set to Spanish gets the Spanish CV. The `<html lang>` attribute follows the selected language.
 - **SEO.** Site metadata, `robots.txt`, `sitemap.xml`, a web manifest, a generated Open Graph / Twitter card, and a schema.org `ProfilePage` + `Person` JSON-LD block.
-- **Accessibility.** `jest-axe` checks on the CV (both languages, light and dark, phones revealed, after a copy), the theme menu, the privacy page and the 404 page. WCAG fixes include a skip link, named landmarks, accessible names on contact links, contrast and visible focus rings.
-- **Behaviour and data-contract tests.** <!-- TEST_COUNT -->+ Jest tests. Expected text comes from the resume data, so content edits don't need test edits, while a contract suite validates both data files.
+- **Accessibility.** `jest-axe` checks on the CV (both languages, light and dark, phones revealed, after a copy), the theme toggle button, the privacy page and the 404 page. WCAG fixes include a skip link, named landmarks, accessible names on contact links, contrast and visible focus rings.
+- **Behaviour and data-contract tests.** 400+ Jest tests. Expected text comes from the resume data, so content edits don't need test edits, while a contract suite validates both data files.
 - **Mutation testing** with Stryker on the logic-bearing modules, with a break threshold in CI.
 - **CI quality gates.** Lint, type check, tests with coverage thresholds, production build, commit lint and mutation score, all on GitHub Actions.
 - **Cookieless EU analytics** with PostHog, plus a GDPR privacy notice at [`/privacy`](https://www.rcastillo.dev/privacy) in both languages.
@@ -33,7 +33,10 @@ Built on top of [Bartosz Jarocki's minimalist CV template](https://github.com/Ba
 - **Phone numbers kept out of the HTML.** They are stored encoded and only decoded in the browser after a click on "Show phone numbers" (or when printing). A test asserts the server HTML and JSON-LD contain no phone number.
 - **Copy to clipboard** for the email and phone numbers, with an in-place, screen-reader-announced confirmation.
 - **Custom 404 and error pages**, bilingual, including a self-contained global error page.
-- **Dark mode** and a print-friendly layout.
+- **Dates computed at build time.** Jobs show their month range and duration ("Jan 2023 – Mar 2025 · 2 yrs 3 mos"), and the "4+ years" claim in the summary, meta description and share card is derived from the oldest job's start. A weekly scheduled redeploy keeps them current.
+- **Save contact.** A "Save contact" link downloads a vCard from the static [`/contact.vcf`](https://www.rcastillo.dev/contact.vcf) route.
+- **Print-ready.** A print button in the header, a print layout with the email and phone numbers as text, and a QR code to the live site next to the photo (encoded on the server by a small built-in QR encoder, so it adds no client JS).
+- **Dark mode** with a toggle button that cycles light, dark and system.
 
 ## Quality gates
 
@@ -58,10 +61,10 @@ The CV content is data, the UI is a set of client components that read it throug
 
 ```
 src/
-├── app/                 # Routes: /, /privacy, 404, error, global error,
-│                        # OG/Twitter image, robots, sitemap, manifest, JSON-LD
-├── components/          # CV sections, language toggle, theme menu, contact
-│   │                    # copy/reveal, privacy, 404 and error content
+├── app/                 # Routes: /, /privacy, /contact.vcf, 404, error, global
+│                        # error, OG/Twitter image, robots, sitemap, manifest, JSON-LD
+├── components/          # CV sections, language and theme toggles, contact
+│   │                    # copy/reveal, print button and QR, privacy, 404/error
 │   └── ui/              # shadcn/ui primitives and the Section landmark
 ├── data/
 │   ├── resume-data.en.tsx
@@ -69,6 +72,10 @@ src/
 │   └── resume-data.types.ts   # Shared ResumeData type
 ├── lib/
 │   ├── analytics/       # PostHog config, typed events, lazy init
+│   ├── dates.ts         # Month ranges, durations, years of experience
+│   ├── initial-lang.ts  # First-visit language from the browser
+│   ├── qr.ts            # Minimal QR encoder for the printed CV
+│   ├── vcard.ts         # vCard for /contact.vcf
 │   ├── decode-phone.ts
 │   └── format-phone.ts
 ├── test/                # renderWithProviders, preconfigured axe, helpers
@@ -76,8 +83,9 @@ src/
 ```
 
 - **Data.** `resume-data.en.tsx` and `resume-data.es.tsx` share the `ResumeData` type, so the compiler and the contract tests keep the two languages in sync.
-- **Language provider.** `LanguageProvider` holds the current language and exposes the matching data. The server and first client render are English, and the stored choice is applied after hydration.
-- **Theme.** `next-themes` with light, dark and system options.
+- **Language provider.** `LanguageProvider` holds the current language and exposes the matching data. The server and first client render are English; after hydration it applies the stored choice or, on a first visit, Spanish for a Spanish browser.
+- **Build date.** The page passes the build month to the CV as a prop, so durations and the years claim are fixed at build time and the hydrated page matches the server HTML.
+- **Theme.** `next-themes` with light, dark and system, switched by one toggle button.
 - **Analytics.** `src/lib/analytics` wraps PostHog with a typed event map. It loads lazily and only on the production hostnames.
 - **Output.** Statically prerendered pages, deployed on Vercel.
 
@@ -125,6 +133,7 @@ The workflow is [`.github/workflows/GithubActions.yml`](.github/workflows/Github
 | `Build`                            | Pull requests, pushes, manual runs                        | `next build` with a cached `.next/cache`                                                                                  |
 | `Mutation Testing`                 | Every run                                                 | Stryker in incremental mode; a full run on the weekly schedule or on request. Uploads the HTML report.                    |
 | `Publish to QA Hub`                | Pushes to `main` and the weekly run                       | Sends the Jest JSON report to the QA Test Hub, passing or failing                                                         |
+| `Weekly Vercel Redeploy`           | Weekly run, once tests pass                               | POSTs to the Vercel deploy hook in the `VERCEL_DEPLOY_HOOK` secret so build-time dates stay current; skipped if unset     |
 | `Deploy Dashboard to GitHub Pages` | Pushes to `main`, weekly and manual runs, once tests pass | Publishes the Jest dashboard and the latest mutation report to GitHub Pages                                               |
 
 Two composite actions live in [`.github/actions/`](.github/actions/):
