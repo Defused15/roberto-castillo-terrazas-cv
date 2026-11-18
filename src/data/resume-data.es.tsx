@@ -27,6 +27,20 @@ export const RESUME_DATA_ES: ResumeData = {
     {
       ...EN.work[0],
       badges: ['Remoto'],
+      title: 'QA Consultant',
+      description: [
+        'Lideré la migración de las suites de regresión end-to-end de las aplicaciones de una aseguradora de Selenium (Java/TestNG) a Playwright con TypeScript, y creé nuevos proyectos de automatización desde cero.',
+        'Reduje el tiempo de ejecución por suite de ~2 horas a ~40 minutos (≈67 % menos) refactorizando con Page Object Model, optimizando las queries a la base de datos y aislando cada test para habilitar la ejecución en paralelo.',
+        'Introduje procesos de QA estandarizados: una estructura y convenciones comunes para los proyectos de automatización, una plantilla estándar de reporte de bugs y Allure como estándar de reportes en todos los proyectos.',
+        'Construí un flujo de QA asistido por IA con skills y subagentes de Claude Code: los agentes analizan las ejecuciones fallidas a partir de los traces y el reporte de Playwright, clasifican cada fallo como problema del test o de la aplicación con evidencia, y redactan tickets de Jira con pasos de reproducción que reviso antes de enviarlos a desarrollo.',
+        'Ejecuté pruebas de carga con k6 e identifiqué la causa raíz de caídas recurrentes.',
+        'Añadí verificaciones de API dentro de los flujos de UI e integré HashiCorp Vault para las credenciales de prueba, usando colecciones de Postman para trabajar con la API de Vault.',
+        'Preparé las suites para ejecutarse en los pipelines de Jenkins existentes desde Bitbucket, con reportes de Allure en cada build, y mantuve la trazabilidad de la cobertura con los casos de prueba de Zephyr.',
+      ],
+    },
+    {
+      ...EN.work[1],
+      badges: ['Remoto'],
       title: 'Quality Engineer',
       description: [
         'Lideré la estrategia de calidad end-to-end de una plataforma CMS basada en Sitecore, abarcando pruebas funcionales, SIT, UAT, de regresión y de accesibilidad.',
@@ -42,7 +56,7 @@ export const RESUME_DATA_ES: ResumeData = {
       ],
     },
     {
-      ...EN.work[1],
+      ...EN.work[2],
       badges: ['Remoto'],
       title: 'QA Engineer',
       description: [
@@ -58,7 +72,7 @@ export const RESUME_DATA_ES: ResumeData = {
       ],
     },
     {
-      ...EN.work[2],
+      ...EN.work[3],
       badges: ['Presencial'],
       title: 'Practicante de QA y Testing',
       description: [
