@@ -323,7 +323,7 @@ export const RESUME_DATA_EN: ResumeData = {
         'GitHub Actions',
       ],
       description:
-        'Personal CV web app forked from an open-source template and extended with dark mode support and a unit testing suite. Features 400+ unit tests across the EN and ES versions, validated with Stryker Mutator mutation testing.',
+        'Personal CV web app forked from an open-source template and extended with dark mode support and a unit testing suite. Features 430+ unit tests across the EN and ES versions, validated with Stryker Mutator mutation testing.',
       link: {
         label: 'rcastillo.dev',
         href: 'https://rcastillo.dev',

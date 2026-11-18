@@ -25,7 +25,7 @@ Built on top of [Bartosz Jarocki's minimalist CV template](https://github.com/Ba
 - **EN/ES i18n.** Two typed data files with the same shape and a language toggle whose choice is remembered in `localStorage`. On a first visit, a browser set to Spanish gets the Spanish CV. The `<html lang>` attribute follows the selected language.
 - **SEO.** Site metadata, `robots.txt`, `sitemap.xml`, a web manifest, a generated Open Graph / Twitter card, and a schema.org `ProfilePage` + `Person` JSON-LD block.
 - **Accessibility.** `jest-axe` checks on the CV (both languages, light and dark, phones revealed, after a copy), the theme toggle button, the privacy page and the 404 page. WCAG fixes include a skip link, named landmarks, accessible names on contact links, contrast and visible focus rings.
-- **Behaviour and data-contract tests.** 400+ Jest tests. Expected text comes from the resume data, so content edits don't need test edits, while a contract suite validates both data files.
+- **Behaviour and data-contract tests.** 430+ Jest tests. Expected text comes from the resume data, so content edits don't need test edits, while a contract suite validates both data files.
 - **Mutation testing** with Stryker on the logic-bearing modules, with a break threshold in CI.
 - **CI quality gates.** Lint, type check, tests with coverage thresholds, production build, commit lint and mutation score, all on GitHub Actions.
 - **Cookieless EU analytics** with PostHog, plus a GDPR privacy notice at [`/privacy`](https://www.rcastillo.dev/privacy) in both languages.
