@@ -24,6 +24,11 @@ describe("robots.txt", () => {
     expect(sitemapUrl).toBe(`${SITE_URL}/sitemap.xml`);
     expect(host).toBe(SITE_URL);
   });
+
+  it("does not disallow any path (the old /graphql route no longer exists)", () => {
+    const rules = [robots().rules].flat();
+    expect(rules.filter((r) => r.disallow !== undefined)).toEqual([]);
+  });
 });
 
 describe("sitemap.xml", () => {
@@ -44,8 +49,10 @@ describe("web manifest", () => {
 
 describe("site metadata", () => {
   it("resolves relative URLs against the canonical https host", () => {
-    expect(siteMetadata.metadataBase?.origin).toBe(origin);
-    expect(siteMetadata.metadataBase?.protocol).toBe("https:");
+    // Next 16 types metadataBase as string | URL; normalise before checking.
+    const base = new URL(String(siteMetadata.metadataBase));
+    expect(base.origin).toBe(origin);
+    expect(base.protocol).toBe("https:");
     expect(siteMetadata.alternates?.canonical).toBe("/");
   });
 

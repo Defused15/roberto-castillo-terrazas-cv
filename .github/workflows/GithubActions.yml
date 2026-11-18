@@ -121,6 +121,31 @@ jobs:
           path: reports/jest-dashboard.html
           retention-days: 1
 
+  commitlint:
+    name: Commit Lint # informative, not a required check
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      # Full history so the PR's base..head range can be walked.
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Setup Node and dependencies
+        uses: ./.github/actions/setup-deps
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Lint PR commit messages
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: npx commitlint --from "$BASE_SHA" --to "$HEAD_SHA" --verbose
+
   build:
     name: Build
     if: github.event_name != 'schedule'
@@ -142,14 +167,14 @@ jobs:
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: .next/cache
-          key: nextjs-v1-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ hashFiles('src/**', 'public/**', 'next.config.js', 'tailwind.config.js', 'postcss.config.js', 'tsconfig.json') }}
+          key: nextjs-v1-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ hashFiles('src/**', 'public/**', 'next.config.ts', 'tailwind.config.js', 'postcss.config.js', 'tsconfig.json') }}
           restore-keys: |
             nextjs-v1-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-
 
       # Lint is enforced by the required "Unit Tests" job, so it is not repeated here.
-      # next build still type-checks and compiles every route.
+      # next build (Next 16 no longer lints) still type-checks and compiles every route.
       - name: Next.js build
-        run: npx next build --no-lint
+        run: npx next build
 
   mutation:
     name: Mutation Testing # informative, not a required check

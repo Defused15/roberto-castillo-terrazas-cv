@@ -5,29 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Jest · Test Report</title>
 <meta name="description" content="Jest test results report">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style"
-  href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@300;400&display=swap"
-  onload="this.onload=null;this.rel='stylesheet'">
-<noscript>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@300;400&display=swap">
-</noscript>
 <style>
-/* ── Font fallbacks ──────────────────────────────────────────────────────────── */
-@font-face {
-  font-family: "DM Sans Fallback";
-  src: local("Arial");
-  size-adjust: 100%; ascent-override: 94%; descent-override: 24%; line-gap-override: 0%;
-}
-@font-face {
-  font-family: "DM Mono Fallback";
-  src: local("Courier New");
-  size-adjust: 105%; ascent-override: 88%; descent-override: 22%; line-gap-override: 0%;
-}
-
 /* ── Design tokens ───────────────────────────────────────────────────────────── */
 :root {
+  /* System font stacks: no third-party font requests (no visitor IPs sent to Google). */
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   --paper:    #faf9f7;
   --paper2:   #f4f2ee;
   --paper3:   #ede9e3;
@@ -56,7 +39,7 @@ html { font-size: 15px; }
 body {
   background: var(--paper);
   color: var(--ink);
-  font-family: "DM Sans", "DM Sans Fallback", sans-serif;
+  font-family: var(--font-sans);
   line-height: 1.5;
   min-height: 100vh;
 }
@@ -116,7 +99,7 @@ h1 strong { font-weight: 600; }
   flex-shrink: 0;
 }
 .mono {
-  font-family: "DM Mono", "DM Mono Fallback", monospace;
+  font-family: var(--font-mono);
   font-size: 11px;
   color: var(--ink3);
   font-weight: 300;
@@ -162,7 +145,7 @@ h1 strong { font-weight: 600; }
 .gc { padding: 20px 18px; border-right: 1px solid var(--line); }
 .gc:last-child { border-right: none; }
 .gn {
-  font-family: "DM Mono", "DM Mono Fallback", monospace;
+  font-family: var(--font-mono);
   font-size: 28px;
   line-height: 1;
   margin-bottom: 5px;
@@ -206,7 +189,7 @@ h1 strong { font-weight: 600; }
   margin-bottom: 6px;
 }
 .insight-value {
-  font-family: "DM Mono", "DM Mono Fallback", monospace;
+  font-family: var(--font-mono);
   font-size: 17px;
   font-weight: 400;
   color: var(--ink);
@@ -290,7 +273,7 @@ h1 strong { font-weight: 600; }
 .fbtn.active.flaky { background: var(--flaky); border-color: var(--flaky); }
 .fbtn.active.skip  { background: var(--skip);  border-color: var(--skip); }
 .fcount {
-  font-family: "DM Mono", "DM Mono Fallback", monospace;
+  font-family: var(--font-mono);
   font-size: 10px;
   color: var(--ink4);
 }
@@ -329,13 +312,13 @@ tr:hover td { background: var(--paper); }
 tr.hidden { display: none; }
 .tt { font-size: 12.5px; font-weight: 500; color: var(--ink); }
 .tf {
-  font-family: "DM Mono", "DM Mono Fallback", monospace;
+  font-family: var(--font-mono);
   font-size: 10px;
   color: var(--ink4);
   margin-top: 2px;
 }
 .te {
-  font-family: "DM Mono", "DM Mono Fallback", monospace;
+  font-family: var(--font-mono);
   font-size: 10px;
   color: var(--fail);
   margin-top: 4px;
@@ -344,7 +327,7 @@ tr.hidden { display: none; }
   max-width: 420px;
 }
 .dur {
-  font-family: "DM Mono", "DM Mono Fallback", monospace;
+  font-family: var(--font-mono);
   font-size: 11px;
   color: var(--ink2);
   white-space: nowrap;
@@ -368,7 +351,7 @@ tr.hidden { display: none; }
   height: 28px;
   padding: 0 6px;
   border-radius: 4px;
-  font-family: "DM Mono", "DM Mono Fallback", monospace;
+  font-family: var(--font-mono);
   font-size: 11px;
   border: 1px solid var(--line2);
   background: #fff;
@@ -380,14 +363,14 @@ tr.hidden { display: none; }
 .pbtn.active { background: var(--ink); border-color: var(--ink); color: #fff; }
 .pbtn:disabled { opacity: .35; cursor: default; }
 .pellipsis {
-  font-family: "DM Mono", "DM Mono Fallback", monospace;
+  font-family: var(--font-mono);
   font-size: 11px;
   color: var(--ink4);
   padding: 0 4px;
 }
 .page-size-wrap { display: flex; align-items: center; gap: 6px; }
 .page-size-select {
-  font-family: "DM Mono", "DM Mono Fallback", monospace;
+  font-family: var(--font-mono);
   font-size: 11px;
   color: var(--ink2);
   background: #fff;
@@ -430,13 +413,13 @@ tr.hidden { display: none; }
 .legend-row   { display: flex; align-items: center; gap: 9px; font-size: 13px; }
 .legend-swatch { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
 .legend-name  { color: var(--ink2); flex: 1; }
-.legend-count { font-family: "DM Mono","DM Mono Fallback",monospace; font-size: 12px; color: var(--ink3); }
+.legend-count { font-family: var(--font-mono); font-size: 12px; color: var(--ink3); }
 /* Browser bars */
 .browser-rows { display: flex; flex-direction: column; gap: 16px; }
 .browser-top  { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
 .browser-name { font-size: 13px; font-weight: 500; color: var(--ink2); display: flex; align-items: center; gap: 7px; }
 .browser-swatch { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
-.browser-info { font-family: "DM Mono","DM Mono Fallback",monospace; font-size: 11px; color: var(--ink3); }
+.browser-info { font-family: var(--font-mono); font-size: 11px; color: var(--ink3); }
 .bar-track { height: 4px; background: var(--paper3); border-radius: 2px; overflow: hidden; }
 .bar-fill  { height: 100%; border-radius: 2px; }
 
@@ -451,7 +434,7 @@ tr.hidden { display: none; }
 .ft {
   font-size: 10px;
   color: var(--ink4);
-  font-family: "DM Mono", "DM Mono Fallback", monospace;
+  font-family: var(--font-mono);
 }
 
 /* ── Animation ───────────────────────────────────────────────────────────────── */
@@ -664,9 +647,9 @@ donutData.forEach(d => {
 });
 const passRate2 = ((DATA.stats.expected/tot)*100).toFixed(0);
 svg.innerHTML += '<text x="'+cx+'" y="'+(cy-5)+'" text-anchor="middle" dominant-baseline="middle"'
-  +' font-family="\'DM Mono\',monospace" font-size="15" fill="#1a1814" aria-hidden="true">'+passRate2+'%</text>'
+  +' font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="15" fill="#1a1814" aria-hidden="true">'+passRate2+'%</text>'
   +'<text x="'+cx+'" y="'+(cy+11)+'" text-anchor="middle" dominant-baseline="middle"'
-  +' font-family="\'DM Sans\',sans-serif" font-size="9" fill="#6b6560" letter-spacing=".08em" aria-hidden="true">PASS RATE</text>';
+  +' font-family="ui-sans-serif,system-ui,sans-serif" font-size="9" fill="#6b6560" letter-spacing=".08em" aria-hidden="true">PASS RATE</text>';
 
 document.getElementById('donut-legend').innerHTML = donutData.map(d =>
   '<div class="legend-row" role="listitem">'

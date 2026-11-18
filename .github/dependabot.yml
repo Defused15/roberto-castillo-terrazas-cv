@@ -1,0 +1,45 @@
+version: 2
+
+updates:
+  # npm: minor and patch updates land in one weekly PR; each major gets its own PR.
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '05:00'
+      timezone: Europe/Madrid
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: 'chore(deps)'
+      prefix-development: 'chore(deps-dev)'
+    groups:
+      npm-minor-patch:
+        update-types: [minor, patch]
+    ignore:
+      # Stay on Tailwind 3 (v4 is a rewrite) and on tailwind-merge 2, which pairs with it.
+      - dependency-name: tailwindcss
+        update-types: [version-update:semver-major]
+      - dependency-name: tailwind-merge
+        update-types: [version-update:semver-major]
+      # Pinned to 5.9.x on purpose; TypeScript 6/7 is a separate migration.
+      - dependency-name: typescript
+        update-types: [version-update:semver-major]
+      # @types/node tracks the Node runtime (engines >=22, CI on 22).
+      - dependency-name: '@types/node'
+        update-types: [version-update:semver-major]
+
+  # GitHub Actions are pinned by SHA; Dependabot bumps the SHA and the version comment.
+  - package-ecosystem: github-actions
+    directories: [/, /.github/actions/*]
+    schedule:
+      interval: weekly
+      day: monday
+      time: '05:00'
+      timezone: Europe/Madrid
+    open-pull-requests-limit: 3
+    commit-message:
+      prefix: 'ci(deps)'
+    groups:
+      actions-minor-patch:
+        update-types: [minor, patch]
