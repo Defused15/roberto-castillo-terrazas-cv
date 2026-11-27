@@ -1,4 +1,4 @@
-/** @jest-environment node */
+/** @jest-environment @stryker-mutator/jest-runner/jest-env/node */
 import {existsSync} from 'fs';
 import {join} from 'path';
 import robots from '@/app/robots';

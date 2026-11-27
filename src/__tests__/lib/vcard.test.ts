@@ -1,4 +1,4 @@
-/** @jest-environment node */
+/** @jest-environment @stryker-mutator/jest-runner/jest-env/node */
 import {RESUME_DATA, RESUME_DATA_BY_LANG} from '@/data/resume-data';
 import {encodePhone} from '@/lib/decode-phone';
 import {buildVCard, escapeVCard} from '@/lib/vcard';
