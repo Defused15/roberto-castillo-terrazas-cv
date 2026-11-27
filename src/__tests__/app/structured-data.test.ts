@@ -1,4 +1,4 @@
-/** @jest-environment node */
+/** @jest-environment @stryker-mutator/jest-runner/jest-env/node */
 import {buildPersonJsonLd, serializeJsonLd} from '@/app/structured-data';
 import {SITE_URL} from '@/app/site-config';
 import {LANGS, RESUME_DATA, type ResumeData} from '@/data/resume-data';

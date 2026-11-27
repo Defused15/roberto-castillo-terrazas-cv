@@ -1,4 +1,4 @@
-/** @jest-environment node */
+/** @jest-environment @stryker-mutator/jest-runner/jest-env/node */
 import {
   CAREER_START,
   RESUME_DATA_BY_LANG,

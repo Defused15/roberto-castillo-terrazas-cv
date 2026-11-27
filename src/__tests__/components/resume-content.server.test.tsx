@@ -1,4 +1,4 @@
-/** @jest-environment node */
+/** @jest-environment @stryker-mutator/jest-runner/jest-env/node */
 import {renderToString} from 'react-dom/server';
 import Page from '@/app/page';
 import {ResumeView} from '@/components/resume-content';

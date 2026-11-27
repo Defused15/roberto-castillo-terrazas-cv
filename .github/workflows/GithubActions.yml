@@ -206,7 +206,9 @@ jobs:
   mutation:
     name: Mutation Testing # informative, not a required check
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    # A full run (no cache, the weekly schedule, or a test/config change) takes ~45 min on the
+    # 4-core runner; incremental runs re-test only changed files and finish in a few minutes.
+    timeout-minutes: 60
 
     steps:
       - name: Checkout repository
